@@ -18,4 +18,9 @@ twitter_username: harsh.kakashniya
 github_username:  harshkakashaniya
 # Build settings
 markdown: kramdown
+<<<<<<< HEAD
 theme: Cayman
+=======
+
+theme: jekyll-theme-cayman
+>>>>>>> 50f32a5fb8f22c704e3cb239f6f13116007ea083
