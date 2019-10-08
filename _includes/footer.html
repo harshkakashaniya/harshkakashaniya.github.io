@@ -1,38 +1,23 @@
-<footer class="site-footer">
-
-  <div class="wrapper">
-
-    <h2 class="footer-heading">{{ site.title }}</h2>
-
-    <div class="footer-col-wrapper">
-      <div class="footer-col footer-col-1">
-        <ul class="contact-list">
-          <li>{{ site.title }}</li>
-          <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col footer-col-2">
-        <ul class="social-media-list">
-          {% if site.github_username %}
-          <li>
-            {% include icon-github.html username=site.github_username %}
-          </li>
-          {% endif %}
-
-          {% if site.twitter_username %}
-          <li>
-            {% include icon-twitter.html username=site.twitter_username %}
-          </li>
-          {% endif %}
-        </ul>
-      </div>
-
-      <div class="footer-col footer-col-3">
-        <p>{{ site.description }}</p>
+  <footer class="site-footer">
+    <div class="row-fluid">
+      <div class="container">
+        <p>{{ site.title }} . All rights reserved.</p>
       </div>
     </div>
+  </footer>
 
-  </div>
 
-</footer>
+
+  <nav class="mobile-nav">
+    <ul class="nav">
+      <li><h3>Site</h3></li>
+      <li><a href="{{ site.baseurl }}/Projects/"{% if page.categories contains 'example' %} class="active"{% endif %}>Projects</a></li>
+      <li><a href="{{ site.baseurl }}/Resume/"{% if page.categories contains 'documentation' %} class="active"{% endif %}>Resume</a></li>
+      <li class="last"><a href="{{ site.baseurl}}/Creative Corner/"{% if page.categories contains 'library' or page.categories contains 'component' %} class="active"{% endif %}>Creative Corner</a></li>
+	<li><a href="{{ site.baseurl }}/Contact/"{% if page.categories contains 'example' %} class="active"{% endif %}>Contact me</a></li>
+      <li><h3>Contact</h3></li>
+      <li><a href="mailto:harshkakashniya@gmail.com"class="email">Mail</a></li>
+      <li><a href="https://www.linkedin.com/in/harsh-kakashaniya/" class="share">Linkedin</a></li>
+      <li><a href="https://github.com/harshkakashaniya">Github</a></li>
+    </ul>
+  </nav>

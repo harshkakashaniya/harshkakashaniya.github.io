@@ -1,23 +1,231 @@
 ---
 layout: default
+title: Harsh Kakashaniya
 ---
+  <section class="row-fluid homepage-section">
+    <div class="promo">
+      <h1 class="promo__title">{{ site.title }}</h1>
+      <p class="promo__text">{{ site.tagline }}</p>
+      <div class="promo__toolbar">
+        <a href="{{ site.baseurl }}/Projects/" class="btn btn-primary promo__button download-button">Projects</a>
+        <a href="{{ site.baseurl }}/Contact/" class="btn btn-primary promo__button download-button" target="_blank">Contact Me</a>
+      </div>
+    </div>
+  </section>
 
-<div class="home">
+  <section class="row-fluid homepage-section about-noflo">
+    <div class="plain-title">
+      <div class="container">
+        <div class="span8 offset4">
+          <h1>About Me ... </h1>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="main">
+        <div class="sidebar span4">
+          <img src="./img/Harsh.png" alt="" title="" class="sidebar__image" />
+        </div>
+        <div class="content span8">
+          <h3>Details</h3>
+          <p>I graduated from MIT College of Engineering, Pune(2016) with a degree in Mechanical Engineering and am pursuing my Masters in Robotics from the University of Maryland at College Park.</p>
 
-  <h1 class="page-heading">Posts</h1>
+<p>Graduate Student with an extensive hands-on practical experience and interest in Robotics Systems development, SLAM , robotics motion planning, and controls. Passionate about technologies having real-world, large scale impact on society and proficient at conducting research. Along with technical know-how, possessing stellar communication, problem-solving and analytical skills.
+</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <ul class="post-list">
-    {% for post in site.posts %}
-      <li>
-        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+<section class="row-fluid">
+<div class="work-title">
+      <div class="container">
+        <div class="span8 offset4">
+          <h1>Work Experience </h1>
+        </div>
+      </div>
+    </div>
 
-        <h2>
-          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-        </h2>
-      </li>
-    {% endfor %}
-  </ul>
+<div class="Subject-title">
+      <div class="container">
+        <div class="span12">
+          <h2>Company 1</h2>
+    <p>About the company</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-  <p class="rss-subscribe"> YouTube Channel : <a href="https://www.youtube.com/c/soft-illusion">Soft_illusion</a></p>
+<section class="row-fluid">
+<div class="Right-project">
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span5 offset1">
+    <h3>Details</h3>
+    <p>I graduated from MIT College of Engineering, Pune(2016) with a degree in Mechanical Engineering and am pursuing my Masters in Robotics from the University of Maryland at College Park.</p>
+<a href="{{ site.baseurl }}/Resume/KoyalBResume.pdf" class="btn btn-primary page-title__button big- button">{{ site.version }} Github Link</a>  
 
+    </div>
+    <div class="span5">
+      <img src="./img/example/clock.png" alt="" title="" class="sidebar__image" />
+    </div>
+  </div>
 </div>
+  </section>
+
+<div class="Subject-title">
+      <div class="container">
+        <div class="span12">
+          <h2>Company 2</h2>
+    <p>About the company</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="row-fluid">
+<div class="Left-project">
+
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span5 offset1">
+      <img src="./img/example/clock.png" alt="" title="" class="sidebar__image" />
+    </div>
+    <div class="span5">
+    <h3>Details</h3>
+    <p>I graduated from MIT College of Engineering, Pune(2016) with a degree in Mechanical Engineering and am pursuing my Masters in Robotics from the University of Maryland at College Park.</p>
+<a href="{{ site.baseurl }}/Resume/KoyalBResume.pdf" class="btn btn-primary page-title__button big- button">{{ site.version }} Github Link</a>     
+</div>
+  </div>
+</div>
+  </section>
+
+
+<div class="Subject-title">
+      <div class="container">
+        <div class="span12">
+          <h2>Company 3</h2>
+    <p>About the company</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section class="row-fluid">
+<div class="Right-project">
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span5 offset1">
+    <h3>Details</h3>
+    <p>I graduated from MIT College of Engineering, Pune(2016) with a degree in Mechanical Engineering and am pursuing my Masters in Robotics from the University of Maryland at College Park.</p>
+<a href="{{ site.baseurl }}/Resume/KoyalBResume.pdf" class="btn btn-primary page-title__button big- button">{{ site.version }} Github Link</a>  
+
+    </div>
+    <div class="span5">
+      <img src="./img/example/clock.png" alt="" title="" class="sidebar__image" />
+    </div>
+  </div>
+</div>
+  </section>
+
+<!-- Time line-->
+<link rel="stylesheet" type="text/css" href="{{ site.url }}/css/home.css">
+	<nav class="class">
+			<ol class="breadcrumb navbar-left"></ol></nav>
+			<div class="row section-customization">
+				<div class="section wider">
+					<h2 class="section-header">
+						Get a head start with Shoutem extensions
+					</h2>
+					{% include cards.html %}
+				</div>
+			</div>
+	<script src="https://code.jquery.com/jquery-3.2.0.min.js" integrity="sha256-JAW99MJVpJBGcbzEuXk4Az05s/XyDdBomFqNlM3ic+I=" crossorigin="anonymous"></script>
+	<script src="{{ site.url }}/js/animation.js"></script>
+	<script src="{{ site.url }}/js/headroom.min.js"></script>
+	<script src="{{ site.url }}/js/dragdealer.min.js"></script>
+	<script src="{{ site.url }}/js/main.js"></script>
+
+  <section class="row-fluid homepage-section about-noflo">
+    <div class="flowhub-promo">
+      <a class="flowhub-promo-logo" href=https://www.youtube.com/c/soft-illusion"><img src="{{ site.basedir }}/img/Soft_illusion.png" alt="Flowhub"></a>
+      <h1 class="flowhub-promo-title">Soft_illusion</h1>
+      <p class="flowhub-promo-text">Description of youtube channel</p>
+      <a href="https://www.youtube.com/c/soft-illusion" class="btn btn-primary flowhub-promo-button download-button">Channel Link</a>
+    </div>
+  </section>
+
+  <section id="featured" class="row-fluid homepage-section">
+    <div class="who-uses-noflo">
+      <div class="container">
+        <div class="span2">
+          <h2>Programming Skills</h2>
+          <p>There are hundreds of <a href="{{ site.baseurl }}/component/">ready-made NoFlo components</a> available, including:</p>
+        </div>
+        <div class="span9 offset1 who-uses-noflo__logos">
+          <ul>
+            {% for library in site.highlight_libraries %}
+            <li>
+              <a>
+                <img src="{{ site.baseurl }}/img/library/{{ library }}.jpg" alt="{{ library }}" title="{{ library }}" />
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+<section id="featured" class="row-fluid homepage-section">
+    <div class="who-uses-noflo">
+      <div class="container">
+        <div class="span2">
+          <h2>Software Tools</h2>
+          <p>There are hundreds of <a href="{{ site.baseurl }}/component/">ready-made NoFlo components</a> available, including:</p>
+        </div>
+        <div class="span9 offset1 who-uses-noflo__logos">
+          <ul>
+            {% for library in site.highlight_libraries %}
+            <li>
+              <a>
+                <img src="{{ site.baseurl }}/img/library/tool/{{ library }}.jpg" alt="{{ library }}" title="{{ library }}" />
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="row-fluid homepage-section">
+<div class="span12 offset 3">
+    <div class="well" style="margin-top: 10%;">
+    <h3>Send me a message</h3>
+    <form role="form" id="contactForm" data-toggle="validator" class="shake">
+            <div class="form-group col-sm-10">
+                <label for="name" class="h4">Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter name" required data-error="NEW ERROR MESSAGE">
+                <div class="help-block with-errors"></div>
+                <label for="email" class="h4">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter email" required>
+                <div class="help-block with-errors"></div>
+            <label for="message" class="h4 ">Message</label>
+            <textarea id="message" class="form-control" rows="5" placeholder="Enter your message" required></textarea>
+            <div class="help-block with-errors"></div>
+        </div>
+        <button type="submit" id="form-submit" class="btn btn-success btn-lg pull-right ">Submit</button>
+        <div id="msgSubmit" class="h3 text-center hidden"></div>
+        <div class="clearfix"></div>
+    </form>
+
+
+<script  type="text/javascript" src="Contact/js/jquery-1.11.2.min.js"></script>
+<script type="text/javascript" src="Contact/js/validator.min.js"></script>
+<script type="text/javascript" src="Contact/js/form-scripts.js"></script>
+
+  </section>
+
+

@@ -1,0 +1,48 @@
+.container-fluid,
+.navbar .container-fluid
+{
+  max-width: 1920px;
+}
+
+#wrapper {
+    width: 100%;
+    background: #FFFFFF;
+}
+
+.documentation-wrapper {
+    max-width: 1920px;
+    padding-left: 280px;
+    margin: 0 auto;
+
+    @media screen and (max-width: 991px) {
+        padding-left: 0;
+    }
+}
+
+#documentation {
+  max-width: 870px;
+  width: 75%;
+  margin: 0 auto;
+
+  @include mobile {
+      width: auto;
+      margin: 0 20px;
+  }
+}
+
+.image {
+    margin-top: 20px;
+    margin-bottom: 40px;
+
+    img {
+      margin: 0 auto;
+      display: block;
+      width: 100%;
+      border: 1px solid #bdc0cb;
+      border: none;
+   }
+}
+
+.navbar {
+  margin-bottom: 0;
+}

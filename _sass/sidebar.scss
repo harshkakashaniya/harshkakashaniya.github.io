@@ -1,0 +1,105 @@
+.navigation {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background: #FFF;
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        position: relative;
+
+        li a {
+            padding-left: 40px;
+        }
+
+        &.level-2 {
+            .menu-group-title {
+                font-size: 14px;
+                font-weight: 700;
+            }
+        }
+
+        &.level-3 {
+            &::before {
+                content: "";
+                width: 1px;
+                position: absolute;
+                background-color: #000;
+                opacity: 0.08;
+                left: 58px;
+                top: 11px;
+                bottom: 11px;
+                height: initial;
+            }
+        }
+    }
+
+    li {
+        font-size: 14px;
+
+        &.primary > a {
+            height: 48px;
+            line-height: 48px;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .active {
+            color: $accent;
+
+            &:not(.menu-group-title) {
+                background-color: $lightaccent;
+            }
+        }
+        
+        a {
+            height: 40px;
+            width: 100%;
+            display: inline-block;
+            line-height: 40px;
+            vertical-align: middle;
+            color: $primary;
+            text-decoration: none;
+            padding-left: 24px;
+            font-size: 14px;
+            @include easeLinear();
+
+            &:hover,
+            &:active,
+            &:focus {
+                background-color: $lightaccent-2;
+            }
+        }
+    }
+
+    &.level-1 {
+        > li > a {
+            font-size: 15px;
+            font-weight: 700;
+            height: 48px;
+            line-height: 48px;
+        }
+    }
+
+    .sidelink a {
+        font-weight: 500 !important;
+        font-size: 14px !important;
+        height: 40px !important;
+        line-height: 40px !important;
+    }
+
+    .button-signup {
+        color: #00aadf;
+        font-weight: 700;
+        font-size: 15px;
+    }
+
+    .menu-button-signup {
+        padding: 15px 0;
+        border-top: 1px solid #DDD;
+        border-bottom: 1px solid #DDD;
+        margin: 15px 0 !important;
+    }
+}
