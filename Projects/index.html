@@ -28,8 +28,15 @@ title:
   <div class="row-fluid">
     <div class="span5 offset1">
     <h3>Solution to Metric Travelling Salesman Problem </h3>
-    <p> </p>
-<a href="https://github.com/harshkakashaniya/Travelling_Salesman_problem" class="btn btn-primary page-title__button big-	button">{{ site.version }} Github Link</a>  
+    <h3>Prog. Lang. Used: Python </h3>
+    <h3>Keywords: Combinatorial optimization, TSP, MST, Dictionary, DFS</h3>
+    <p> NP Hard and Combinatorial optimization are terms easier to express in theory than in code. The Travelling Salesman Problem is one such and has involved a lot of reasearch in the past. In this project, I refer to cities as nodes that the robot needs to visit. The goal is to form a tour such that the robot visits all the nodes taking the shortest possible route, in other words an optimized planner which creates the route such that the sum of the cost to travel between the nodes is minimum.</p> 
+<p>
+To solve this I used Depth First Search (DFS) applied on the Minimum Spannning Tree (MST) based on the 2-approximation algorithm. As the name implies the cost of the MST i.e the sum of the weights of all the edges in the tree is the minimum possible among all possible spanning trees. The edge weight between the nodes is the Euclidian distance. The MST is created by basically connecting the nearest neighbour from each node/vertex, while simulataneously avoiding any loops. This is achived by making the MST dictionary in a directed fashion such that the edges are always directed from a visited node to an unvisited node. DFS is then used to form a stack to keep track of all the childs of each parent of the tree.</p> 
+
+<p>
+The above technique gives us a basic tour which needs to be optimized using a combination of various heuristics. Various algorithms have been used for the same such as the 2-opt, nearest neighbour switch, reverse order swapping of nodes etc. This have been explained and proved in the BLOG link below.   </p>
+<a href="https://github.com/harshkakashaniya/Travelle ing_Salesman_problem" class="btn btn-primary page-title__button big-	button">{{ site.version }} Github Link</a>  
 
     </div>
     <div class="span5">
@@ -98,7 +105,12 @@ title:
   <div class="row-fluid">
     <div class="span5 offset1">
     <h3>Roadmap Based Robot Motion Planning in Dynamic Environments</h3>
-    <p></p>
+    <h3>Prog. Lang. Used: Python </h3>
+    <h3>Keywords: Dynamic Planning, PRM, State Time Space, A*, KD Tree</h3>
+    <p>Path Planning of mobile robots in an environment which encompasses both dynamic and static obstacles reamains to be a challenging task. Here a pragmatic algorithm based  on the roadmap for the static part of the scene is first developed. The roadmap generated is used to form a time-optimal trajectory from start position to goal position without colliding with the non-static obstacle. This is achieved using the PRM algorithm which takes random samples from the configuration space of the robot, tests them for whether they are in the free space, and uses a local planner to attempt to connect these configurations to other nearby configurations. The starting and goal configurations are added in, and a graph search algorithm is applied to the resulting graph to determine a path between the starting and goal configurations.</p>       
+
+<p>
+The final path is obtained in two phases; the first phase is the local level search where a sub-optimal trajectory is developed using the depth-first search (DFS) and in the following phase, an optimal path is obtained taking in consideration time as one of the parameters and using A* search algorithm.  The solution obtained is applicable to all types of robots, in any configuration space where the motion of obstacles is unconstrained but should be known beforehand. Furthermore, the velocities of obstacle also should remain constant throughout the process. This approach has been applied to a multi-robot system and is also effective for both free-flying and articulated robots.</p>
 <a href="https://github.com/harshkakashaniya/Multiple_Robot_with_PRM" class="btn btn-primary page-title__button big-	button">{{ site.version }} Github Link</a>  
 
 </div>
@@ -208,7 +220,13 @@ title:
   <div class="row-fluid">
     <div class="span5 offset1">
     <h3>Design of Algorithm for Lane Detection and Turn Prediction used in Self Driving Cars</h3>
-    <p></p>
+<h3>Prog. Lang. Used: Python, OpenCV </h3>
+    <h3>Keywords: Homography, Image Processing, Histogram</h3>
+    <p>The booming topic of self driving car needs no formal introduction. Lane Detection and Turn Prediction being the most fundamental needs of the same. Not RADAR or LIDAR, but it is a front facing camera that can achieve this in the cheapest way. Although we can assume the lanes of the road to be parallel to each other, the challenge is that the actual camera does not look at the road ’from the top’, but it always looks at the
+road at the same angle.  </p>
+<p> In this project the homography is first computed using points from an image frame. Image processing techniques such as Edge Detection, noise removal and extraction of ROI is also performed. Perspective transform is taken to build the Histogram of the Lane Pixels for both the lanes, using the homograpy. Further refining of the lane detection is done by fitting a polynomial in between the lane candidates along with turn prediction.
+</p>
+
 <a href="https://github.com/harshkakashaniya/Traffic_Lane_Detection" class="btn btn-primary page-title__button big-	button">{{ site.version }} Github Link</a> 
 
     </div>
@@ -243,7 +261,13 @@ title:
   <div class="row-fluid">
     <div class="span5 offset1">
     <h3>Implementation of Traffic Sign Detection and Classification using MSER and SVM Model</h3>
-    <p></p>
+<h3>Prog. Lang. Used: Python, OpenCV </h3>
+    <h3>Keywords: Support Vector Machine, HOG, MSER</h3>
+    <p>The recent reserach in self driving cars has proved that the goal of achieving autonomous driving without collision can not be implemented without the proper recognition of traffic signs. Also the task of understanding the environment can be classified into sub-tasks i.e detection and classification. In this project I have focused on 8 commonly used signs.</p>
+<p>Post the initial image processing, the Detection of the Signs is achieved using the Maximally Stable External Region (MSER) Algorithm, which is a varient of affine trasnformation. It allows multi-scale detection without any smoothing, which can detect both fine and large structures.
+</p>
+<p>The Classifcation phase is implemented using HOG descriptors to train an SVM model with the RBF kernel. Computer Vision techniques is used to get the HOG values. SVM's predict method is then used to check the correctness of the model. The E_out achieved was 97.4% showing that 97% of the images were classified correctly. The code and implementation is show in the links below.
+</p>
 <a href="https://github.com/harshkakashaniya/Traffic_sign_detection" class="btn btn-primary page-title__button big-	button">{{ site.version }} Github Link</a> 
 
     </div>
@@ -264,7 +288,12 @@ title:
     </div>
     <div class="span5">
     <h3>Detection and Tracking of AR Tags using Homography and Pose Estimation</h3>
-    <p></p>
+    <h3>Prog. Lang. Used: Python, OpenCV </h3>
+    <h3>Keywords: Homography, AR Tag, Contours, Corner Detection, Projection Matrix</h3>
+    <p>In this project I have focused on detecting a custom AR Tag (a form of fiducial marker), that is used for obtaining a point of reference in the real world, such as in augmented reality applications.
+The two aspects to using an AR Tag: detection and tracking, has been implemented.</p>
+<p>Detection is performed using edge and corner detection. Several methods of Computer Vision such as Contours has been used for the implementation. On successful detection of the corner, perspective transformation is performed which gives the ID of the AR Tag compemsated for any camera rotation in the image. </p>
+<p>The tracking of the Tag is visualised using the method of superimposing an image or placing a virtual cube on the tag. This is achieved using homographic transformation between the world coordinates (the reference AR tag) and the image plane (the tag in the image sequence) which gives the projection matrix to place an object on the Tag. The implementation along with the codes have been shown in the links below.</p>
 <a href="https://github.com/harshkakashaniya/AR-tag-detection" class="btn btn-primary page-title__button big-	button">{{ site.version }} Github Link</a> 
 
     </div>
@@ -277,8 +306,19 @@ title:
 <div class="container-fluid">
   <div class="row-fluid">
     <div class="span5 offset1">
-    <h3>Object Tracking using Lucas Kanade</h3>
-    <p></p>
+    <h3>Object Tracking using Lucas Kanade Template Tracker</h3>
+    <h3>Prog. Lang. Used: Python </h3>
+    <h3>Keywords: Optical Flow, Lucas Kanade, HIstogram Equalization</h3>
+    <p> Optical flow basically is the distribution of apparent velocities of movement of brightness pattern in an image. Sequences of ordered images allow the estimation of motion as either instantaneous image velocities or discrete image displacements. Lucas Kanade is a differential method used for the estimation of the above achieved by combining information from several nearby pixels. Howver this algorithm assumes that the displacement of the image contents between two nearby instants (frames) is small.</p>
+<p>
+In this project, the algorithm has been implemented on three video Visual Tracker benchmark database: featuring a car on the road, a human walking, and a box on a table as shown in the BLOG link. 
+To initialize the tracker a template has been defined by drawing a bounding box around the object
+to be tracked in the first frame of the video. For each of the subsequent frames the tracker updates an
+affine transform that warps the current frame so that the template in the first frame is aligned with the warped
+current frame.
+The tracked has also been made more robust, by incorporating steps to increase
+illumination invariance i.e using LAB color space and histogram equalization.
+</p>
 <a href="https://github.com/harshkakashaniya/Lucas_Kanade_image-tracking" class="btn btn-primary page-title__button big-	button">{{ site.version }} Github Link</a> 
 
     </div>
