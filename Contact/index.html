@@ -1,45 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Contact form</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta charset="utf-8">
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/animate.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Ajax Contact Form</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
-<body style="background-color: #7e7e7e">
-<div class="row">
-<div class="col-sm-6 col-sm-offset-3">
-    <div class="well" style="margin-top: 10%;">
-    <h3>Send me a message</h3>
-    <form role="form" id="contactForm" data-toggle="validator" class="shake">
-        <div class="row">
-            <div class="form-group col-sm-6">
-                <label for="name" class="h4">Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Enter name" required data-error="NEW ERROR MESSAGE">
-                <div class="help-block with-errors"></div>
-            </div>
-            <div class="form-group col-sm-6">
-                <label for="email" class="h4">Email</label>
-                <input type="email" class="form-control" id="email" placeholder="Enter email" required>
-                <div class="help-block with-errors"></div>
+<body>
+
+    <!-- ajax contact form -->
+    <section style="margin-top: 50px;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <h5 class="card-header">Ajax Contact Form</h5>
+                        <div class="card-body">
+                            <form class="contact__form" method="post" action="mail.php">
+                                
+                                <!-- form message -->
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="alert alert-success contact__msg" style="display: none" role="alert">
+                                            Your message was sent successfully.
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end message -->
+
+                                <!-- form element -->
+                                <div class="row">
+                                    <div class="col-md-6 form-group">
+                                        <input name="name" type="text" class="form-control" placeholder="Name" required>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <input name="email" type="email" class="form-control" placeholder="Email" required>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <input name="phone" type="text" class="form-control" placeholder="Phone" required>
+                                    </div>
+                                    <div class="col-md-6 form-group">
+                                        <input name="subject" type="text" class="form-control" placeholder="Subject" required>
+                                    </div>
+                                    <div class="col-12 form-group">
+                                        <textarea name="message" class="form-control" rows="3" placeholder="Message" required></textarea>
+                                    </div>
+                                    <div class="col-12">
+                                        <input name="submit" type="submit" class="btn btn-success" value="Send Message">
+                                    </div>
+                                </div>
+                                <!-- end form element -->
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="form-group">
-            <label for="message" class="h4 ">Message</label>
-            <textarea id="message" class="form-control" rows="5" placeholder="Enter your message" required></textarea>
-            <div class="help-block with-errors"></div>
-        </div>
-        <button type="submit" id="form-submit" class="btn btn-success btn-lg pull-right ">Submit</button>
-        <div id="msgSubmit" class="h3 text-center hidden"></div>
-        <div class="clearfix"></div>
-    </form>
-    </div>
-</div>
-</div>
+    </section>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="main.js"></script>
 </body>
-<script  type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
-<script type="text/javascript" src="js/validator.min.js"></script>
-<script type="text/javascript" src="js/form-scripts.js"></script>
 </html>
