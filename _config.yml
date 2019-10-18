@@ -19,6 +19,13 @@ highlight_libraries:
   - comp_6
   - comp_7
   - comp_8
+  - comp_9
+  - comp_11
+  - comp_12
+  - comp_13
+  - comp_14
+  - comp_15
+  - comp_16
 exclude:
   - "Gruntfile.coffee"
   - "README.md"
