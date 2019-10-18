@@ -11,21 +11,15 @@ google:
   analytics: ""
   plus: ""
 highlight_libraries:
-  - noflo-couchdb
-  - noflo-diffbot
-  - noflo-ducksboard
-  - noflo-github
-  - noflo-stripe
-  - noflo-redis
-  - noflo-twilio
-  - noflo-twitter
+  - comp_1
+  - comp_2
+  - comp_3
+  - comp_4
+  - comp_5
+  - comp_6
+  - comp_7
+  - comp_8
 exclude:
-  - "node_modules"
   - "Gruntfile.coffee"
   - "README.md"
-  - "npm-debug.log"
   - "package.json"
-  - "docco.css"
-  - "Gemfile"
-  - "Gemfile.lock"
-  - "vendor"
