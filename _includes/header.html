@@ -9,6 +9,7 @@
         </div>
         <nav class="main-nav">
           <ul class="nav">
+	<li><a href="{{ site.baseurl }}/"{% if page.categories contains 'example' %} class="active"{% endif %}>Home</a></li>
             <li><a href="{{ site.baseurl }}/Projects/"{% if page.categories contains 'example' %} class="active"{% endif %}>Projects</a></li>
             <li><a href="{{ site.baseurl }}/Resume/"{% if page.categories contains 'documentation' %} class="active"{% endif %}>Resume</a></li>
             <li class="last"><a href="{{ site.baseurl }}/Certifications/">Certifications</a></li>
