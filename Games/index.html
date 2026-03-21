@@ -11,6 +11,7 @@ title: Games
     padding: 20px 0;
   }
   .game-card {
+    display: inline-block;
     width: 220px;
     background: #1a1a2e;
     border: 2px solid #d4af37;
@@ -20,6 +21,8 @@ title: Games
     text-decoration: none;
     transition: transform 0.2s, box-shadow 0.2s;
     cursor: pointer;
+    position: relative;
+    z-index: 10;
   }
   .game-card:hover {
     transform: translateY(-6px);
