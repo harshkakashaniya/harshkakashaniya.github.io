@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "jekyll",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["-c", "GEM_HOME=$HOME/.gem GEM_PATH=$HOME/.gem bundle exec jekyll serve --port 4000"],
+      "port": 4000
+    }
+  ]
+}
