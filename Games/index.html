@@ -3,13 +3,55 @@ layout: default
 title: Games
 ---
 
+<style>
+  .games-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 20px 0;
+  }
+  .game-card {
+    width: 220px;
+    background: #1a1a2e;
+    border: 2px solid #d4af37;
+    border-radius: 12px;
+    overflow: hidden;
+    text-align: center;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+  .game-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 24px rgba(212,175,55,0.4);
+  }
+  .game-card img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+  }
+  .game-card-label {
+    padding: 12px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #d4af37;
+    background: #0f0f1a;
+  }
+</style>
+
 <section class="row-fluid">
 <div class="Left-project">
 <div class="container-fluid">
   <div class="row-fluid">
     <div class="span12">
       <h1><font color="white">Games</font></h1>
-      <p><font color="white">Coming soon! Check back later for games and interactive demos.</font></p>
+      <p><font color="white">Click on a game to play!</font></p>
+      <div class="games-grid">
+        <a href="{{ site.baseurl }}/Games/blackjack.html" class="game-card">
+          <img src="{{ site.baseurl }}/Games/screenshot-1774116932992.jpg" alt="Blackjack" />
+          <div class="game-card-label">&#9824; Blackjack</div>
+        </a>
+      </div>
     </div>
   </div>
 </div>
