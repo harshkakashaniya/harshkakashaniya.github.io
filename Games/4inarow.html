@@ -93,26 +93,24 @@
       grid-template-rows:repeat(6,68px);
       gap:6px;
       box-shadow:0 8px 32px rgba(0,0,0,0.6), inset 0 2px 8px rgba(0,0,0,0.4);
+      position:relative;
     }
     .cell {
       border-radius:50%;
       background:#070e1a;
       box-shadow:inset 0 4px 12px rgba(0,0,0,0.8), inset 0 -2px 4px rgba(255,255,255,0.04);
-      position:relative; overflow:hidden;
+      position:relative; overflow:hidden; cursor:pointer;
     }
+    .cell:hover { background:#0d1a30; }
     .cell .piece {
       position:absolute; inset:0; border-radius:50%;
-      transform:translateY(-120%);
-      transition:transform 0s;
+      transition:none;
     }
-    .cell .piece.dropped {
-      transform:translateY(0);
-    }
-    .cell .piece.red {
+    .piece.red {
       background:radial-gradient(circle at 35% 30%, #ff6b5b 0%, #e74c3c 40%, #c0392b 100%);
       box-shadow:0 4px 12px rgba(231,76,60,0.5), inset 0 2px 4px rgba(255,255,255,0.2);
     }
-    .cell .piece.yellow {
+    .piece.yellow {
       background:radial-gradient(circle at 35% 30%, #ffe566 0%, #f1c40f 40%, #d4ac0d 100%);
       box-shadow:0 4px 12px rgba(241,196,15,0.4), inset 0 2px 4px rgba(255,255,255,0.3);
     }
@@ -369,6 +367,8 @@
         const cell = document.createElement('div');
         cell.className = 'cell';
         cell.id = `cell-${r}-${c}`;
+        cell.dataset.col = c;
+        cell.onclick = () => handleClick(c);
         const piece = document.createElement('div');
         piece.className = 'piece';
         piece.id = `piece-${r}-${c}`;
@@ -393,6 +393,7 @@
         const p = document.getElementById(`piece-${r}-${c}`);
         p.className = 'piece';
         p.style.transition = '';
+        p.style.transform  = '';
       }
 
     // Reset column targets
@@ -435,7 +436,6 @@
       disableTargets();
       await sleep(520);
       await cpuMove();
-      cpuThinking = false;
     }
   }
 
@@ -444,28 +444,56 @@
   ────────────────────────────────────────── */
   function getDropRow(col) {
     for (let r = ROWS - 1; r >= 0; r--)
-      if (!board[r][col]) return r;
+      if (board[r][col] === null) return r;
     return -1;
   }
 
   async function dropPiece(row, col, player) {
     board[row][col] = player;
+
+    const boardEl  = document.getElementById('board');
+    const cellSize = 68, gap = 6, padding = 8;
+    const targetLeft = padding + col * (cellSize + gap);
+    const targetTop  = padding + row * (cellSize + gap);
+
+    // Create a floating piece that visually drops from above the board
+    const floater = document.createElement('div');
+    floater.className = `piece ${COLORS[player]}`;
+    floater.style.position      = 'absolute';
+    floater.style.width         = cellSize + 'px';
+    floater.style.height        = cellSize + 'px';
+    floater.style.borderRadius  = '50%';
+    floater.style.left          = targetLeft + 'px';
+    floater.style.top           = (-cellSize - 10) + 'px';
+    floater.style.right         = 'auto';
+    floater.style.bottom        = 'auto';
+    floater.style.zIndex        = '20';
+    floater.style.transition    = 'none';
+    floater.style.transform     = 'none';
+    floater.style.pointerEvents = 'none';
+    boardEl.appendChild(floater);
+
+    void floater.offsetWidth; // reflow
+
+    // Gravity-like fall: ease-in so it accelerates downward
+    const dropMs = 100 + row * 55;
+    floater.style.transition = `top ${dropMs}ms cubic-bezier(0.4, 0, 1, 1)`;
+    floater.style.top = targetTop + 'px';
+    await sleep(dropMs + 10);
+
+    // Bounce
+    floater.style.transition = `top 0.09s ease-out`;
+    floater.style.top = (targetTop - 9) + 'px';
+    await sleep(90);
+    floater.style.transition = `top 0.1s ease-in`;
+    floater.style.top = targetTop + 'px';
+    await sleep(110);
+
+    // Snap actual cell piece into place, remove floater
     const piece = document.getElementById(`piece-${row}-${col}`);
     piece.className = `piece ${COLORS[player]}`;
-    // Calculate drop distance in vh-equivalent: animate from top
-    const dropMs = 80 + row * 45;
-    piece.style.transition = `transform ${dropMs}ms cubic-bezier(0.55,-0.1,0.8,1.15)`;
-    // Trigger reflow
-    void piece.offsetWidth;
-    piece.classList.add('dropped');
-    await sleep(dropMs + 30);
-
-    // Bounce effect
-    piece.style.transition = 'transform 0.12s ease';
-    piece.style.transform   = 'translateY(-6px)';
-    await sleep(120);
-    piece.style.transform   = 'translateY(0)';
-    await sleep(100);
+    piece.style.transform = 'translateY(0)';
+    floater.remove();
 
     updateColumnTarget(col);
   }
@@ -572,6 +600,7 @@
 
     const row = getDropRow(bestCol);
     await dropPiece(row, bestCol, 1);
+    cpuThinking = false;
     enableTargets();
     const win = checkWin(row, bestCol, 1);
     if (win) { endGame(1, win); return; }
