@@ -7,249 +7,288 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --green: #2ecc71;
-      --red: #e74c3c;
-      --blue: #3498db;
-      --gold: #f1c40f;
-      --bg: #0d1117;
-      --card: #161b22;
-      --border: #30363d;
+      --green: #2ecc71; --red: #e74c3c; --blue: #3498db;
+      --gold: #f1c40f; --bg: #0d1117; --card: #161b22; --border: #30363d;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: #e6edf3;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px 16px 40px;
+      font-family:'Inter',sans-serif; background:var(--bg); color:#e6edf3;
+      min-height:100vh; display:flex; flex-direction:column;
+      align-items:center; padding:20px 16px 40px;
     }
 
-    /* HEADER */
-    .header { text-align: center; margin-bottom: 20px; }
+    /* ── HEADER ── */
+    .header { text-align:center; margin-bottom:20px; }
     .header h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.4rem;
-      background: linear-gradient(135deg, var(--green), var(--gold));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-family:'Playfair Display',serif; font-size:2.4rem;
+      background:linear-gradient(135deg,#2ecc71,#f1c40f);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
     }
-    .header p { color: #8b949e; margin-top: 4px; }
+    .header p { color:#8b949e; margin-top:4px; }
 
-    /* SETUP SCREEN */
+    /* ── SETUP ── */
     #setup-screen {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 40px;
-      max-width: 420px;
-      width: 100%;
-      text-align: center;
+      background:var(--card); border:1px solid var(--border);
+      border-radius:16px; padding:36px 32px; max-width:520px; width:100%; text-align:center;
     }
-    #setup-screen h2 { font-size: 1.4rem; margin-bottom: 24px; color: var(--gold); }
-    .mode-btn {
-      display: block;
-      width: 100%;
-      padding: 16px;
-      margin: 12px 0;
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      background: transparent;
-      color: #e6edf3;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
+    .setup-section-label {
+      font-size:0.72rem; color:#8b949e; text-transform:uppercase;
+      letter-spacing:1.5px; margin-bottom:14px; font-weight:600;
     }
-    .mode-btn:hover { border-color: var(--green); color: var(--green); transform: translateY(-2px); }
+    .setup-section { margin-bottom:28px; }
+    .setup-cards { display:flex; gap:14px; justify-content:center; }
+    .setup-card {
+      flex:1; max-width:220px; padding:20px 14px; border-radius:14px;
+      border:2px solid var(--border); background:#0d1117; cursor:pointer;
+      transition:all 0.2s; text-align:center; user-select:none;
+    }
+    .setup-card:hover { border-color:#555; transform:translateY(-3px); }
+    .setup-card.selected { border-color:var(--gold); background:rgba(241,196,15,0.07); }
+    .setup-card .card-icon { font-size:2.4rem; margin-bottom:10px; }
+    .setup-card .card-title { font-size:1rem; font-weight:700; color:#e6edf3; margin-bottom:6px; }
+    .setup-card .card-desc  { font-size:0.78rem; color:#8b949e; line-height:1.5; }
+    .setup-divider { border:none; border-top:1px solid var(--border); margin:0 0 28px; }
+    #start-btn {
+      width:100%; padding:16px; border:none; border-radius:12px;
+      background:linear-gradient(135deg,#2ecc71,#27ae60);
+      color:#fff; font-size:1.05rem; font-weight:700; cursor:pointer;
+      transition:all 0.2s; opacity:0.4; pointer-events:none;
+    }
+    #start-btn.ready { opacity:1; pointer-events:auto; }
+    #start-btn.ready:hover { transform:translateY(-2px); box-shadow:0 6px 20px rgba(46,204,113,0.35); }
 
-    /* GAME LAYOUT */
-    #game-screen { display: none; width: 100%; max-width: 960px; }
+    /* ── ADVANCED CHOICE MODAL ── */
+    #choice-modal {
+      display:none; position:fixed;
+      bottom:0; left:0; right:0;
+      background:linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 100%);
+      z-index:200; align-items:flex-end; justify-content:center;
+      padding-bottom:24px;
+    }
+    #choice-modal.show { display:flex; }
+    .choice-box {
+      background:rgba(22,27,34,0.82); border:1px solid rgba(255,255,255,0.12);
+      backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+      border-radius:20px; padding:20px 22px; max-width:480px; width:95%; text-align:center;
+      animation:dramaticPop 0.35s cubic-bezier(.175,.885,.32,1.275) forwards;
+      box-shadow:0 -4px 32px rgba(0,0,0,0.4);
+    }
+    .choice-box h2 { font-family:'Playfair Display',serif; font-size:1.5rem; color:var(--gold); margin-bottom:6px; }
+    .choice-box .choice-roll { font-size:3.5rem; margin:10px 0; }
+    .choice-box p { color:#8b949e; font-size:0.88rem; margin-bottom:22px; }
+    .choice-btns { display:flex; gap:12px; }
+    .choice-btn {
+      flex:1; padding:16px 10px; border:2px solid transparent;
+      border-radius:14px; cursor:pointer; font-weight:700; font-size:0.9rem;
+      transition:all 0.2s; display:flex; flex-direction:column;
+      align-items:center; gap:8px;
+    }
+    .choice-btn .btn-icon { font-size:2rem; }
+    .choice-btn.forward { background:rgba(46,204,113,0.12); border-color:#2ecc71; color:#2ecc71; }
+    .choice-btn.forward:hover { background:rgba(46,204,113,0.25); transform:translateY(-3px); box-shadow:0 6px 18px rgba(46,204,113,0.3); }
+    .choice-btn.pushback { background:rgba(231,76,60,0.12); border-color:#e74c3c; color:#e74c3c; }
+    .choice-btn.pushback:hover { background:rgba(231,76,60,0.25); transform:translateY(-3px); box-shadow:0 6px 18px rgba(231,76,60,0.3); }
+    /* version badge in panel */
+    .version-badge {
+      display:inline-block; font-size:0.65rem; padding:2px 8px; border-radius:10px;
+      font-weight:700; letter-spacing:0.5px; margin-left:6px; vertical-align:middle;
+    }
+    .badge-classic  { background:rgba(52,152,219,0.2); color:#3498db; }
+    .badge-advanced { background:rgba(155,89,182,0.2); color:#9b59b6; }
+
+    /* ── GAME LAYOUT ── */
+    #game-screen { display:none; width:100%; max-width:1000px; }
     .game-layout {
-      display: flex;
-      gap: 24px;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      justify-content: center;
+      display:flex; gap:24px; align-items:flex-start;
+      flex-wrap:wrap; justify-content:center;
     }
 
-    /* BOARD */
-    .board-wrap { position: relative; }
+    /* ── BOARD ── */
+    .board-wrap { position:relative; flex-shrink:0; }
     #board {
-      display: grid;
-      grid-template-columns: repeat(10, 56px);
-      grid-template-rows: repeat(10, 56px);
-      border: 3px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-      position: relative;
+      display:grid;
+      grid-template-columns:repeat(10,58px);
+      grid-template-rows:repeat(10,58px);
+      border:3px solid var(--border); border-radius:8px; overflow:hidden;
     }
     .cell {
-      width: 56px;
-      height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.65rem;
-      font-weight: 700;
-      position: relative;
-      border: 1px solid rgba(255,255,255,0.06);
+      width:58px; height:58px;
+      display:flex; align-items:center; justify-content:center;
+      position:relative; border:1px solid rgba(255,255,255,0.05);
+      transition:background 0.15s;
     }
     .cell-num {
-      position: absolute;
-      top: 3px;
-      left: 4px;
-      font-size: 0.6rem;
-      color: rgba(255,255,255,0.4);
+      position:absolute; top:3px; left:4px;
+      font-size:0.58rem; color:rgba(255,255,255,0.35); font-weight:600;
     }
-    .cell:nth-child(odd) { background: #1c2128; }
-    .cell:nth-child(even) { background: #161b22; }
-    .cell.snake-head { background: rgba(231,76,60,0.2); }
-    .cell.snake-tail { background: rgba(231,76,60,0.08); }
-    .cell.ladder-bottom { background: rgba(46,204,113,0.2); }
-    .cell.ladder-top { background: rgba(46,204,113,0.08); }
+    .cell:nth-child(even) { background:#1c2128; }
+    .cell:nth-child(odd)  { background:#161b22; }
+    .cell.highlight { background:rgba(241,196,15,0.22) !important; }
+    .cell.snake-head-cell { background:rgba(231,76,60,0.18); }
+    .cell.ladder-bot-cell  { background:rgba(46,204,113,0.18); }
 
-    /* SVG OVERLAY for snakes & ladders */
+    /* ── SVG OVERLAY ── */
     #overlay {
-      position: absolute;
-      top: 0; left: 0;
-      width: 560px; height: 560px;
-      pointer-events: none;
+      position:absolute; top:0; left:0;
+      width:580px; height:580px; pointer-events:none;
     }
 
-    /* TOKENS */
-    .token {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      border: 2px solid white;
-      position: absolute;
-      font-size: 0.55rem;
-      font-weight: 800;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.4s ease;
-      z-index: 10;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+    /* ── PAWNS ── */
+    .pawn {
+      position:absolute; width:30px; height:42px;
+      transition:left 0.28s cubic-bezier(.4,0,.2,1), top 0.28s cubic-bezier(.4,0,.2,1);
+      z-index:20; filter:drop-shadow(0 3px 6px rgba(0,0,0,0.8));
     }
-    #token1 { background: var(--red); transform: translate(4px, 4px); }
-    #token2 { background: var(--blue); transform: translate(28px, 4px); }
+    #pawn1 { z-index:21; }
+    #pawn2 { z-index:22; }
 
-    /* SIDE PANEL */
-    .side-panel { width: 280px; display: flex; flex-direction: column; gap: 16px; }
-
+    /* ── SIDE PANEL ── */
+    .side-panel { width:280px; display:flex; flex-direction:column; gap:14px; }
     .panel-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 18px;
+      background:var(--card); border:1px solid var(--border);
+      border-radius:12px; padding:16px;
     }
-    .panel-card h3 { font-size: 0.85rem; color: #8b949e; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+    .panel-card h3 {
+      font-size:0.78rem; color:#8b949e;
+      text-transform:uppercase; letter-spacing:1px; margin-bottom:10px;
+    }
 
-    /* PLAYER INFO */
+    /* ── PLAYER ROWS ── */
     .player-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px;
-      border-radius: 8px;
-      margin-bottom: 8px;
-      border: 2px solid transparent;
-      transition: all 0.2s;
+      display:flex; align-items:center; gap:10px; padding:9px;
+      border-radius:8px; margin-bottom:6px;
+      border:2px solid transparent; transition:all 0.25s;
     }
-    .player-row.active { border-color: var(--gold); background: rgba(241,196,15,0.06); }
-    .player-dot { width: 18px; height: 18px; border-radius: 50%; flex-shrink: 0; border: 2px solid white; }
-    .p1-dot { background: var(--red); }
-    .p2-dot { background: var(--blue); }
-    .player-name { font-weight: 600; font-size: 0.9rem; flex: 1; }
-    .player-pos { font-size: 0.85rem; color: #8b949e; }
-    .turn-badge { font-size: 0.7rem; background: var(--gold); color: #000; padding: 2px 7px; border-radius: 10px; font-weight: 700; }
+    .player-row.active { border-color:var(--gold); background:rgba(241,196,15,0.07); }
+    .pawn-icon { width:22px; height:30px; flex-shrink:0; }
+    .player-name { font-weight:600; font-size:0.88rem; flex:1; }
+    .player-pos { font-size:0.82rem; color:#8b949e; }
+    .turn-badge {
+      font-size:0.68rem; background:var(--gold); color:#000;
+      padding:2px 7px; border-radius:10px; font-weight:700;
+    }
 
-    /* DICE */
-    #dice-face {
-      font-size: 4rem;
-      text-align: center;
-      margin: 8px 0;
-      transition: transform 0.15s;
-      user-select: none;
+    /* ── 3D DICE ── */
+    .dice-scene {
+      width:58px; height:58px; margin:8px auto 12px;
+      perspective:180px; perspective-origin:50% 40%;
     }
-    #dice-face.rolling { animation: roll 0.5s ease; }
-    @keyframes roll {
-      0%,100% { transform: rotate(0deg) scale(1); }
-      25% { transform: rotate(-15deg) scale(1.2); }
-      75% { transform: rotate(15deg) scale(1.2); }
+    .dice-3d {
+      width:58px; height:58px;
+      position:relative; transform-style:preserve-3d;
+      transform:rotateX(0deg) rotateY(0deg);
+      transition:transform 0.1s ease;
     }
+    .face {
+      position:absolute; width:58px; height:58px;
+      border-radius:10px;
+      display:grid; grid-template-columns:repeat(3,1fr);
+      grid-template-rows:repeat(3,1fr);
+      padding:7px; gap:4px;
+      border:2px solid rgba(0,0,0,0.15);
+      box-shadow:inset 0 2px 5px rgba(255,255,255,0.5), inset 0 -2px 5px rgba(0,0,0,0.15);
+    }
+    .face-1 { background:linear-gradient(135deg,#fff 0%,#e8e8e8 100%); transform:translateZ(29px); }
+    .face-6 { background:linear-gradient(135deg,#c8c8c8 0%,#b5b5b5 100%); transform:rotateY(180deg) translateZ(29px); }
+    .face-2 { background:linear-gradient(135deg,#ddd 0%,#ccc 100%); transform:rotateY(90deg) translateZ(29px); }
+    .face-5 { background:linear-gradient(135deg,#d8d8d8 0%,#c8c8c8 100%); transform:rotateY(-90deg) translateZ(29px); }
+    .face-3 { background:linear-gradient(135deg,#e4e4e4 0%,#d4d4d4 100%); transform:rotateX(-90deg) translateZ(29px); }
+    .face-4 { background:linear-gradient(135deg,#cfcfcf 0%,#bfbfbf 100%); transform:rotateX(90deg) translateZ(29px); }
+    .dot {
+      width:100%; height:100%; border-radius:50%;
+      background:radial-gradient(circle at 35% 35%, #3a3a4a, #111);
+      box-shadow:0 1px 3px rgba(0,0,0,0.4), inset 0 1px 2px rgba(255,255,255,0.08);
+    }
+    .dot.red { background:radial-gradient(circle at 35% 35%,#e74c3c,#7b241c); }
+    .empty { background:transparent; }
     #roll-btn {
-      width: 100%;
-      padding: 12px;
-      background: linear-gradient(135deg, var(--green), #27ae60);
-      border: none;
-      border-radius: 10px;
-      color: white;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s;
+      width:100%; padding:13px; border:none; border-radius:10px;
+      background:linear-gradient(135deg,#2ecc71,#27ae60);
+      color:#fff; font-size:1rem; font-weight:700; cursor:pointer; transition:all 0.2s;
     }
-    #roll-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(46,204,113,0.4); }
-    #roll-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    #roll-btn:hover:not(:disabled) { transform:translateY(-2px); box-shadow:0 4px 16px rgba(46,204,113,0.4); }
+    #roll-btn:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
 
-    /* LOG */
-    #log {
-      max-height: 160px;
-      overflow-y: auto;
-      font-size: 0.78rem;
-      line-height: 1.6;
-      color: #8b949e;
+    /* ── LOG ── */
+    #log { max-height:150px; overflow-y:auto; font-size:0.76rem; line-height:1.65; color:#8b949e; }
+    #log div { padding:2px 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+    #log div:last-child { border:none; }
+    .log-snake  { color:#e74c3c; font-weight:600; }
+    .log-ladder { color:#2ecc71; font-weight:600; }
+    .log-win    { color:var(--gold); font-weight:700; }
+
+    /* ── DRAMATIC OVERLAY ── */
+    #dramatic {
+      display:none; position:fixed; inset:0;
+      align-items:center; justify-content:center;
+      z-index:150; pointer-events:none;
     }
-    #log div { padding: 2px 0; border-bottom: 1px solid rgba(255,255,255,0.04); }
-    #log div:last-child { border: none; }
-    .log-snake { color: #e74c3c; }
-    .log-ladder { color: #2ecc71; }
-    .log-win { color: var(--gold); font-weight: 700; }
+    #dramatic.show { display:flex; }
+    #dramatic-box {
+      text-align:center; padding:0 20px;
+      animation:dramaticPop 0.45s cubic-bezier(.175,.885,.32,1.275) forwards;
+    }
+    @keyframes dramaticPop {
+      0%{ transform:scale(0.3) rotate(-8deg); opacity:0; }
+      60%{ transform:scale(1.15) rotate(3deg); }
+      100%{ transform:scale(1) rotate(0deg); opacity:1; }
+    }
+    #dramatic-emoji { font-size:7rem; line-height:1; }
+    #dramatic-title { font-family:'Playfair Display',serif; font-size:2.8rem; font-weight:900; margin-top:8px; }
+    #dramatic-sub   { font-size:1.1rem; margin-top:6px; opacity:0.85; }
+    .dramatic-snake-bg { background:radial-gradient(ellipse,rgba(180,20,20,0.6) 0%,transparent 70%); }
+    .dramatic-ladder-bg{ background:radial-gradient(ellipse,rgba(180,140,0,0.55) 0%,transparent 70%); }
 
-    /* WIN MODAL */
+    /* ── BOARD SHAKE ── */
+    @keyframes shake {
+      0%,100%{ transform:translateX(0) rotate(0); }
+      15%{ transform:translateX(-10px) rotate(-1.5deg); }
+      30%{ transform:translateX(10px) rotate(1.5deg); }
+      45%{ transform:translateX(-8px) rotate(-1deg); }
+      60%{ transform:translateX(8px) rotate(1deg); }
+      75%{ transform:translateX(-5px); }
+    }
+    .shaking { animation:shake 0.55s ease; }
+
+    /* ── LADDER GLOW ── */
+    @keyframes ladderGlow {
+      0%,100%{ box-shadow:none; }
+      50%{ box-shadow:0 0 40px 10px rgba(46,204,113,0.5); }
+    }
+    .glowing { animation:ladderGlow 0.6s ease 3; }
+
+    /* ── CONFETTI ── */
+    .confetti {
+      position:fixed; width:9px; height:9px; border-radius:2px;
+      z-index:200; animation:confettiFall 1.8s ease-in forwards;
+    }
+    @keyframes confettiFall {
+      0%{ transform:translateY(-10px) rotate(0deg); opacity:1; }
+      100%{ transform:translateY(100vh) rotate(720deg); opacity:0; }
+    }
+
+    /* ── WIN MODAL ── */
     #win-modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.8);
-      z-index: 100;
-      align-items: center;
-      justify-content: center;
+      display:none; position:fixed; inset:0;
+      background:rgba(0,0,0,0.8); z-index:300;
+      align-items:center; justify-content:center;
     }
-    #win-modal.show { display: flex; }
+    #win-modal.show { display:flex; }
     .win-box {
-      background: var(--card);
-      border: 2px solid var(--gold);
-      border-radius: 20px;
-      padding: 40px;
-      text-align: center;
-      max-width: 360px;
+      background:var(--card); border:2px solid var(--gold);
+      border-radius:20px; padding:40px; text-align:center; max-width:360px;
     }
-    .win-box h2 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold); margin-bottom: 8px; }
-    .win-box p { color: #8b949e; margin-bottom: 24px; }
+    .win-box h2 {
+      font-family:'Playfair Display',serif; font-size:2rem;
+      color:var(--gold); margin-bottom:8px;
+    }
+    .win-box p { color:#8b949e; margin-bottom:24px; }
     .win-box button {
-      padding: 12px 32px;
-      background: var(--gold);
-      color: #000;
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform 0.2s;
+      padding:12px 32px; background:var(--gold); color:#000;
+      border:none; border-radius:10px; font-size:1rem; font-weight:700;
+      cursor:pointer; transition:transform 0.2s;
     }
-    .win-box button:hover { transform: scale(1.05); }
-
-    /* LEGEND */
-    .legend { display: flex; flex-wrap: wrap; gap: 10px; }
-    .legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.75rem; color: #8b949e; }
-    .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
+    .win-box button:hover { transform:scale(1.05); }
   </style>
 </head>
 <body>
@@ -261,68 +300,172 @@
 
 <!-- SETUP -->
 <div id="setup-screen">
-  <h2>Choose Game Mode</h2>
-  <button class="mode-btn" onclick="startGame('2p')">👥 2 Players (Local)</button>
-  <button class="mode-btn" onclick="startGame('cpu')">🤖 1 Player vs CPU</button>
+  <!-- Step 1: Version -->
+  <div class="setup-section">
+    <div class="setup-section-label">Step 1 — Choose Version</div>
+    <div class="setup-cards">
+      <div class="setup-card" id="card-classic" onclick="selectOption('version','classic')">
+        <div class="card-icon">🎲</div>
+        <div class="card-title">Classic</div>
+        <div class="card-desc">Roll &amp; move forward. Use snakes and ladders to race to 100.</div>
+      </div>
+      <div class="setup-card" id="card-advanced" onclick="selectOption('version','advanced')">
+        <div class="card-icon">⚔️</div>
+        <div class="card-title">Advanced</div>
+        <div class="card-desc">Each roll, choose: move yourself forward <em>or</em> push your opponent back!</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="setup-divider">
+
+  <!-- Step 2: Mode -->
+  <div class="setup-section">
+    <div class="setup-section-label">Step 2 — Choose Mode</div>
+    <div class="setup-cards">
+      <div class="setup-card" id="card-2p" onclick="selectOption('mode','2p')">
+        <div class="card-icon">👥</div>
+        <div class="card-title">2 Players</div>
+        <div class="card-desc">Play locally with a friend on the same device.</div>
+      </div>
+      <div class="setup-card" id="card-cpu" onclick="selectOption('mode','cpu')">
+        <div class="card-icon">🤖</div>
+        <div class="card-title">vs CPU</div>
+        <div class="card-desc">Challenge the computer. CPU plays smart in Advanced mode!</div>
+      </div>
+    </div>
+  </div>
+
+  <button id="start-btn" onclick="startGame()">Start Game →</button>
 </div>
 
 <!-- GAME -->
 <div id="game-screen">
   <div class="game-layout">
 
-    <!-- BOARD -->
-    <div class="board-wrap">
+    <div class="board-wrap" id="board-wrap">
       <div id="board"></div>
-      <svg id="overlay" viewBox="0 0 560 560" xmlns="http://www.w3.org/2000/svg"></svg>
-      <div class="token" id="token1">P1</div>
-      <div class="token" id="token2">P2</div>
+      <svg id="overlay" viewBox="0 0 580 580" xmlns="http://www.w3.org/2000/svg"></svg>
+
+      <!-- Pawn 1 (red) -->
+      <svg class="pawn" id="pawn1" viewBox="0 0 30 44" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="15" cy="41" rx="12" ry="3.5" fill="#a93226"/>
+        <rect x="9" y="29" width="12" height="13" rx="3" fill="#e74c3c"/>
+        <ellipse cx="15" cy="28" rx="8" ry="3" fill="#a93226"/>
+        <ellipse cx="15" cy="21" rx="10" ry="9" fill="#e74c3c"/>
+        <circle cx="15" cy="10" r="9" fill="#e74c3c"/>
+        <ellipse cx="12" cy="7" rx="3.5" ry="2.5" fill="rgba(255,255,255,0.28)" transform="rotate(-20,12,7)"/>
+        <ellipse cx="15" cy="41" rx="12" ry="3.5" fill="rgba(0,0,0,0.25)"/>
+      </svg>
+
+      <!-- Pawn 2 (blue) -->
+      <svg class="pawn" id="pawn2" viewBox="0 0 30 44" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="15" cy="41" rx="12" ry="3.5" fill="#1a5276"/>
+        <rect x="9" y="29" width="12" height="13" rx="3" fill="#3498db"/>
+        <ellipse cx="15" cy="28" rx="8" ry="3" fill="#1a5276"/>
+        <ellipse cx="15" cy="21" rx="10" ry="9" fill="#3498db"/>
+        <circle cx="15" cy="10" r="9" fill="#3498db"/>
+        <ellipse cx="12" cy="7" rx="3.5" ry="2.5" fill="rgba(255,255,255,0.28)" transform="rotate(-20,12,7)"/>
+        <ellipse cx="15" cy="41" rx="12" ry="3.5" fill="rgba(0,0,0,0.25)"/>
+      </svg>
     </div>
 
     <!-- SIDE PANEL -->
     <div class="side-panel">
-
-      <!-- Players -->
       <div class="panel-card">
-        <h3>Players</h3>
+        <h3>Players <span id="version-badge" class="version-badge badge-classic">CLASSIC</span></h3>
         <div class="player-row active" id="p1-row">
-          <div class="player-dot p1-dot"></div>
+          <svg class="pawn-icon" viewBox="0 0 30 44"><ellipse cx="15" cy="41" rx="12" ry="3.5" fill="#a93226"/><rect x="9" y="29" width="12" height="13" rx="3" fill="#e74c3c"/><ellipse cx="15" cy="28" rx="8" ry="3" fill="#a93226"/><ellipse cx="15" cy="21" rx="10" ry="9" fill="#e74c3c"/><circle cx="15" cy="10" r="9" fill="#e74c3c"/><ellipse cx="12" cy="7" rx="3.5" ry="2.5" fill="rgba(255,255,255,0.28)" transform="rotate(-20,12,7)"/></svg>
           <div class="player-name" id="p1-name">Player 1</div>
-          <div class="player-pos" id="p1-pos">Pos: 0</div>
+          <div class="player-pos" id="p1-pos">Sq: 0</div>
           <div class="turn-badge" id="p1-badge">TURN</div>
         </div>
         <div class="player-row" id="p2-row">
-          <div class="player-dot p2-dot"></div>
+          <svg class="pawn-icon" viewBox="0 0 30 44"><ellipse cx="15" cy="41" rx="12" ry="3.5" fill="#1a5276"/><rect x="9" y="29" width="12" height="13" rx="3" fill="#3498db"/><ellipse cx="15" cy="28" rx="8" ry="3" fill="#1a5276"/><ellipse cx="15" cy="21" rx="10" ry="9" fill="#3498db"/><circle cx="15" cy="10" r="9" fill="#3498db"/><ellipse cx="12" cy="7" rx="3.5" ry="2.5" fill="rgba(255,255,255,0.28)" transform="rotate(-20,12,7)"/></svg>
           <div class="player-name" id="p2-name">Player 2</div>
-          <div class="player-pos" id="p2-pos">Pos: 0</div>
+          <div class="player-pos" id="p2-pos">Sq: 0</div>
           <div class="turn-badge" id="p2-badge" style="display:none">TURN</div>
         </div>
       </div>
 
-      <!-- Dice -->
       <div class="panel-card">
         <h3>Dice</h3>
-        <div id="dice-face">⚀</div>
+        <div class="dice-scene">
+          <div class="dice-3d" id="dice-3d">
+            <!-- Face 1: center dot (front) -->
+            <div class="face face-1">
+              <div class="empty"></div><div class="empty"></div><div class="empty"></div>
+              <div class="empty"></div><div class="dot red"></div><div class="empty"></div>
+              <div class="empty"></div><div class="empty"></div><div class="empty"></div>
+            </div>
+            <!-- Face 2: top-right, bot-left (right) -->
+            <div class="face face-2">
+              <div class="empty"></div><div class="empty"></div><div class="dot"></div>
+              <div class="empty"></div><div class="empty"></div><div class="empty"></div>
+              <div class="dot"></div><div class="empty"></div><div class="empty"></div>
+            </div>
+            <!-- Face 3: top-right, center, bot-left (top) -->
+            <div class="face face-3">
+              <div class="empty"></div><div class="empty"></div><div class="dot"></div>
+              <div class="empty"></div><div class="dot"></div><div class="empty"></div>
+              <div class="dot"></div><div class="empty"></div><div class="empty"></div>
+            </div>
+            <!-- Face 4: four corners (bottom) -->
+            <div class="face face-4">
+              <div class="dot"></div><div class="empty"></div><div class="dot"></div>
+              <div class="empty"></div><div class="empty"></div><div class="empty"></div>
+              <div class="dot"></div><div class="empty"></div><div class="dot"></div>
+            </div>
+            <!-- Face 5: corners + center (left) -->
+            <div class="face face-5">
+              <div class="dot"></div><div class="empty"></div><div class="dot"></div>
+              <div class="empty"></div><div class="dot"></div><div class="empty"></div>
+              <div class="dot"></div><div class="empty"></div><div class="dot"></div>
+            </div>
+            <!-- Face 6: two columns of 3 (back) -->
+            <div class="face face-6">
+              <div class="dot"></div><div class="empty"></div><div class="dot"></div>
+              <div class="dot"></div><div class="empty"></div><div class="dot"></div>
+              <div class="dot"></div><div class="empty"></div><div class="dot"></div>
+            </div>
+          </div>
+        </div>
         <button id="roll-btn" onclick="rollDice()">🎲 Roll Dice</button>
       </div>
 
-      <!-- Legend -->
-      <div class="panel-card">
-        <h3>Legend</h3>
-        <div class="legend">
-          <div class="legend-item"><div class="legend-dot" style="background:rgba(231,76,60,0.6)"></div>Snake Head</div>
-          <div class="legend-item"><div class="legend-dot" style="background:rgba(46,204,113,0.6)"></div>Ladder Bottom</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#e74c3c;border-radius:50%"></div>Player 1</div>
-          <div class="legend-item"><div class="legend-dot" style="background:#3498db;border-radius:50%"></div>Player 2</div>
-        </div>
-      </div>
-
-      <!-- Log -->
       <div class="panel-card">
         <h3>Game Log</h3>
         <div id="log"></div>
       </div>
-
     </div>
+  </div>
+</div>
+
+<!-- ADVANCED CHOICE MODAL -->
+<div id="choice-modal">
+  <div class="choice-box">
+    <h2>Your Roll</h2>
+    <div class="choice-roll" id="choice-roll-display"></div>
+    <p id="choice-desc">Choose your action wisely!</p>
+    <div class="choice-btns">
+      <button class="choice-btn forward" id="btn-forward" onclick="resolveChoice('forward')">
+        <span class="btn-icon">🚀</span>
+        <span id="btn-forward-label">Move Forward</span>
+      </button>
+      <button class="choice-btn pushback" id="btn-pushback" onclick="resolveChoice('pushback')">
+        <span class="btn-icon">💀</span>
+        <span id="btn-pushback-label">Push Opponent Back</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- DRAMATIC OVERLAY -->
+<div id="dramatic">
+  <div id="dramatic-box">
+    <div id="dramatic-emoji"></div>
+    <div id="dramatic-title"></div>
+    <div id="dramatic-sub"></div>
   </div>
 </div>
 
@@ -337,133 +480,327 @@
 </div>
 
 <script>
-  // ── SNAKES: head → tail (move down) ──
-  const SNAKES = { 97:78, 95:56, 88:24, 62:19, 64:60, 56:53, 49:11, 47:26, 16:6, 99:41 };
-  // ── LADDERS: bottom → top (move up) ──
-  const LADDERS = { 4:14, 9:31, 20:38, 28:84, 40:59, 51:67, 63:81, 71:91, 17:7 };
+  /* ──────────────────────────────────────────
+     BOARD DATA
+  ────────────────────────────────────────── */
+  const SNAKES  = { 97:78, 95:56, 88:24, 62:19, 64:60, 49:11, 47:26, 16:6, 99:41, 56:53 };
+  const LADDERS = { 4:14,  9:31,  20:38, 28:84, 40:59, 51:67, 63:81, 71:91, 17:56 };
+  // Face 1=front, 6=back, 2=right, 5=left, 3=top, 4=bottom
+  const FACE_TRANSFORMS = {
+    1: 'rotateX(0deg)   rotateY(0deg)',
+    2: 'rotateX(0deg)   rotateY(-90deg)',
+    3: 'rotateX(90deg)  rotateY(0deg)',
+    4: 'rotateX(-90deg) rotateY(0deg)',
+    5: 'rotateX(0deg)   rotateY(90deg)',
+    6: 'rotateX(0deg)   rotateY(180deg)'
+  };
 
-  const DICE_FACES = ['⚀','⚁','⚂','⚃','⚄','⚅'];
-
-  let gameMode = '2p';
-  let positions = [0, 0];
-  let currentPlayer = 0;
-  let animating = false;
-
-  // ── BOARD LAYOUT ──
-  // Row 10 = squares 91-100 (left→right), Row 9 = 81-90 (right→left), etc.
-  function squareToCell(sq) {
-    const row = Math.floor((sq - 1) / 10); // 0=bottom, 9=top
-    const col = (sq - 1) % 10;
-    const gridRow = 9 - row; // invert for display (row 9 = top)
-    const gridCol = (row % 2 === 0) ? col : (9 - col); // snake pattern
-    return { gridRow, gridCol };
+  async function spin3DDice(finalValue) {
+    const dice = document.getElementById('dice-3d');
+    // Tumble through random faces quickly
+    dice.style.transition = 'transform 0.08s ease';
+    for (let i = 0; i < 14; i++) {
+      const f = Math.ceil(Math.random() * 6);
+      dice.style.transform = FACE_TRANSFORMS[f];
+      await sleep(75);
+    }
+    // Settle on final face with a satisfying bounce
+    dice.style.transition = 'transform 0.55s cubic-bezier(.175,.885,.32,1.275)';
+    dice.style.transform = FACE_TRANSFORMS[finalValue];
+    await sleep(580);
   }
+  const CELL = 58;
 
+  // Unique snake colors
+  const SNAKE_COLORS = [
+    { body:'#1d8348', scale:'#27ae60', belly:'#a9dfbf', head:'#145a32' },
+    { body:'#7d6608', scale:'#d4ac0d', belly:'#f9e79f', head:'#6e2f1a' },
+    { body:'#922b21', scale:'#e74c3c', belly:'#f5b7b1', head:'#641e16' },
+    { body:'#6c3483', scale:'#9b59b6', belly:'#d2b4de', head:'#4a235a' },
+    { body:'#154360', scale:'#2e86c1', belly:'#a9cce3', head:'#0b2545' },
+    { body:'#1e8449', scale:'#239b56', belly:'#a9dfbf', head:'#0e6655' },
+  ];
+
+  let gameMode='2p', gameVersion='classic';
+  let positions=[0,0], currentPlayer=0, animating=false;
+  let setupSelections = { version: null, mode: null };
+  let choiceResolve = null; // promise resolver for advanced choice
+
+  /* ──────────────────────────────────────────
+     COORDINATE HELPERS
+  ────────────────────────────────────────── */
+  function squareToGrid(sq) {
+    const row = Math.floor((sq-1)/10);
+    const col  = (sq-1) % 10;
+    return {
+      gridRow: 9 - row,
+      gridCol: (row % 2 === 0) ? col : (9 - col)
+    };
+  }
   function cellCenter(sq) {
-    const { gridRow, gridCol } = squareToCell(sq);
-    return { x: gridCol * 56 + 28, y: gridRow * 56 + 28 };
+    const {gridRow, gridCol} = squareToGrid(sq);
+    return { x: gridCol*CELL + CELL/2, y: gridRow*CELL + CELL/2 };
   }
 
+  /* ──────────────────────────────────────────
+     BUILD BOARD
+  ────────────────────────────────────────── */
   function buildBoard() {
     const board = document.getElementById('board');
     board.innerHTML = '';
-    for (let gridRow = 0; gridRow < 10; gridRow++) {
-      for (let gridCol = 0; gridCol < 10; gridCol++) {
-        const row = 9 - gridRow;
-        const sq = (row % 2 === 0)
-          ? row * 10 + gridCol + 1
-          : row * 10 + (9 - gridCol) + 1;
-
+    for (let gr=0; gr<10; gr++) {
+      for (let gc=0; gc<10; gc++) {
+        const row = 9 - gr;
+        const sq  = (row%2===0) ? row*10+gc+1 : row*10+(9-gc)+1;
         const cell = document.createElement('div');
         cell.className = 'cell';
-        cell.id = 'cell-' + sq;
-
+        cell.id = 'sq-'+sq;
         const num = document.createElement('div');
         num.className = 'cell-num';
         num.textContent = sq;
         cell.appendChild(num);
-
-        if (SNAKES[sq]) cell.classList.add('snake-head');
-        if (Object.values(SNAKES).includes(sq)) cell.classList.add('snake-tail');
-        if (LADDERS[sq]) cell.classList.add('ladder-bottom');
-        if (Object.values(LADDERS).includes(sq)) cell.classList.add('ladder-top');
-
+        if (SNAKES[sq])  cell.classList.add('snake-head-cell');
+        if (LADDERS[sq]) cell.classList.add('ladder-bot-cell');
         board.appendChild(cell);
       }
     }
     drawOverlay();
   }
 
+  /* ──────────────────────────────────────────
+     SVG HELPERS
+  ────────────────────────────────────────── */
+  function svgEl(tag, attrs) {
+    const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    for (const [k,v] of Object.entries(attrs)) el.setAttribute(k,v);
+    return el;
+  }
+
+  /* ──────────────────────────────────────────
+     DRAW REALISTIC SNAKE
+  ────────────────────────────────────────── */
+  function drawSnake(svg, headSq, tailSq, colors, idx) {
+    const H = cellCenter(headSq), T = cellCenter(tailSq);
+
+    // Wiggle control points
+    const dx = T.x - H.x, dy = T.y - H.y;
+    const perp = { x: -dy * 0.35, y: dx * 0.35 };
+    const sign = idx % 2 === 0 ? 1 : -1;
+    const c1 = { x: H.x + dx*0.3  + perp.x*sign,  y: H.y + dy*0.3  + perp.y*sign };
+    const c2 = { x: H.x + dx*0.65 - perp.x*sign,  y: H.y + dy*0.65 - perp.y*sign };
+    const d  = `M ${H.x} ${H.y} C ${c1.x} ${c1.y} ${c2.x} ${c2.y} ${T.x} ${T.y}`;
+
+    // Shadow
+    svg.appendChild(svgEl('path',{ d, stroke:'rgba(0,0,0,0.5)', 'stroke-width':22, fill:'none', 'stroke-linecap':'round', transform:'translate(3,4)' }));
+
+    // Body – outer
+    svg.appendChild(svgEl('path',{ d, stroke:colors.body,  'stroke-width':18, fill:'none', 'stroke-linecap':'round' }));
+    // Body – belly stripe
+    svg.appendChild(svgEl('path',{ d, stroke:colors.belly, 'stroke-width':9,  fill:'none', 'stroke-linecap':'round', opacity:'0.5' }));
+    // Body – scale dots
+    svg.appendChild(svgEl('path',{ d, stroke:colors.scale, 'stroke-width':14, fill:'none', 'stroke-linecap':'round', 'stroke-dasharray':'7 9', opacity:'0.55' }));
+
+    // Tail tip
+    svg.appendChild(svgEl('circle',{ cx:T.x, cy:T.y, r:5, fill:colors.body }));
+
+    // ── HEAD ──
+    // Angle of head based on first control point direction
+    const hAngle = Math.atan2(c1.y - H.y, c1.x - H.x) * 180 / Math.PI + 180;
+    const hg = svgEl('g',{ transform:`rotate(${hAngle},${H.x},${H.y})` });
+
+    // Head oval
+    hg.appendChild(svgEl('ellipse',{ cx:H.x, cy:H.y, rx:14, ry:10, fill:colors.head }));
+    // Top markings
+    hg.appendChild(svgEl('ellipse',{ cx:H.x, cy:H.y-2, rx:9,  ry:5,  fill:colors.scale, opacity:'0.6' }));
+    // Eyes
+    hg.appendChild(svgEl('circle',{ cx:H.x-5, cy:H.y-4, r:4, fill:'#111' }));
+    hg.appendChild(svgEl('circle',{ cx:H.x+5, cy:H.y-4, r:4, fill:'#111' }));
+    hg.appendChild(svgEl('circle',{ cx:H.x-4, cy:H.y-5, r:1.8, fill:'#ff2222' }));
+    hg.appendChild(svgEl('circle',{ cx:H.x+6, cy:H.y-5, r:1.8, fill:'#ff2222' }));
+    hg.appendChild(svgEl('circle',{ cx:H.x-3.5,cy:H.y-4.5,r:0.9,fill:'white'}));
+    hg.appendChild(svgEl('circle',{ cx:H.x+5.5,cy:H.y-4.5,r:0.9,fill:'white'}));
+    // Tongue (forked)
+    hg.appendChild(svgEl('path',{
+      d:`M ${H.x} ${H.y+8} L ${H.x} ${H.y+16} M ${H.x} ${H.y+16} L ${H.x-5} ${H.y+22} M ${H.x} ${H.y+16} L ${H.x+5} ${H.y+22}`,
+      stroke:'#ff1a44', 'stroke-width':2.2, fill:'none', 'stroke-linecap':'round'
+    }));
+    svg.appendChild(hg);
+  }
+
+  /* ──────────────────────────────────────────
+     DRAW REALISTIC LADDER
+  ────────────────────────────────────────── */
+  function drawLadder(svg, botSq, topSq) {
+    const B = cellCenter(botSq), T = cellCenter(topSq);
+    const dx = T.x - B.x, dy = T.y - B.y;
+    const len = Math.sqrt(dx*dx + dy*dy);
+    const nx = -dy/len, ny = dx/len; // perpendicular unit
+    const W = 10; // half-width between rails
+
+    // Rail positions
+    const BL = { x:B.x+nx*W, y:B.y+ny*W };
+    const BR = { x:B.x-nx*W, y:B.y-ny*W };
+    const TL = { x:T.x+nx*W, y:T.y+ny*W };
+    const TR = { x:T.x-nx*W, y:T.y-ny*W };
+
+    // Shadow
+    svg.appendChild(svgEl('line',{ x1:BL.x+3,y1:BL.y+4,x2:TL.x+3,y2:TL.y+4, stroke:'rgba(0,0,0,0.4)', 'stroke-width':7, 'stroke-linecap':'round' }));
+    svg.appendChild(svgEl('line',{ x1:BR.x+3,y1:BR.y+4,x2:TR.x+3,y2:TR.y+4, stroke:'rgba(0,0,0,0.4)', 'stroke-width':7, 'stroke-linecap':'round' }));
+
+    // Left rail
+    svg.appendChild(svgEl('line',{ x1:BL.x,y1:BL.y,x2:TL.x,y2:TL.y, stroke:'#7d4e1f', 'stroke-width':6, 'stroke-linecap':'round' }));
+    svg.appendChild(svgEl('line',{ x1:BL.x,y1:BL.y,x2:TL.x,y2:TL.y, stroke:'#c0832d', 'stroke-width':3.5,'stroke-linecap':'round', opacity:'0.7' }));
+
+    // Right rail
+    svg.appendChild(svgEl('line',{ x1:BR.x,y1:BR.y,x2:TR.x,y2:TR.y, stroke:'#7d4e1f', 'stroke-width':6, 'stroke-linecap':'round' }));
+    svg.appendChild(svgEl('line',{ x1:BR.x,y1:BR.y,x2:TR.x,y2:TR.y, stroke:'#c0832d', 'stroke-width':3.5,'stroke-linecap':'round', opacity:'0.7' }));
+
+    // Rungs
+    const steps = Math.max(3, Math.floor(len / 28));
+    for (let i=0; i<=steps; i++) {
+      const t = i/steps;
+      const rl = { x:BL.x+dx*t, y:BL.y+dy*t };
+      const rr = { x:BR.x+dx*t, y:BR.y+dy*t };
+      // Shadow
+      svg.appendChild(svgEl('line',{ x1:rl.x+2,y1:rl.y+2,x2:rr.x+2,y2:rr.y+2, stroke:'rgba(0,0,0,0.3)', 'stroke-width':5, 'stroke-linecap':'round' }));
+      // Rung
+      svg.appendChild(svgEl('line',{ x1:rl.x,y1:rl.y,x2:rr.x,y2:rr.y, stroke:'#5d3a1a','stroke-width':5,'stroke-linecap':'round' }));
+      svg.appendChild(svgEl('line',{ x1:rl.x,y1:rl.y,x2:rr.x,y2:rr.y, stroke:'#e59866','stroke-width':2.5,'stroke-linecap':'round',opacity:'0.55' }));
+    }
+
+    // Glow arrows at bottom & top
+    const arrowSize = 6;
+    svg.appendChild(svgEl('circle',{ cx:B.x,cy:B.y,r:arrowSize+2, fill:'#2ecc71',opacity:'0.7' }));
+    svg.appendChild(svgEl('circle',{ cx:T.x,cy:T.y,r:arrowSize,   fill:'#f1c40f',opacity:'0.85' }));
+  }
+
+  /* ──────────────────────────────────────────
+     DRAW ALL OVERLAYS
+  ────────────────────────────────────────── */
   function drawOverlay() {
     const svg = document.getElementById('overlay');
     svg.innerHTML = '';
 
-    // Draw ladders
-    for (const [from, to] of Object.entries(LADDERS)) {
-      const a = cellCenter(+from), b = cellCenter(+to);
-      const line = document.createElementNS('http://www.w3.org/2000/svg','line');
-      line.setAttribute('x1', a.x); line.setAttribute('y1', a.y);
-      line.setAttribute('x2', b.x); line.setAttribute('y2', b.y);
-      line.setAttribute('stroke', '#2ecc71');
-      line.setAttribute('stroke-width', '5');
-      line.setAttribute('stroke-linecap', 'round');
-      line.setAttribute('opacity', '0.7');
-      svg.appendChild(line);
-      // rungs
-      const dx = b.x - a.x, dy = b.y - a.y;
-      const len = Math.sqrt(dx*dx + dy*dy);
-      const steps = Math.floor(len / 30);
-      for (let i = 1; i < steps; i++) {
-        const t = i / steps;
-        const cx = a.x + dx * t, cy = a.y + dy * t;
-        const nx = -dy/len * 10, ny = dx/len * 10;
-        const rung = document.createElementNS('http://www.w3.org/2000/svg','line');
-        rung.setAttribute('x1', cx - nx); rung.setAttribute('y1', cy - ny);
-        rung.setAttribute('x2', cx + nx); rung.setAttribute('y2', cy + ny);
-        rung.setAttribute('stroke', '#2ecc71');
-        rung.setAttribute('stroke-width', '3');
-        rung.setAttribute('opacity', '0.5');
-        svg.appendChild(rung);
-      }
+    // Ladders first (behind snakes)
+    Object.entries(LADDERS).forEach(([bot, top]) => drawLadder(svg, +bot, +top));
+
+    // Snakes on top
+    let ci = 0;
+    Object.entries(SNAKES).forEach(([head, tail]) => {
+      drawSnake(svg, +head, +tail, SNAKE_COLORS[ci % SNAKE_COLORS.length], ci);
+      ci++;
+    });
+  }
+
+  /* ──────────────────────────────────────────
+     PAWN POSITIONING
+  ────────────────────────────────────────── */
+  function placePawn(player, sq) {
+    const pawn = document.getElementById('pawn'+(player+1));
+    if (sq === 0) {
+      // Off-board start
+      pawn.style.left = (player===0 ? 4 : 32) + 'px';
+      pawn.style.top  = (580 - 10) + 'px';
+      return;
     }
+    const {gridRow, gridCol} = squareToGrid(sq);
+    pawn.style.left = (gridCol * CELL + (player===0 ? 2 : 26)) + 'px';
+    pawn.style.top  = (gridRow * CELL + 6) + 'px';
+  }
 
-    // Draw snakes
-    for (const [from, to] of Object.entries(SNAKES)) {
-      const a = cellCenter(+from), b = cellCenter(+to);
-      const path = document.createElementNS('http://www.w3.org/2000/svg','path');
-      const mx = (a.x + b.x) / 2 + 40, my = (a.y + b.y) / 2 - 20;
-      const d = `M ${a.x} ${a.y} Q ${mx} ${my} ${b.x} ${b.y}`;
-      path.setAttribute('d', d);
-      path.setAttribute('stroke', '#e74c3c');
-      path.setAttribute('stroke-width', '5');
-      path.setAttribute('fill', 'none');
-      path.setAttribute('stroke-linecap', 'round');
-      path.setAttribute('opacity', '0.75');
-      svg.appendChild(path);
-      // snake head circle
-      const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
-      circle.setAttribute('cx', a.x); circle.setAttribute('cy', a.y);
-      circle.setAttribute('r', '7');
-      circle.setAttribute('fill', '#e74c3c');
-      circle.setAttribute('opacity', '0.9');
-      svg.appendChild(circle);
+  /* ──────────────────────────────────────────
+     HIGHLIGHT CELL
+  ────────────────────────────────────────── */
+  function highlightCell(sq) {
+    const el = document.getElementById('sq-'+sq);
+    if (!el) return;
+    el.classList.add('highlight');
+    setTimeout(() => el.classList.remove('highlight'), 280);
+  }
+
+  /* ──────────────────────────────────────────
+     STEP-BY-STEP MOVE
+  ────────────────────────────────────────── */
+  async function moveStepByStep(player, fromSq, roll) {
+    let pos = fromSq;
+    for (let s=1; s<=roll; s++) {
+      pos = Math.min(fromSq + s, 100);
+      positions[player] = pos;
+      placePawn(player, pos);
+      highlightCell(pos);
+      await sleep(240);
+      if (fromSq + s > 100) break;
+    }
+    return positions[player];
+  }
+
+  /* ──────────────────────────────────────────
+     DRAMATIC EVENTS
+  ────────────────────────────────────────── */
+  async function dramaticSnake(name, from, to) {
+    const d = document.getElementById('dramatic');
+    const box = document.getElementById('dramatic-box');
+    box.className = 'dramatic-snake-bg';
+    document.getElementById('dramatic-emoji').textContent = '🐍';
+    document.getElementById('dramatic-title').textContent = 'SNAKE BITE!';
+    document.getElementById('dramatic-title').style.color = '#e74c3c';
+    document.getElementById('dramatic-sub').textContent  = `${name} slides from ${from} down to ${to}!`;
+    document.getElementById('dramatic-sub').style.color  = '#f1948a';
+    d.style.display = 'flex';
+    box.style.animation = 'none';
+    void box.offsetWidth;
+    box.style.animation = '';
+    // Shake the board
+    const wrap = document.getElementById('board-wrap');
+    wrap.classList.add('shaking');
+    await sleep(560);
+    wrap.classList.remove('shaking');
+    await sleep(800);
+    d.style.display = 'none';
+  }
+
+  async function dramaticLadder(name, from, to) {
+    const d = document.getElementById('dramatic');
+    const box = document.getElementById('dramatic-box');
+    box.className = 'dramatic-ladder-bg';
+    document.getElementById('dramatic-emoji').textContent = '🪜';
+    document.getElementById('dramatic-title').textContent = 'LUCKY LADDER!';
+    document.getElementById('dramatic-title').style.color = '#f1c40f';
+    document.getElementById('dramatic-sub').textContent  = `${name} climbs from ${from} up to ${to}!`;
+    document.getElementById('dramatic-sub').style.color  = '#abebc6';
+    d.style.display = 'flex';
+    box.style.animation = 'none';
+    void box.offsetWidth;
+    box.style.animation = '';
+    // Glow the board
+    const wrap = document.getElementById('board-wrap');
+    wrap.classList.add('glowing');
+    // Confetti!
+    spawnConfetti();
+    await sleep(1400);
+    wrap.classList.remove('glowing');
+    d.style.display = 'none';
+  }
+
+  function spawnConfetti() {
+    const colors = ['#f1c40f','#2ecc71','#3498db','#e74c3c','#9b59b6','#1abc9c','#e67e22'];
+    for (let i=0; i<60; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left = (Math.random()*100) + 'vw';
+      c.style.top  = '-10px';
+      c.style.background = colors[Math.floor(Math.random()*colors.length)];
+      c.style.animationDelay = (Math.random()*0.6) + 's';
+      c.style.animationDuration = (1.2 + Math.random()*0.8) + 's';
+      c.style.borderRadius = Math.random()>0.5 ? '50%' : '2px';
+      document.body.appendChild(c);
+      setTimeout(() => c.remove(), 2200);
     }
   }
 
-  function moveToken(player, sq) {
-    const token = document.getElementById('token' + (player + 1));
-    const { gridRow, gridCol } = squareToCell(sq);
-    const offset = player === 0 ? 4 : 28;
-    token.style.left = (gridCol * 56 + offset) + 'px';
-    token.style.top = (gridRow * 56 + 4) + 'px';
-  }
-
-  function moveTokenToStart(player) {
-    const token = document.getElementById('token' + (player + 1));
-    token.style.left = (player === 0 ? 4 : 28) + 'px';
-    token.style.top = '530px';
-  }
-
+  /* ──────────────────────────────────────────
+     LOG
+  ────────────────────────────────────────── */
   function addLog(msg, cls='') {
     const log = document.getElementById('log');
     const div = document.createElement('div');
@@ -472,124 +809,263 @@
     log.prepend(div);
   }
 
+  /* ──────────────────────────────────────────
+     UI UPDATE
+  ────────────────────────────────────────── */
   function updateUI() {
-    document.getElementById('p1-pos').textContent = 'Pos: ' + positions[0];
-    document.getElementById('p2-pos').textContent = 'Pos: ' + positions[1];
-    document.getElementById('p1-row').className = 'player-row' + (currentPlayer === 0 ? ' active' : '');
-    document.getElementById('p2-row').className = 'player-row' + (currentPlayer === 1 ? ' active' : '');
-    document.getElementById('p1-badge').style.display = currentPlayer === 0 ? 'block' : 'none';
-    document.getElementById('p2-badge').style.display = currentPlayer === 1 ? 'block' : 'none';
+    document.getElementById('p1-pos').textContent = 'Sq: '+positions[0];
+    document.getElementById('p2-pos').textContent = 'Sq: '+positions[1];
+    ['p1','p2'].forEach((p,i) => {
+      document.getElementById(p+'-row').className   = 'player-row'+(currentPlayer===i?' active':'');
+      document.getElementById(p+'-badge').style.display = currentPlayer===i ? 'block':'none';
+    });
   }
 
+  /* ──────────────────────────────────────────
+     ADVANCED: SETUP CARD SELECTION
+  ────────────────────────────────────────── */
+  function selectOption(type, value) {
+    setupSelections[type] = value;
+    // Highlight selected card
+    document.querySelectorAll(`[id^="card-${type === 'version' ? '' : ''}"]`).forEach(el => el.classList.remove('selected'));
+    if (type === 'version') {
+      document.getElementById('card-classic').classList.toggle('selected', value === 'classic');
+      document.getElementById('card-advanced').classList.toggle('selected', value === 'advanced');
+    } else {
+      document.getElementById('card-2p').classList.toggle('selected', value === '2p');
+      document.getElementById('card-cpu').classList.toggle('selected', value === 'cpu');
+    }
+    // Enable start button only when both are chosen
+    const btn = document.getElementById('start-btn');
+    if (setupSelections.version && setupSelections.mode) {
+      btn.classList.add('ready');
+    }
+  }
+
+  /* ──────────────────────────────────────────
+     ADVANCED: SHOW CHOICE MODAL
+  ────────────────────────────────────────── */
+  function showChoiceModal(roll, playerName, opponentName, playerPos, opponentPos) {
+    const DICE_EMOJI = ['⚀','⚁','⚂','⚃','⚄','⚅'];
+    document.getElementById('choice-roll-display').textContent = DICE_EMOJI[roll-1];
+    document.getElementById('choice-desc').textContent = `${playerName}, choose your action:`;
+    document.getElementById('btn-forward-label').textContent  = `Move me +${roll} (to ${Math.min(playerPos+roll,100)})`;
+    document.getElementById('btn-pushback-label').textContent = `Push ${opponentName} -${roll} (to ${Math.max(opponentPos-roll,1)})`;
+
+    // Disable pushback if opponent is at 0 (hasn't started)
+    const pushBtn = document.getElementById('btn-pushback');
+    pushBtn.disabled = opponentPos === 0;
+    pushBtn.style.opacity = opponentPos === 0 ? '0.4' : '1';
+
+    document.getElementById('choice-modal').classList.add('show');
+    return new Promise(res => { choiceResolve = res; });
+  }
+
+  function resolveChoice(choice) {
+    document.getElementById('choice-modal').classList.remove('show');
+    if (choiceResolve) { choiceResolve(choice); choiceResolve = null; }
+  }
+
+  /* ──────────────────────────────────────────
+     ADVANCED: CPU SMART CHOICE
+  ────────────────────────────────────────── */
+  function cpuChoice(roll, cpuPos, humanPos) {
+    const fwdDest  = cpuPos  + roll;
+    const backDest = Math.max(humanPos - roll, 1);
+
+    // If moving forward wins → always go forward
+    if (fwdDest === 100) return 'forward';
+    // If moving forward lands on a snake → prefer pushback
+    if (SNAKES[fwdDest] && humanPos > 0) return 'pushback';
+    // If pushing opponent lands on a snake → great move
+    if (SNAKES[backDest] && humanPos > 0) return 'pushback';
+    // If moving forward lands on a ladder → very good
+    if (LADDERS[fwdDest]) return 'forward';
+    // If opponent is far ahead, push back
+    if (humanPos - cpuPos > 15 && humanPos > 0) return 'pushback';
+    // Default: move forward
+    return 'forward';
+  }
+
+  /* ──────────────────────────────────────────
+     APPLY MOVE + SNAKE/LADDER CHECK
+  ────────────────────────────────────────── */
+  async function applyMove(p, fromSq, roll) {
+    const name = document.getElementById('p'+(p+1)+'-name').textContent;
+    const dest = fromSq + roll;
+    if (dest > 100) {
+      addLog(`${name} needs exact roll to reach 100. Staying at ${fromSq}.`);
+      return;
+    }
+    await moveStepByStep(p, fromSq, roll);
+    await sleep(150);
+    let pos = positions[p];
+    if (SNAKES[pos]) {
+      const tail = SNAKES[pos];
+      addLog(`🐍 ${name} hit a SNAKE at ${pos}! Slides to ${tail}.`, 'log-snake');
+      await dramaticSnake(name, pos, tail);
+      positions[p] = tail; placePawn(p, tail); await sleep(300);
+    } else if (LADDERS[pos]) {
+      const top = LADDERS[pos];
+      addLog(`🪜 ${name} found a LADDER at ${pos}! Climbs to ${top}.`, 'log-ladder');
+      await dramaticLadder(name, pos, top);
+      positions[p] = top; placePawn(p, top); await sleep(300);
+    }
+  }
+
+  /* ──────────────────────────────────────────
+     APPLY PUSHBACK
+  ────────────────────────────────────────── */
+  async function applyPushback(attacker, target, roll) {
+    const attackerName = document.getElementById('p'+(attacker+1)+'-name').textContent;
+    const targetName   = document.getElementById('p'+(target+1)+'-name').textContent;
+    const fromSq = positions[target];
+    const toSq   = Math.max(fromSq - roll, 1);
+
+    addLog(`💀 ${attackerName} pushed ${targetName} back ${roll} steps! (${fromSq} → ${toSq})`, 'log-snake');
+
+    // Animate step by step backward
+    let pos = fromSq;
+    for (let s=1; s<=roll; s++) {
+      pos = Math.max(fromSq - s, 1);
+      positions[target] = pos;
+      placePawn(target, pos);
+      highlightCell(pos);
+      await sleep(220);
+      if (fromSq - s < 1) break;
+    }
+    await sleep(150);
+
+    // Check snake/ladder on landing square
+    if (SNAKES[pos]) {
+      const tail = SNAKES[pos];
+      addLog(`🐍 ${targetName} also hit a SNAKE at ${pos}! Slides further to ${tail}.`, 'log-snake');
+      await dramaticSnake(targetName, pos, tail);
+      positions[target] = tail; placePawn(target, tail); await sleep(300);
+    } else if (LADDERS[pos]) {
+      const top = LADDERS[pos];
+      addLog(`🪜 ${targetName} lucky! Hit a LADDER at ${pos} while being pushed! Climbs to ${top}.`, 'log-ladder');
+      await dramaticLadder(targetName, pos, top);
+      positions[target] = top; placePawn(target, top); await sleep(300);
+    }
+  }
+
+  /* ──────────────────────────────────────────
+     ROLL DICE
+  ────────────────────────────────────────── */
   async function rollDice() {
     if (animating) return;
     animating = true;
     document.getElementById('roll-btn').disabled = true;
 
-    // Animate dice
-    const diceFace = document.getElementById('dice-face');
-    diceFace.classList.add('rolling');
-    let flips = 0;
-    await new Promise(res => {
-      const id = setInterval(() => {
-        diceFace.textContent = DICE_FACES[Math.floor(Math.random() * 6)];
-        if (++flips >= 8) { clearInterval(id); res(); }
-      }, 80);
-    });
-    diceFace.classList.remove('rolling');
+    const roll = Math.floor(Math.random()*6)+1;
+    await spin3DDice(roll);
 
-    const roll = Math.floor(Math.random() * 6) + 1;
-    diceFace.textContent = DICE_FACES[roll - 1];
+    const p        = currentPlayer;
+    const opponent = 1 - p;
+    const name     = document.getElementById('p'+(p+1)+'-name').textContent;
+    const oppName  = document.getElementById('p'+(opponent+1)+'-name').textContent;
 
-    const p = currentPlayer;
-    const name = document.getElementById('p' + (p+1) + '-name').textContent;
-    let pos = positions[p] + roll;
+    addLog(`${name} rolled a ${roll}.`);
 
-    addLog(`${name} rolled a ${roll}. Moving to ${Math.min(pos, 100)}.`);
-
-    if (pos > 100) {
-      addLog(`${name} needs exact number to finish. Stays at ${positions[p]}.`);
-      pos = positions[p];
-    } else {
-      positions[p] = pos;
-      if (pos > 0) moveToken(p, pos);
-      await sleep(500);
-
-      if (SNAKES[pos]) {
-        const tail = SNAKES[pos];
-        addLog(`🐍 Oh no! ${name} hit a snake at ${pos}! Slides down to ${tail}.`, 'log-snake');
-        await sleep(400);
-        positions[p] = tail;
-        moveToken(p, tail);
-        await sleep(400);
-      } else if (LADDERS[pos]) {
-        const top = LADDERS[pos];
-        addLog(`🪜 Lucky! ${name} climbed a ladder from ${pos} to ${top}!`, 'log-ladder');
-        await sleep(400);
-        positions[p] = top;
-        moveToken(p, top);
-        await sleep(400);
+    if (gameVersion === 'advanced') {
+      let choice;
+      if (gameMode === 'cpu' && p === 1) {
+        // CPU decides
+        await sleep(700);
+        choice = cpuChoice(roll, positions[p], positions[opponent]);
+        addLog(`🤖 CPU chose to ${choice === 'forward' ? 'move forward' : 'push back'}.`);
+        await sleep(500);
+      } else {
+        // Human picks
+        choice = await showChoiceModal(roll, name, oppName, positions[p], positions[opponent]);
       }
+
+      if (choice === 'forward') {
+        await applyMove(p, positions[p], roll);
+      } else {
+        await applyPushback(p, opponent, roll);
+      }
+    } else {
+      // Classic: just move forward
+      await applyMove(p, positions[p], roll);
     }
 
     updateUI();
 
     if (positions[p] === 100) {
       addLog(`🏆 ${name} wins!`, 'log-win');
-      showWin(p);
-      animating = false;
-      return;
+      showWin(p); animating = false; return;
     }
 
     currentPlayer = 1 - currentPlayer;
     updateUI();
     animating = false;
 
-    // CPU turn
     if (gameMode === 'cpu' && currentPlayer === 1) {
       document.getElementById('roll-btn').disabled = true;
-      await sleep(1000);
+      await sleep(900);
       await rollDice();
     } else {
       document.getElementById('roll-btn').disabled = false;
     }
   }
 
-  function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-
+  /* ──────────────────────────────────────────
+     WIN
+  ────────────────────────────────────────── */
   function showWin(player) {
-    const name = document.getElementById('p' + (player+1) + '-name').textContent;
-    document.getElementById('win-title').textContent = `${name} Wins! 🎉`;
-    document.getElementById('win-sub').textContent = `Reached square 100 first!`;
+    const name = document.getElementById('p'+(player+1)+'-name').textContent;
+    document.getElementById('win-title').textContent = name+' Wins! 🎉';
+    document.getElementById('win-sub').textContent   = 'Reached square 100 first!';
     document.getElementById('win-modal').classList.add('show');
+    spawnConfetti();
+    setTimeout(spawnConfetti, 400);
   }
 
-  function startGame(mode) {
-    gameMode = mode;
-    positions = [0, 0];
-    currentPlayer = 0;
+  /* ──────────────────────────────────────────
+     START / RESET
+  ────────────────────────────────────────── */
+  function startGame() {
+    gameMode    = setupSelections.mode;
+    gameVersion = setupSelections.version;
+    positions=[0,0]; currentPlayer=0; animating=false;
 
-    document.getElementById('p2-name').textContent = mode === 'cpu' ? 'CPU 🤖' : 'Player 2';
+    document.getElementById('p2-name').textContent = gameMode==='cpu' ? 'CPU 🤖' : 'Player 2';
+
+    // Show version badge in panel
+    const badge = document.getElementById('version-badge');
+    if (gameVersion === 'advanced') {
+      badge.textContent = 'ADVANCED'; badge.className = 'version-badge badge-advanced';
+    } else {
+      badge.textContent = 'CLASSIC'; badge.className = 'version-badge badge-classic';
+    }
+
     document.getElementById('setup-screen').style.display = 'none';
-    document.getElementById('game-screen').style.display = 'block';
-
+    document.getElementById('game-screen').style.display  = 'block';
     buildBoard();
-    moveTokenToStart(0);
-    moveTokenToStart(1);
+    placePawn(0,0); placePawn(1,0);
     updateUI();
     document.getElementById('roll-btn').disabled = false;
     document.getElementById('log').innerHTML = '';
-    addLog('Game started! Player 1 goes first.');
+    addLog(`Game started! ${gameVersion === 'advanced' ? '⚔️ Advanced mode — choose wisely!' : '🎲 Classic mode — race to 100!'}`);
+    addLog('Player 1 goes first.');
   }
 
   function resetGame() {
     document.getElementById('win-modal').classList.remove('show');
     document.getElementById('setup-screen').style.display = 'block';
-    document.getElementById('game-screen').style.display = 'none';
-    positions = [0, 0];
-    currentPlayer = 0;
-    animating = false;
+    document.getElementById('game-screen').style.display  = 'none';
+    setupSelections = { version: null, mode: null };
+    // Reset card selections
+    ['card-classic','card-advanced','card-2p','card-cpu'].forEach(id =>
+      document.getElementById(id).classList.remove('selected')
+    );
+    document.getElementById('start-btn').classList.remove('ready');
+    positions=[0,0]; currentPlayer=0; animating=false;
   }
+
+  function sleep(ms) { return new Promise(r=>setTimeout(r,ms)); }
 </script>
 </body>
 </html>
