@@ -528,6 +528,12 @@ section { padding: 5rem 0; }
   opacity: 0.9;
   transition: opacity .2s;
 }
+/* White-background logos (e.g. ACG) get a light pill to contrast dark theme */
+.tl-logo-light {
+  background: #fff;
+  padding: 2px 5px;
+  border-radius: 5px;
+}
 .tl-item:hover .tl-logo { opacity: 1; }
 
 /* Company logo in resume */
