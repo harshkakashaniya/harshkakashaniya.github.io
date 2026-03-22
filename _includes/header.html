@@ -1,38 +1,37 @@
-  <header class="row-fluid">
-    <div class="site-header span12">
-      <div class="container">
-        <a href="{{ site.baseurl }}/" class="logo{% if page.url == '/index.html' %} active{% endif %}">{{ site.title }}</a>
-        <a href="{{ site.baseurl }}/" class="toggle-main-nav">Navigation</a>
-        <div class="search-site">
-          <a href="{{ site.baseurl }}" class="toggle-search">Search</a>
-          {% include search.html %}
-        </div>
-        <nav class="main-nav">
-          <ul class="nav">
-	<li><a href="{{ site.baseurl }}/"{% if page.categories contains 'example' %} class="active"{% endif %}>Home</a></li>
-            <li><a href="{{ site.baseurl }}/Projects/"{% if page.categories contains 'example' %} class="active"{% endif %}>Projects</a></li>
-            <li><a href="{{ site.baseurl }}/Resume/"{% if page.categories contains 'documentation' %} class="active"{% endif %}>Resume</a></li>
-            <li class="last"><a href="{{ site.baseurl }}/Certifications/">Certifications</a></li>
-	    <li><a href="{{ site.baseurl }}/Contact/">Contact me</a></li>
-	    <li class="last"><a href="{{ site.baseurl }}/Games/">Games</a></li>
-          </ul>
-        </nav>
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="{{ site.baseurl }}/" class="nav-logo">Harsh<span class="dot">.</span></a>
 
-        <div class="right">
-          <nav class="util-nav">
-            <ul class="nav">
-              <li class="dropdown">
-                <a href="mailto:harshkakashniya@gmail.com" class="email">Mail</a>
-              </li>
-              <li class="dropdown">
-                <a href="https://www.linkedin.com/in/harsh-kakashaniya/" class="share">Linkedin</a>
-              </li>
-              <li class="dropdown">
-                <a href="https://github.com/harshkakashaniya" class="github">Github</a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      </div>
-    </div>
-  </header>
+    <ul class="nav-links">
+      <li><a href="{{ site.baseurl }}/">Home</a></li>
+      <li><a href="{{ site.baseurl }}/Projects/">Projects</a></li>
+      <li><a href="{{ site.baseurl }}/Resume/">Resume</a></li>
+      <li><a href="{{ site.baseurl }}/Certifications/">Certifications</a></li>
+      <li><a href="{{ site.baseurl }}/Contact/">Contact</a></li>
+      <li><a href="{{ site.baseurl }}/Games/">Games</a></li>
+    </ul>
+
+    <ul class="nav-social">
+      <li><a href="mailto:harshkakashniya@gmail.com">✉ Mail</a></li>
+      <li><a href="https://www.linkedin.com/in/harsh-kakashaniya/" target="_blank" rel="noopener">LinkedIn</a></li>
+      <li><a href="https://github.com/harshkakashaniya" target="_blank" rel="noopener">GitHub</a></li>
+    </ul>
+
+    <button class="nav-toggle" id="nav-toggle" aria-label="Open navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="nav-mobile" id="nav-mobile">
+  <a href="{{ site.baseurl }}/">Home</a>
+  <a href="{{ site.baseurl }}/Projects/">Projects</a>
+  <a href="{{ site.baseurl }}/Resume/">Resume</a>
+  <a href="{{ site.baseurl }}/Certifications/">Certifications</a>
+  <a href="{{ site.baseurl }}/Contact/">Contact</a>
+  <a href="{{ site.baseurl }}/Games/">Games</a>
+  <div class="m-divider"></div>
+  <a href="mailto:harshkakashniya@gmail.com">✉ Mail</a>
+  <a href="https://www.linkedin.com/in/harsh-kakashaniya/" target="_blank" rel="noopener">LinkedIn</a>
+  <a href="https://github.com/harshkakashaniya" target="_blank" rel="noopener">GitHub</a>
+</div>

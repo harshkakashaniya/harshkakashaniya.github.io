@@ -2,167 +2,282 @@
 layout: default
 title: Harsh Kakashaniya
 ---
-  <section class="row-fluid homepage-section">
-    <div class="promo">
-      <h1 class="promo__title">{{ site.title }}</h1>
-      <p class="promo__text">{{ site.tagline }}</p>
-      <div class="promo__toolbar">
-        <a href="{{ site.baseurl }}/Projects/" class="btn btn-primary promo__button download-button">Projects</a>
-        <a href="{{ site.baseurl }}/Contact/" class="btn btn-primary promo__button download-button" target="_blank">Contact Me</a>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-content container">
+    <div class="hero-text">
+      <p class="hero-eyebrow">Roboticist with an MBA</p>
+      <h1>Harsh Bharat<br>Kakashaniya</h1>
+      <p class="hero-tagline">Think like a proton. Always positive.</p>
+      <div class="hero-actions">
+        <a href="{{ site.baseurl }}/Projects/" class="btn btn-primary">View Projects</a>
+        <a href="{{ site.baseurl }}/Contact/" class="btn btn-outline">Contact Me</a>
       </div>
     </div>
-  </section>
 
-  <section class="row-fluid homepage-section about-noflo">
-    <div class="plain-title">
-      <div class="container">
-        <div class="span8 offset4">
-          <h1>About Me ... </h1>
-        </div>
-      </div>
-    </div>
-    <div class="container">
-      <div class="main">
-        <div class="sidebar span4">
-          <img src="./img/Harsh.png" alt="" title="" class="sidebar__image" />
-        </div>
-        <div class="content span8">
-          <p>I am a master's student pursuing my Masters in Robotics from the University of Maryland at College Park. Completed my bachelor's degree from MIT College of Engineering, Pune(2016) in Mechanical Engineering.</p>
+    <!-- Robotic arm illustration -->
+    <div class="hero-visual">
+      <svg class="hero-robot" viewBox="0 0 440 480" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="armGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#58a6ff"/>
+            <stop offset="100%" stop-color="#bc8cff"/>
+          </linearGradient>
+          <radialGradient id="glowB" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#58a6ff" stop-opacity="0.7"/>
+            <stop offset="100%" stop-color="#58a6ff" stop-opacity="0"/>
+          </radialGradient>
+          <radialGradient id="glowP" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#bc8cff" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#bc8cff" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="fglow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="5" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
 
-<p>Graduate Student with an extensive hands-on practical experience and interest in Robotics Systems development, SLAM , robotics motion planning, and controls. Passionate about technologies having real-world, large scale impact on society and proficient at conducting research. Along with technical know-how, possessing stellar communication, problem-solving and analytical skills.
-</p>
-        </div>
-      </div>
-    </div>
-  </section>
+        <!-- Circuit traces left -->
+        <path class="ct" d="M 20 318 H 80 V 275 H 118" stroke="#58a6ff" stroke-width="1" stroke-dasharray="5 3" opacity="0.35" fill="none"/>
+        <path class="ct" d="M 28 374 H 84 V 406 H 122" stroke="#7ee787" stroke-width="1" stroke-dasharray="5 3" opacity="0.30" fill="none"/>
+        <path class="ct" d="M 12 208 H 70 V 182" stroke="#bc8cff" stroke-width="1" stroke-dasharray="5 3" opacity="0.30" fill="none"/>
+        <!-- Circuit traces right -->
+        <path class="ct" d="M 354 124 H 412 V 94 H 438" stroke="#58a6ff" stroke-width="1" stroke-dasharray="5 3" opacity="0.35" fill="none"/>
+        <path class="ct" d="M 348 214 H 416" stroke="#bc8cff" stroke-width="1" stroke-dasharray="5 3" opacity="0.30" fill="none"/>
+        <path class="ct" d="M 344 304 H 412 V 340 H 440" stroke="#7ee787" stroke-width="1" stroke-dasharray="5 3" opacity="0.30" fill="none"/>
+        <!-- Circuit nodes -->
+        <circle cx="20" cy="318" r="4" fill="#58a6ff" opacity="0.8"/>
+        <circle cx="118" cy="275" r="4" fill="#58a6ff" opacity="0.7"/>
+        <circle cx="28" cy="374" r="4" fill="#7ee787" opacity="0.8"/>
+        <circle cx="122" cy="406" r="4" fill="#7ee787" opacity="0.6"/>
+        <circle cx="12" cy="208" r="4" fill="#bc8cff" opacity="0.8"/>
+        <circle cx="70" cy="182" r="4" fill="#bc8cff" opacity="0.6"/>
+        <circle cx="354" cy="124" r="4" fill="#58a6ff" opacity="0.8"/>
+        <circle cx="438" cy="94" r="4" fill="#58a6ff" opacity="0.5"/>
+        <circle cx="348" cy="214" r="4" fill="#bc8cff" opacity="0.8"/>
+        <circle cx="416" cy="214" r="4" fill="#bc8cff" opacity="0.8"/>
+        <circle cx="344" cy="304" r="4" fill="#7ee787" opacity="0.8"/>
 
-<!-- Time line-->
-<link rel="stylesheet" type="text/css" href="{{ site.url }}/css/home.css">
-	<nav class="class">
-			<ol class="breadcrumb navbar-left"></ol></nav>
-			<div class="row section-customization">
-				<div class="section wider">
-					<h2 class="section-header">
-						Professional Timeline
-					</h2>
-					{% include cards.html %}
-				</div>
-			</div>
-	<script src="https://code.jquery.com/jquery-3.2.0.min.js" integrity="sha256-JAW99MJVpJBGcbzEuXk4Az05s/XyDdBomFqNlM3ic+I=" crossorigin="anonymous"></script>
-	<script src="{{ site.url }}/js/animation.js"></script>
-	<script src="{{ site.url }}/js/headroom.min.js"></script>
-	<script src="{{ site.url }}/js/dragdealer.min.js"></script>
-	<script src="{{ site.url }}/js/main.js"></script>
+        <!-- Right status panel -->
+        <rect x="348" y="246" width="74" height="62" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+        <text x="356" y="261" fill="#8b949e" font-size="7" font-family="monospace" letter-spacing="0.5">SYSTEM STATUS</text>
+        <rect x="356" y="266" width="58" height="5" rx="2.5" fill="#58a6ff" opacity="0.85"/>
+        <rect x="356" y="277" width="40" height="4" rx="2" fill="#7ee787" opacity="0.70"/>
+        <rect x="356" y="287" width="50" height="4" rx="2" fill="#bc8cff" opacity="0.60"/>
+        <rect x="356" y="297" width="30" height="4" rx="2" fill="#58a6ff" opacity="0.40"/>
+        <circle cx="410" cy="300" r="5" fill="#7ee787"/>
 
+        <!-- Left status panel -->
+        <rect x="12" y="234" width="66" height="54" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+        <text x="20" y="248" fill="#8b949e" font-size="6.5" font-family="monospace" letter-spacing="0.5">MOTORS</text>
+        <rect x="20" y="252" width="50" height="4.5" rx="2" fill="#58a6ff" opacity="0.75"/>
+        <rect x="20" y="262" width="36" height="4" rx="2" fill="#7ee787" opacity="0.65"/>
+        <rect x="20" y="272" width="44" height="4" rx="2" fill="#bc8cff" opacity="0.55"/>
+        <circle cx="55" cy="275" r="4.5" fill="#f78166"/>
 
+        <!-- Base platform -->
+        <rect x="140" y="428" width="160" height="22" rx="9" fill="#21262d" stroke="url(#armGrad)" stroke-width="1.5"/>
+        <rect x="155" y="407" width="130" height="25" rx="7" fill="#21262d" stroke="url(#armGrad)" stroke-width="1"/>
+        <ellipse cx="220" cy="407" rx="56" ry="14" fill="none" stroke="url(#armGrad)" stroke-width="1.5"/>
+        <ellipse cx="220" cy="407" rx="38" ry="9" fill="#0d1117" stroke="url(#armGrad)" stroke-width="1" opacity="0.9"/>
 
-<section class="row-fluid">
-<div class="container-fluid">
-  <div class="row-fluid">
-<div class="span8 offset4">
-          <h1>Work Experience ... </h1>
-</div>
-</div>
-</div>
-</section>
+        <!-- Arm link 0: Base→Shoulder (220,400)→(195,265) -->
+        <line x1="220" y1="400" x2="195" y2="265" stroke="#161b22" stroke-width="35" stroke-linecap="round"/>
+        <line x1="220" y1="400" x2="195" y2="265" stroke="#21262d" stroke-width="28" stroke-linecap="round"/>
+        <line x1="220" y1="400" x2="195" y2="265" stroke="url(#armGrad)" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+        <line x1="212" y1="396" x2="188" y2="272" stroke="white" stroke-width="7" stroke-linecap="round" opacity="0.035"/>
 
-<section class="row-fluid">
-<div class="Right-work">
-<div class="container-fluid">
-  <div class="row-fluid">
-    <div class="span5 offset1">
-    <img src="./img/cards/extensions/download.jpg" alt="" title="" class="rightwork__image" />
-    <h2><font color="white">Title:</font></h2>
-    <p><font color="white">Robotics Engineer </font></p>
-    <h2><font color="white">Duration:</font></h2>
-    <p><font color="white">May 2019 - Present</font></p>
-    <h2><font color="white">Projects :</font></h2>
-<ul><font color="yellow">
-    <li><font color="yellow">Multi-agent Planning in Warehouse Environment:</font></li>
- <p><font color="white">Successfully designed pipeline for simultaneous motion of robot with dynamic collision avoidance.</font></p>
+        <!-- Arm link 1: Shoulder→Elbow (195,265)→(295,148) -->
+        <line x1="195" y1="265" x2="295" y2="148" stroke="#161b22" stroke-width="29" stroke-linecap="round"/>
+        <line x1="195" y1="265" x2="295" y2="148" stroke="#21262d" stroke-width="23" stroke-linecap="round"/>
+        <line x1="195" y1="265" x2="295" y2="148" stroke="url(#armGrad)" stroke-width="2" stroke-linecap="round" opacity="0.55"/>
+        <line x1="188" y1="261" x2="288" y2="144" stroke="white" stroke-width="6" stroke-linecap="round" opacity="0.035"/>
 
+        <!-- Arm link 2: Elbow→Wrist (295,148)→(336,68) -->
+        <line x1="295" y1="148" x2="336" y2="68" stroke="#161b22" stroke-width="23" stroke-linecap="round"/>
+        <line x1="295" y1="148" x2="336" y2="68" stroke="#21262d" stroke-width="18" stroke-linecap="round"/>
+        <line x1="295" y1="148" x2="336" y2="68" stroke="url(#armGrad)" stroke-width="2" stroke-linecap="round" opacity="0.45"/>
 
- <li><font color="yellow"> Bi-directional Path planning: </font></li> 
- <p><font color="white">Implemented and Tested bidirectional path planning algorithms on vehicle with
-differential constraints for warehouse dynamic environment. </font></p>
+        <!-- Shoulder joint -->
+        <circle class="jg jg1" cx="195" cy="265" r="34" fill="url(#glowB)"/>
+        <circle cx="195" cy="265" r="23" fill="#161b22" stroke="url(#armGrad)" stroke-width="2.5"/>
+        <circle cx="195" cy="265" r="14" fill="#0d1117" stroke="url(#armGrad)" stroke-width="1.5"/>
+        <circle cx="195" cy="265" r="6" fill="url(#armGrad)" filter="url(#fglow)"/>
+        <circle cx="215" cy="251" r="3.5" fill="#21262d" stroke="#30363d" stroke-width="1"/>
+        <circle cx="175" cy="279" r="3.5" fill="#21262d" stroke="#30363d" stroke-width="1"/>
 
+        <!-- Elbow joint -->
+        <circle class="jg jg2" cx="295" cy="148" r="27" fill="url(#glowP)"/>
+        <circle cx="295" cy="148" r="18" fill="#161b22" stroke="url(#armGrad)" stroke-width="2.5"/>
+        <circle cx="295" cy="148" r="11" fill="#0d1117" stroke="url(#armGrad)" stroke-width="1.5"/>
+        <circle cx="295" cy="148" r="5" fill="url(#armGrad)" filter="url(#fglow)"/>
 
- <li><font color="yellow"> Position estimation using computer vision techniques: </font> </li>
+        <!-- Wrist joint -->
+        <circle class="jg jg3" cx="336" cy="68" r="21" fill="url(#glowB)"/>
+        <circle cx="336" cy="68" r="14" fill="#161b22" stroke="url(#armGrad)" stroke-width="2"/>
+        <circle cx="336" cy="68" r="8.5" fill="#0d1117" stroke="url(#armGrad)" stroke-width="1.5"/>
+        <circle cx="336" cy="68" r="3.5" fill="url(#armGrad)" filter="url(#fglow)"/>
 
-<p><font color="white">Designed and tested algorithm for orientation estimation using camera for robot attachment.</font></p>
-</font></ul>
-    </div>
-
-    <div class="span4 offset1">
-    <img src="./img/cards/extensions/acg_new.jpg" alt="" class="leftwork__image" />
-    <h2><font color="white">Title:</font></h2><p><font color="white">Design Engineer</font></p>
-    
-    <h2><font color="white">Duration:</font></h2>
-    <p><font color="white">July 2016 - Aug 2018</font></p>
-    <h2><font color="white">Projects :</font></h2>
-<ul><font color="yellow" align="left">
-    <li><font color="yellow">Robotic Pick-and-Place:</font></li>
- <p><font color="white">Developed “Robotic Pick-and-Place” (3D SCARA of RRP type) resulting in a market revolution; we were the first company in India to have a robotic transfer system. The company showcased this work at ‘P-Mech Exhibition 2018’.</font></p>
-
-
- <li><font color="yellow"> Biscuit Packer: </font></li> 
- <p><font color="white">Launched a Special Biscuit transfer attachment for packing 110 biscuits per minute which led to opening of completely new business avenue for ACG in the FMCG market. </font></p>
-
-
- <li><font color="yellow"> Value addition and Value Engineering: </font> </li>
-
-<p><font color="white">Led ‘Value addition and Value Engineering’ in the Design department
-which caused a high reduction in overall costs due to the design optimizations.</font></p>
-
- <li><font color="yellow"> Operational Excellence: </font> </li>
-
-<p><font color="white">Improved output efficiency by 15% yielding a record breaking total number of
-machines produced by the company in Sep’16.</font></p>
-
-
-</font></ul>
+        <!-- Gripper -->
+        <rect x="321" y="40" width="30" height="12" rx="5" fill="#21262d" stroke="url(#armGrad)" stroke-width="1.5"/>
+        <rect x="316" y="15" width="12" height="30" rx="5.5" fill="#21262d" stroke="url(#armGrad)" stroke-width="1.5"/>
+        <rect x="343" y="15" width="12" height="30" rx="5.5" fill="#21262d" stroke="url(#armGrad)" stroke-width="1.5"/>
+        <rect x="318" y="15" width="8" height="5" rx="2.5" fill="#58a6ff" opacity="0.75"/>
+        <rect x="345" y="15" width="8" height="5" rx="2.5" fill="#58a6ff" opacity="0.75"/>
+      </svg>
     </div>
   </div>
-</div>
-  </section>
+</section>
 
-
-
-  <section class="row-fluid homepage-section about-noflo">
-    <div class="flowhub-promo">
-      <a class="flowhub-promo-logo" href=https://www.youtube.com/c/soft-illusion"><img src="{{ site.basedir }}/img/Soft_illusion.png" alt="Flowhub"></a>
-      <h1 class="flowhub-promo-title">Soft_illusion</h1>
-      <p><font color="yellow" >Interested in Robotics and Simulation and wish to make a difference!!? Then you are probably at the right place.
-Soft_illusion is a channel which aims to help the robotics community!!</font></p> 
-<p><font color="yellow" > Currently we are working to provide easy to learn tutorials on the Robot simulator called Webots. The tutorials begins with the basic installation of the simulator, and ranges to higher level applications. </font></p>
-
-<h2 class="flowhub-promo-title"><font color="green" >755K+ Views , 4.5K+ Subscribers and Counting . . .</font></h2>
-      <a href="https://www.youtube.com/c/soft-illusion" class="btn btn-primary flowhub-promo-button download-button">Channel Link</a>
-    </div>
-  </section>
-
-
-  <section id="featured" class="row-fluid homepage-section">
-    <div class="who-uses-noflo">
-      <div class="container">
-        <div class="span3">
-	<img src="./img/skill.png" alt="" title="" class="sidebar__image" />
-          
+<!-- ===== ABOUT ===== -->
+<section id="about" style="background: var(--bg-2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <div class="container">
+    <div class="about-grid fade-up">
+      <div class="about-photo">
+        <img src="{{ site.baseurl }}/img/Harsh.png" alt="Harsh Kakashaniya" />
+      </div>
+      <div class="about-text">
+        <div class="accent-line"></div>
+        <h2>About Me</h2>
+        <p>I am a master's student pursuing my Masters in Robotics from the University of Maryland at College Park. Completed my bachelor's degree from MIT College of Engineering, Pune (2016) in Mechanical Engineering.</p>
+        <p>Graduate student with extensive hands-on practical experience and interest in Robotics Systems development, SLAM, robotics motion planning, and controls. Passionate about technologies having real-world, large-scale impact on society and proficient at conducting research. Along with technical know-how, possessing stellar communication, problem-solving and analytical skills.</p>
+        <div style="display:flex; gap:.75rem; flex-wrap:wrap;">
+          <a href="{{ site.baseurl }}/Resume/" class="btn btn-primary btn-sm">View Resume</a>
+          <a href="{{ site.baseurl }}/Projects/" class="btn btn-outline btn-sm">My Projects</a>
         </div>
-        <div class="span9 who-uses-noflo__logos">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WORK EXPERIENCE ===== -->
+<section id="experience">
+  <div class="container">
+    <div class="section-head fade-up">
+      <div class="accent-line"></div>
+      <h2>Work Experience</h2>
+      <p>My professional journey in robotics and engineering</p>
+    </div>
+
+    <div class="timeline">
+
+      <div class="tl-item tl-card" data-delay="0">
+        <div class="tl-dot" style="background:#ffd700; box-shadow: 0 0 0 4px rgba(255,215,0,.25), 0 0 14px rgba(255,215,0,.35);"></div>
+        <div class="tl-meta">
+          <span class="tl-date">Present</span>
+          <span class="tl-badge tl-badge-gold">Current Role</span>
+        </div>
+        <div class="tl-title">Sr. Manager, Robotics Software Engineering</div>
+        <div class="tl-company">
+          <span class="tl-co-icon">🏢</span> ARCBEST Technologies &mdash; Fort Smith, AR
+        </div>
+        <div class="tl-body">
           <ul>
-            {% for library in site.highlight_libraries %}
-            <li>
-              <a>
-                <img src="{{ site.baseurl }}/img/library/{{ library }}.jpg" alt="{{ library }}" title="{{ library }}" />
-              </a>
-            </li>
-            {% endfor %}
+            <li>Leading the Robotics Software Engineering team, driving architecture, strategy, and delivery of autonomous warehouse robotics systems at scale.</li>
+            <li>Responsible for team growth, technical roadmap, and cross-functional collaboration across hardware, product, and operations.</li>
+            <li>Overseeing development of multi-agent planning, perception, and autonomous navigation stacks for production deployment.</li>
           </ul>
         </div>
       </div>
+
+      <div class="tl-item tl-card" data-delay="1">
+        <div class="tl-dot"></div>
+        <div class="tl-meta">
+          <span class="tl-date">May 2019 – Present</span>
+        </div>
+        <div class="tl-title">Robotics Engineer</div>
+        <div class="tl-company">
+          <span class="tl-co-icon">🤖</span> ARCBEST Technologies &mdash; Fort Smith, AR
+        </div>
+        <div class="tl-body">
+          <ul>
+            <li>Successfully designed pipeline for simultaneous motion of robot with dynamic collision avoidance in a warehouse environment.</li>
+            <li>Implemented and tested bidirectional path planning algorithms on vehicle with differential constraints for dynamic environments.</li>
+            <li>Designed and tested algorithm for orientation estimation using camera for robot attachment (position estimation via computer vision).</li>
+            <li>Worked on localization in known environments using Aruco Tags and odometry using Kalman filter.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item tl-card" data-delay="2">
+        <div class="tl-dot" style="background: var(--accent-p); box-shadow: 0 0 0 4px rgba(188,140,255,.25), 0 0 14px rgba(188,140,255,.3);"></div>
+        <div class="tl-meta">
+          <span class="tl-date">Sep 2018 – Apr 2019</span>
+        </div>
+        <div class="tl-title">Research Assistant</div>
+        <div class="tl-company">
+          <span class="tl-co-icon">🔬</span> Maryland Robotics Center &mdash; College Park, MD
+        </div>
+        <div class="tl-body">
+          <ul>
+            <li>Design and implementation of autonomous Hydroponic system (cultivation without substrate) with monitoring of plant health and yield.</li>
+            <li>Developed cultivation module using Robotic End Effectors.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item tl-card" data-delay="3">
+        <div class="tl-dot" style="background: var(--accent-g); box-shadow: 0 0 0 4px rgba(126,231,135,.25), 0 0 14px rgba(126,231,135,.3);"></div>
+        <div class="tl-meta">
+          <span class="tl-date">Jul 2016 – Aug 2018</span>
+        </div>
+        <div class="tl-title">Design Engineer</div>
+        <div class="tl-company">
+          <span class="tl-co-icon">⚙️</span> ACG Worldwide &mdash; India
+        </div>
+        <div class="tl-body">
+          <ul>
+            <li>Developed "Robotic Pick-and-Place" (3D SCARA of RRP type) — the first company in India to have a robotic transfer system, showcased at P-Mech Exhibition 2018.</li>
+            <li>Launched a Special Biscuit transfer attachment for packing 110 biscuits per minute, opening a new FMCG business avenue for ACG.</li>
+            <li>Led Value Addition and Value Engineering in the Design department, causing significant reduction in overall costs.</li>
+            <li>Improved output efficiency by 15%, yielding a record-breaking total number of machines produced in Sep 2016.</li>
+          </ul>
+        </div>
+      </div>
+
     </div>
-  </section>
+  </div>
+</section>
 
+<!-- ===== YOUTUBE / SOFT ILLUSION ===== -->
+<section class="yt-section">
+  <div class="container">
+    <div class="yt-card fade-up">
+      <div class="yt-logo">
+        <img src="{{ site.baseurl }}/img/Soft_illusion.png" alt="Soft Illusion YouTube Channel" />
+      </div>
+      <div class="yt-content">
+        <h2>Soft_Illusion</h2>
+        <p>Interested in Robotics and Simulation and wish to make a difference? Then you are probably at the right place. Soft_Illusion is a YouTube channel that aims to help the robotics community with easy-to-learn tutorials on the Webots robot simulator — from basic installation to advanced applications.</p>
+        <div class="yt-stats">
+          <div>
+            <span class="yt-stat-num">755K+</span>
+            <span class="yt-stat-label">Total Views</span>
+          </div>
+          <div>
+            <span class="yt-stat-num">4.5K+</span>
+            <span class="yt-stat-label">Subscribers</span>
+          </div>
+        </div>
+        <a href="https://www.youtube.com/c/soft-illusion" target="_blank" rel="noopener" class="btn btn-primary">Visit Channel</a>
+      </div>
+    </div>
+  </div>
+</section>
 
-
+<!-- ===== SKILLS ===== -->
+<section id="skills" style="background: var(--bg-2); border-top: 1px solid var(--border);">
+  <div class="container">
+    <div class="section-head">
+      <div class="accent-line"></div>
+      <h2>Skills</h2>
+      <p>Tools, languages, and frameworks I work with</p>
+    </div>
+    <div class="skills-imgs">
+      {% for library in site.highlight_libraries %}
+        <img src="{{ site.baseurl }}/img/library/{{ library }}.jpg" alt="{{ library }}" title="{{ library }}" loading="lazy" />
+      {% endfor %}
+    </div>
+  </div>
+</section>
