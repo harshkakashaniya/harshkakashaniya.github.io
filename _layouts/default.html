@@ -2,26 +2,47 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>{{ page.title }}{% unless page.url == '/' %} | {{ site.title }}{% endunless %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="{{ site.baseurl }}/css/bootstrap.min.css">
-  <link rel="stylesheet" href="{{ site.baseurl }}/css/main.css">
-  <link rel="stylesheet" href="{{ site.baseurl }}/css/zenburn.css">
+  <title>{{ page.title }}{% unless page.url == '/' %} | {{ site.title }}{% endunless %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ site.baseurl }}/css/modern.css">
   <link rel="shortcut icon" href="{{ site.baseurl }}/img/favicon.png">
-  <link rel="publisher" href="https://plus.google.com/{{ site.google.plus }}">
-  <meta name="theme-color" content="#f5f6f7">
-  <meta property="fb:admins" content="722463139">
+  <meta name="theme-color" content="#0d1117">
   <meta name="google-site-verification" content="shV-uX9JiafQZT3nSkhQfC67DLrp3q7tVaSKXzBTe1c">
 </head>
 <body>
-<div class="page">
   {% include header.html %}
-  {{ content }}
+  <div class="page-body">
+    {{ content }}
+  </div>
   {% include footer.html %}
-</div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-<script src="{{ site.baseurl }}/js/min/bootstrap.min.js"></script>
-<script src="{{ site.baseurl }}/js/min/all.min.js"></script>
-{% include analytics.html %}
+  <script>
+    // Mobile nav toggle
+    (function() {
+      var toggle = document.getElementById('nav-toggle');
+      var mobile = document.getElementById('nav-mobile');
+      if (!toggle || !mobile) return;
+      toggle.addEventListener('click', function() {
+        toggle.classList.toggle('open');
+        mobile.classList.toggle('open');
+      });
+      mobile.querySelectorAll('a').forEach(function(a) {
+        a.addEventListener('click', function() {
+          toggle.classList.remove('open');
+          mobile.classList.remove('open');
+        });
+      });
+      // Close on outside click
+      document.addEventListener('click', function(e) {
+        if (!toggle.contains(e.target) && !mobile.contains(e.target)) {
+          toggle.classList.remove('open');
+          mobile.classList.remove('open');
+        }
+      });
+    })();
+  </script>
+  {% include analytics.html %}
 </body>
 </html>
