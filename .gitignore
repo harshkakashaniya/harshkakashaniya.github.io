@@ -1,4 +1,16 @@
+# macOS
 .DS_Store
 **/.DS_Store
-.bundle
-.sass-cache
+
+# Jekyll build output — generated, never commit
+_site/
+
+# SASS cache
+.sass-cache/
+
+# Ruby / Bundler
+.bundle/
+vendor/
+
+# Node
+node_modules/
