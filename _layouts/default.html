@@ -19,7 +19,22 @@
   </div>
   {% include footer.html %}
   <script>
-    // Mobile nav toggle
+    // ── Scroll animations ──────────────────────────────
+    (function() {
+      var els = document.querySelectorAll('.fade-up');
+      if (!els.length) return;
+      var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) {
+            e.target.classList.add('visible');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.12 });
+      els.forEach(function(el) { io.observe(el); });
+    })();
+
+    // ── Mobile nav toggle ──────────────────────────────
     (function() {
       var toggle = document.getElementById('nav-toggle');
       var mobile = document.getElementById('nav-mobile');
