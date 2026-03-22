@@ -1,53 +1,106 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="220" height="140" viewBox="0 0 220 140">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 140">
+  <defs>
+    <radialGradient id="r4-bg" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#1a1f3c"/>
+      <stop offset="100%" stop-color="#070912"/>
+    </radialGradient>
+    <linearGradient id="r4-board" x1="0%" y1="0%" x2="60%" y2="100%">
+      <stop offset="0%" stop-color="#1e4fa0"/>
+      <stop offset="100%" stop-color="#0d2d6e"/>
+    </linearGradient>
+    <radialGradient id="r4-red" cx="35%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#ff6b6b"/>
+      <stop offset="100%" stop-color="#c0392b"/>
+    </radialGradient>
+    <radialGradient id="r4-yellow" cx="35%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#ffe066"/>
+      <stop offset="100%" stop-color="#d4a017"/>
+    </radialGradient>
+    <radialGradient id="r4-empty" cx="35%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#0d1f55"/>
+      <stop offset="100%" stop-color="#06102e"/>
+    </radialGradient>
+    <filter id="r4-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.6"/>
+    </filter>
+    <filter id="r4-win" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="3.5" result="b"/>
+      <feColorMatrix in="b" type="matrix"
+        values="1.3 0.4 0 0 0  0.2 0.6 0 0 0  0 0 0 0 0  0 0 0 0.8 0" result="col"/>
+      <feMerge><feMergeNode in="col"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="r4-pieceshine" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
   <!-- Background -->
-  <rect width="220" height="140" fill="#0d1117"/>
+  <rect width="220" height="140" fill="url(#r4-bg)"/>
 
-  <!-- Board background -->
-  <rect x="10" y="15" width="145" height="115" rx="10" fill="#1a3a8f"/>
+  <!-- Board frame -->
+  <rect x="12" y="10" width="148" height="122" rx="10" fill="url(#r4-board)" filter="url(#r4-shadow)"/>
+  <!-- Gold board border -->
+  <rect x="12" y="10" width="148" height="122" rx="10" fill="none" stroke="#d4af37" stroke-width="1.2" opacity="0.45"/>
 
-  <!-- Grid cells (5 cols x 4 rows for thumb) -->
-  <!-- Row 1 -->
-  <circle cx="37" cy="38" r="13" fill="#070e1a"/>
-  <circle cx="66" cy="38" r="13" fill="#070e1a"/>
-  <circle cx="95" cy="38" r="13" fill="#070e1a"/>
-  <circle cx="124" cy="38" r="13" fill="#070e1a"/>
+  <!-- ── GRID: 5 cols × 4 rows, r=13, col-step=29, row-step=28 ── -->
+  <!-- col centers: 28, 57, 86, 115, 144  row centers: 30, 58, 86, 114 -->
+
+  <!-- Row 1 (top) -->
+  <circle cx="28"  cy="30" r="13" fill="url(#r4-empty)"/>
+  <circle cx="57"  cy="30" r="13" fill="url(#r4-empty)"/>
+  <circle cx="86"  cy="30" r="13" fill="url(#r4-empty)"/>
+  <circle cx="115" cy="30" r="13" fill="url(#r4-empty)"/>
+  <circle cx="144" cy="30" r="13" fill="url(#r4-empty)"/>
 
   <!-- Row 2 -->
-  <circle cx="37" cy="67" r="13" fill="#070e1a"/>
-  <circle cx="66" cy="67" r="13" fill="#e74c3c"/>
-  <circle cx="95" cy="67" r="13" fill="#f1c40f"/>
-  <circle cx="124" cy="67" r="13" fill="#070e1a"/>
+  <circle cx="28"  cy="58" r="13" fill="url(#r4-empty)"/>
+  <circle cx="57"  cy="58" r="13" fill="url(#r4-red)"   filter="url(#r4-pieceshine)"/>
+  <circle cx="86"  cy="58" r="13" fill="url(#r4-empty)"/>
+  <circle cx="115" cy="58" r="13" fill="url(#r4-yellow)" filter="url(#r4-pieceshine)"/>
+  <circle cx="144" cy="58" r="13" fill="url(#r4-empty)"/>
 
   <!-- Row 3 -->
-  <circle cx="37" cy="96" r="13" fill="#f1c40f"/>
-  <circle cx="66" cy="96" r="13" fill="#e74c3c"/>
-  <circle cx="95" cy="96" r="13" fill="#e74c3c"/>
-  <circle cx="124" cy="96" r="13" fill="#f1c40f"/>
+  <circle cx="28"  cy="86" r="13" fill="url(#r4-yellow)" filter="url(#r4-pieceshine)"/>
+  <circle cx="57"  cy="86" r="13" fill="url(#r4-red)"    filter="url(#r4-pieceshine)"/>
+  <circle cx="86"  cy="86" r="13" fill="url(#r4-red)"    filter="url(#r4-pieceshine)"/>
+  <circle cx="115" cy="86" r="13" fill="url(#r4-yellow)" filter="url(#r4-pieceshine)"/>
+  <circle cx="144" cy="86" r="13" fill="url(#r4-empty)"/>
 
-  <!-- Row 4 -->
-  <circle cx="37" cy="125" r="13" fill="#f1c40f"/>
-  <circle cx="66" cy="125" r="13" fill="#e74c3c"/>
-  <circle cx="95" cy="125" r="13" fill="#f1c40f"/>
-  <circle cx="124" cy="125" r="13" fill="#e74c3c"/>
+  <!-- Row 4 (bottom) -->
+  <circle cx="28"  cy="114" r="13" fill="url(#r4-yellow)" filter="url(#r4-pieceshine)"/>
+  <circle cx="57"  cy="114" r="13" fill="url(#r4-red)"    filter="url(#r4-pieceshine)"/>
+  <circle cx="86"  cy="114" r="13" fill="url(#r4-yellow)" filter="url(#r4-pieceshine)"/>
+  <circle cx="115" cy="114" r="13" fill="url(#r4-red)"    filter="url(#r4-pieceshine)"/>
+  <circle cx="144" cy="114" r="13" fill="url(#r4-red)"    filter="url(#r4-pieceshine)"/>
 
-  <!-- Winning highlight diagonal -->
-  <circle cx="66" cy="67" r="13" fill="#e74c3c" opacity="0.0"/>
-  <circle cx="66" cy="96" r="13" fill="#e74c3c" stroke="#fff" stroke-width="2.5" opacity="0.9"/>
-  <circle cx="95" cy="96" r="13" fill="#e74c3c" stroke="#fff" stroke-width="2.5" opacity="0.9"/>
-  <circle cx="66" cy="67" r="13" fill="#e74c3c" stroke="#fff" stroke-width="2.5" opacity="0.9"/>
+  <!-- ── WINNING 4 (diagonal red: 57,58 → 86,86 → 115,114 ... + 28,30 to show intent) ── -->
+  <!-- Winning pieces with gold glow ring -->
+  <circle cx="57"  cy="58"  r="13" fill="url(#r4-red)" stroke="#d4af37" stroke-width="2.5" filter="url(#r4-win)"/>
+  <circle cx="86"  cy="86"  r="13" fill="url(#r4-red)" stroke="#d4af37" stroke-width="2.5" filter="url(#r4-win)"/>
+  <circle cx="115" cy="114" r="13" fill="url(#r4-red)" stroke="#d4af37" stroke-width="2.5" filter="url(#r4-win)"/>
+  <circle cx="28"  cy="30"  r="13" fill="url(#r4-red)" stroke="#d4af37" stroke-width="2.5" filter="url(#r4-win)"/>
 
-  <!-- Side panel -->
-  <rect x="163" y="15" width="47" height="115" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+  <!-- Piece shine overlays (top-left highlight) -->
+  <circle cx="54"  cy="55"  r="5" fill="rgba(255,255,255,0.18)"/>
+  <circle cx="83"  cy="83"  r="5" fill="rgba(255,255,255,0.18)"/>
+  <circle cx="112" cy="111" r="5" fill="rgba(255,255,255,0.18)"/>
+  <circle cx="25"  cy="27"  r="5" fill="rgba(255,255,255,0.18)"/>
+
+  <!-- ── RIGHT PANEL ── -->
+  <rect x="168" y="12" width="44" height="116" rx="8" fill="#0e1124" stroke="#d4af37" stroke-width="0.8" opacity="0.9"/>
 
   <!-- Red disc -->
-  <circle cx="186" cy="42" r="14" fill="#e74c3c"/>
-  <circle cx="182" cy="38" r="4" fill="rgba(255,255,255,0.2)"/>
-  <text x="186" cy="42" text-anchor="middle" font-size="9" fill="white" font-weight="bold" y="46">P1</text>
+  <circle cx="190" cy="40" r="15" fill="url(#r4-red)" filter="url(#r4-pieceshine)"/>
+  <circle cx="187" cy="36" r="5"  fill="rgba(255,255,255,0.2)"/>
+  <text x="190" y="44.5" text-anchor="middle" font-size="8.5" fill="white" font-weight="700"
+        font-family="sans-serif">P1</text>
 
   <!-- Yellow disc -->
-  <circle cx="186" cy="80" r="14" fill="#f1c40f"/>
-  <circle cx="182" cy="76" r="4" fill="rgba(255,255,255,0.25)"/>
-  <text x="186" text-anchor="middle" font-size="9" fill="#333" font-weight="bold" y="84">P2</text>
+  <circle cx="190" cy="82" r="15" fill="url(#r4-yellow)" filter="url(#r4-pieceshine)"/>
+  <circle cx="187" cy="78" r="5"  fill="rgba(255,255,255,0.25)"/>
+  <text x="190" y="86.5" text-anchor="middle" font-size="8.5" fill="#3a2000" font-weight="700"
+        font-family="sans-serif">P2</text>
 
-  <text x="186" text-anchor="middle" font-size="9" fill="#8b949e" y="115">🏆</text>
+  <!-- Trophy -->
+  <text x="190" y="120" text-anchor="middle" font-size="16" fill="#d4af37" opacity="0.9">🏆</text>
 </svg>
