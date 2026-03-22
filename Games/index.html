@@ -93,15 +93,15 @@ title: Games
   var DB = '{{ site.firebase_db_url }}';
 
   function animateCount(el, target) {
-    var duration = 1400, startTime = null;
-    function step(ts) {
-      if (!startTime) startTime = ts;
-      var p = Math.min((ts - startTime) / duration, 1);
+    var duration = 1400, start = Date.now();
+    el.textContent = '0';
+    function step() {
+      var p = Math.min((Date.now() - start) / duration, 1);
       var ease = 1 - Math.pow(1 - p, 3);
       el.textContent = Math.round(ease * target).toLocaleString();
-      if (p < 1) requestAnimationFrame(step);
+      if (p < 1) setTimeout(step, 16);
     }
-    requestAnimationFrame(step);
+    setTimeout(step, 16);
   }
 
   fetch(DB + '/games.json')
