@@ -413,9 +413,39 @@ section { padding: 5rem 0; }
   border-left: 3px solid var(--border);
   border-radius: var(--radius);
   padding: 1.35rem 1.5rem;
+  overflow: hidden;
   transition: border-left-color .3s ease,
               transform .35s cubic-bezier(0.22,1,0.36,1),
               box-shadow .35s ease;
+}
+
+/* Right-side fading machine/company photo */
+.tl-img-bg {
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 42%;
+  pointer-events: none;
+  z-index: 0;
+}
+.tl-img-bg img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0.22;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.6) 45%, rgba(0,0,0,0.85) 100%);
+  mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.6) 45%, rgba(0,0,0,0.85) 100%);
+  transition: opacity .4s ease;
+}
+.tl-item:hover .tl-img-bg img { opacity: 0.35; }
+
+/* Keep all card content above the background image */
+.tl-dot, .tl-meta, .tl-title, .tl-company, .tl-body {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 600px) {
+  .tl-img-bg { display: none; }
 }
 .tl-item:hover {
   border-left-color: var(--accent);
@@ -486,6 +516,43 @@ section { padding: 5rem 0; }
   gap: .4rem;
 }
 .tl-co-icon { font-size: .9rem; }
+
+/* Company logo in timeline */
+.tl-logo {
+  height: 24px;
+  width: auto;
+  max-width: 90px;
+  border-radius: 4px;
+  object-fit: contain;
+  flex-shrink: 0;
+  opacity: 0.9;
+  transition: opacity .2s;
+}
+/* White-background logos (e.g. ACG) get a light pill to contrast dark theme */
+.tl-logo-light {
+  background: #fff;
+  padding: 2px 5px;
+  border-radius: 5px;
+}
+.tl-item:hover .tl-logo { opacity: 1; }
+
+/* Company logo in resume */
+.re-sub-logo {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+.re-logo {
+  height: 20px;
+  width: auto;
+  max-width: 80px;
+  border-radius: 3px;
+  object-fit: contain;
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+
 .tl-body { font-size: .9rem; }
 .tl-body li { color: var(--muted); font-size: .875rem; margin-bottom: .35rem; }
 
@@ -501,9 +568,11 @@ section { padding: 5rem 0; }
   transform: translateX(0);
 }
 .tl-card[data-delay="0"] { transition-delay: 0s; }
-.tl-card[data-delay="1"] { transition-delay: 0.12s; }
-.tl-card[data-delay="2"] { transition-delay: 0.24s; }
-.tl-card[data-delay="3"] { transition-delay: 0.36s; }
+.tl-card[data-delay="1"] { transition-delay: 0.1s; }
+.tl-card[data-delay="2"] { transition-delay: 0.2s; }
+.tl-card[data-delay="3"] { transition-delay: 0.3s; }
+.tl-card[data-delay="4"] { transition-delay: 0.4s; }
+.tl-card[data-delay="5"] { transition-delay: 0.5s; }
 
 @media (prefers-reduced-motion: reduce) {
   .tl-card { opacity: 1; transform: none; transition: none; }
@@ -512,16 +581,47 @@ section { padding: 5rem 0; }
 /* ===== YOUTUBE CARD ===== */
 .yt-section { background: var(--bg-2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .yt-card {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 3rem;
-  background: linear-gradient(135deg, rgba(255,0,0,.06) 0%, rgba(20,10,10,.6) 100%);
-  border: 1px solid rgba(255,70,70,.2);
+  background: var(--bg-2);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 2.5rem;
+  overflow: hidden;
 }
+
+/* Channel banner backdrop */
+.yt-card-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.yt-card-bg img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  opacity: 0.13;
+  display: block;
+  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.9) 40%, transparent 100%);
+  mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.9) 40%, transparent 100%);
+  transition: opacity .4s ease;
+}
+.yt-card:hover .yt-card-bg img { opacity: 0.28; }
+
+/* Ensure content sits above backdrop */
+.yt-logo, .yt-content { position: relative; z-index: 1; }
+
 .yt-logo { flex-shrink: 0; }
-.yt-logo img { width: 72px; height: auto; }
+.yt-logo img {
+  width: 104px; height: 104px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(255,255,255,.12);
+  box-shadow: 0 0 0 4px rgba(255,255,255,.06);
+}
 .yt-content { flex: 1; }
 .yt-content h2 { margin-bottom: .5rem; }
 .yt-content p { color: var(--muted); font-size: .95rem; }

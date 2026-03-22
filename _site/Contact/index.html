@@ -135,6 +135,50 @@
       els.forEach(function(el) { io.observe(el); });
     })();
 
+    // ── YouTube stat counter ───────────────────────────
+    (function() {
+      var card = document.querySelector('.yt-card');
+      if (!card) return;
+      var counters = card.querySelectorAll('.yt-count');
+      if (!counters.length) return;
+
+      function formatNum(current, target) {
+        if (target >= 1000) {
+          var k = current / 1000;
+          var decimals = (target % 1000 !== 0) ? 1 : 0;
+          return k.toFixed(decimals) + 'K+';
+        }
+        return Math.round(current) + '+';
+      }
+
+      function animateCounter(el) {
+        var target = parseFloat(el.dataset.target);
+        var duration = 1800;
+        var start = null;
+        el.textContent = formatNum(0, target);
+        function step(ts) {
+          if (!start) start = ts;
+          var progress = Math.min((ts - start) / duration, 1);
+          var ease = 1 - Math.pow(1 - progress, 3); // easeOutCubic
+          el.textContent = formatNum(ease * target, target);
+          if (progress < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+
+      var fired = false;
+      var io2 = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting && !fired) {
+            fired = true;
+            counters.forEach(animateCounter);
+            io2.disconnect();
+          }
+        });
+      }, { threshold: 0.3 });
+      io2.observe(card);
+    })();
+
     // ── Mobile nav toggle ──────────────────────────────
     (function() {
       var toggle = document.getElementById('nav-toggle');

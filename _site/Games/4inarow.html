@@ -728,5 +728,24 @@
 
   function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 </script>
+
+
+<script>
+/* ── Session play counter ── */
+(function () {
+  var DB = '';
+  var GAME = '4inarow';
+  var key = 'gp_' + GAME;
+  if (sessionStorage.getItem(key)) return;
+  fetch(DB + '/games/' + GAME + '.json', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ '.sv': { increment: 1 } })
+  }).then(function () {
+    sessionStorage.setItem(key, '1');
+  }).catch(function () {});
+})();
+</script>
+
 </body>
 </html>
