@@ -581,6 +581,7 @@ section { padding: 5rem 0; }
 /* ===== YOUTUBE CARD ===== */
 .yt-section { background: var(--bg-2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .yt-card {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 3rem;
@@ -588,7 +589,29 @@ section { padding: 5rem 0; }
   border: 1px solid rgba(255,70,70,.2);
   border-radius: var(--radius);
   padding: 2.5rem;
+  overflow: hidden;
 }
+
+/* Channel banner backdrop */
+.yt-card-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.yt-card-bg img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  opacity: 0.13;
+  display: block;
+  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.9) 40%, transparent 100%);
+  mask-image: radial-gradient(ellipse at center, rgba(0,0,0,0.9) 40%, transparent 100%);
+}
+
+/* Ensure content sits above backdrop */
+.yt-logo, .yt-content { position: relative; z-index: 1; }
+
 .yt-logo { flex-shrink: 0; }
 .yt-logo img { width: 72px; height: auto; }
 .yt-content { flex: 1; }
