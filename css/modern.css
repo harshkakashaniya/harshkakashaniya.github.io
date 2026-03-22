@@ -486,6 +486,37 @@ section { padding: 5rem 0; }
   gap: .4rem;
 }
 .tl-co-icon { font-size: .9rem; }
+
+/* Company logo in timeline */
+.tl-logo {
+  height: 24px;
+  width: auto;
+  max-width: 90px;
+  border-radius: 4px;
+  object-fit: contain;
+  flex-shrink: 0;
+  opacity: 0.9;
+  transition: opacity .2s;
+}
+.tl-item:hover .tl-logo { opacity: 1; }
+
+/* Company logo in resume */
+.re-sub-logo {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  flex-wrap: wrap;
+}
+.re-logo {
+  height: 20px;
+  width: auto;
+  max-width: 80px;
+  border-radius: 3px;
+  object-fit: contain;
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+
 .tl-body { font-size: .9rem; }
 .tl-body li { color: var(--muted); font-size: .875rem; margin-bottom: .35rem; }
 

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 48">
+  <rect width="120" height="48" rx="6" fill="#1a1a2e"/>
+  <!-- Arc shape -->
+  <path d="M14 36 L24 12 L34 36" stroke="#F47920" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="18" y1="28" x2="30" y2="28" stroke="#F47920" stroke-width="3" stroke-linecap="round"/>
+  <!-- "Best" text -->
+  <text x="42" y="31" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#ffffff" letter-spacing="0.5">Best</text>
+  <text x="42" y="19" font-family="Arial,sans-serif" font-size="9" font-weight="400" fill="#F47920" letter-spacing="1.5">ARC</text>
+</svg>
