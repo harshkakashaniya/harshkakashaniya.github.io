@@ -34,11 +34,23 @@ title: Games
     object-fit: cover;
   }
   .game-card-label {
-    padding: 12px;
+    padding: 10px 12px 12px;
     font-size: 18px;
     font-weight: bold;
     color: #d4af37;
     background: #0f0f1a;
+  }
+  .game-sessions {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(212,175,55,0.6);
+    margin-top: 5px;
+    letter-spacing: 0.05em;
+    min-height: 16px;
+  }
+  .game-sessions .sess-num {
+    color: #d4af37;
+    font-size: 13px;
   }
 </style>
 
@@ -52,15 +64,21 @@ title: Games
       <div class="games-grid">
         <a href="{{ site.baseurl }}/Games/blackjack.html" class="game-card">
           <img src="{{ site.baseurl }}/Games/screenshot-1774116932992.jpg" alt="Blackjack" />
-          <div class="game-card-label">&#9824; Blackjack</div>
+          <div class="game-card-label">&#9824; Blackjack
+            <div class="game-sessions">👥 <span class="sess-num" data-game="blackjack">--</span> sessions</div>
+          </div>
         </a>
         <a href="{{ site.baseurl }}/Games/snakeladder.html" class="game-card">
           <img src="{{ site.baseurl }}/Games/snakeladder-thumb.svg" alt="Snake & Ladder" />
-          <div class="game-card-label">🐍 Advance Snake and Ladder</div>
+          <div class="game-card-label">🐍 Advance Snake and Ladder
+            <div class="game-sessions">👥 <span class="sess-num" data-game="snakeladder">--</span> sessions</div>
+          </div>
         </a>
         <a href="{{ site.baseurl }}/Games/4inarow.html" class="game-card">
           <img src="{{ site.baseurl }}/Games/4inarow-thumb.svg" alt="4 in a Row" />
-          <div class="game-card-label">🔴 4 in a Row</div>
+          <div class="game-card-label">🔴 4 in a Row
+            <div class="game-sessions">👥 <span class="sess-num" data-game="4inarow">--</span> sessions</div>
+          </div>
         </a>
       </div>
     </div>
@@ -68,3 +86,34 @@ title: Games
 </div>
 </div>
 </section>
+
+{% if site.firebase_db_url != "" %}
+<script>
+(function () {
+  var DB = '{{ site.firebase_db_url }}';
+
+  function animateCount(el, target) {
+    var duration = 1400, startTime = null;
+    function step(ts) {
+      if (!startTime) startTime = ts;
+      var p = Math.min((ts - startTime) / duration, 1);
+      var ease = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(ease * target).toLocaleString();
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  fetch(DB + '/games.json')
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      if (!data) return;
+      Object.keys(data).forEach(function (game) {
+        var el = document.querySelector('[data-game="' + game + '"]');
+        if (el && typeof data[game] === 'number') animateCount(el, data[game]);
+      });
+    })
+    .catch(function () {});
+})();
+</script>
+{% endif %}

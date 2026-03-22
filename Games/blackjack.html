@@ -1,3 +1,5 @@
+---
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -745,5 +747,24 @@ function resetGame(){
 buildDeck();
 refreshStats();
 </script>
+
+{% if site.firebase_db_url != "" %}
+<script>
+/* ── Session play counter ── */
+(function () {
+  var DB = '{{ site.firebase_db_url }}';
+  var GAME = 'blackjack';
+  var key = 'gp_' + GAME;
+  if (sessionStorage.getItem(key)) return;
+  fetch(DB + '/games/' + GAME + '.json', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ '.sv': { increment: 1 } })
+  }).then(function () {
+    sessionStorage.setItem(key, '1');
+  }).catch(function () {});
+})();
+</script>
+{% endif %}
 </body>
 </html>

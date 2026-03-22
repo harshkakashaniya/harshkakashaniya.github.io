@@ -1,3 +1,12 @@
+# ── Game play-session counter ──────────────────────────────────────────────
+# Paste your Firebase Realtime Database URL here to enable live session
+# counters on the Games page. Firebase setup (free, ~5 min):
+#   1. console.firebase.google.com → Add project
+#   2. Build → Realtime Database → Create Database (test mode is fine)
+#   3. Copy the Database URL (ends in .firebaseio.com)
+#   4. Paste it below, save, and redeploy.
+firebase_db_url: ""
+
 title: Harsh Bharat Kakashaniya
 tagline: "Think like a proton. Always positive."
 version:
