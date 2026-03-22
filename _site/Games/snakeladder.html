@@ -685,24 +685,47 @@
   ────────────────────────────────────────── */
   function drawDirectionArrows(svg) {
     for (let sq = 1; sq <= 100; sq++) {
-      const row     = Math.floor((sq - 1) / 10);   // 0=bottom, 9=top
-      const goRight = row % 2 === 0;                // even rows: →, odd rows: ←
+      const row     = Math.floor((sq - 1) / 10);
+      const goRight = row % 2 === 0;
       const { gridRow, gridCol } = squareToGrid(sq);
-
       const cx = gridCol * CELL + CELL / 2;
-      const cy = gridRow * CELL + CELL / 2 + 12;   // lower half of cell
-      const s  = 5;                                  // chevron size
-      const d  = goRight ? 1 : -1;                  // direction
+      const cy = gridRow * CELL + CELL / 2;
+      const s  = 5;
 
-      // Chevron: > or <
-      svg.appendChild(svgEl('path', {
-        d: `M ${cx - d*s} ${cy - s} L ${cx + d*s} ${cy} L ${cx - d*s} ${cy + s}`,
-        stroke: 'rgba(255,255,255,0.28)',
-        'stroke-width': 1.8,
-        fill: 'none',
-        'stroke-linecap': 'round',
-        'stroke-linejoin': 'round',
-      }));
+      if (sq === 100) {
+        // Trophy watermark
+        const t = svgEl('text', {
+          x: cx, y: cy + 14,
+          'text-anchor': 'middle',
+          'font-size': '28',
+          opacity: '0.18',
+        });
+        t.textContent = '🏆';
+        svg.appendChild(t);
+
+      } else if (sq % 10 === 0) {
+        // Turn square → upward chevron
+        svg.appendChild(svgEl('path', {
+          d: `M ${cx - s} ${cy + 14 + s} L ${cx} ${cy + 14 - s} L ${cx + s} ${cy + 14 + s}`,
+          stroke: 'rgba(255,255,255,0.35)',
+          'stroke-width': 1.8,
+          fill: 'none',
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round',
+        }));
+
+      } else {
+        // Left / right chevron
+        const d = goRight ? 1 : -1;
+        svg.appendChild(svgEl('path', {
+          d: `M ${cx - d*s} ${cy + 12 - s} L ${cx + d*s} ${cy + 12} L ${cx - d*s} ${cy + 12 + s}`,
+          stroke: 'rgba(255,255,255,0.28)',
+          'stroke-width': 1.8,
+          fill: 'none',
+          'stroke-linecap': 'round',
+          'stroke-linejoin': 'round',
+        }));
+      }
     }
   }
 
