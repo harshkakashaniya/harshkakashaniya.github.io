@@ -886,6 +886,25 @@ section { padding: 5rem 0; }
   margin-bottom: 1rem;
   flex: 1;
 }
+/* Badge-only cert card (no certificate image file) */
+.cert-badge {
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.6rem;
+  font-weight: 900;
+  letter-spacing: .04em;
+  color: #fff;
+  user-select: none;
+}
+.cert-badge.ep   { background: linear-gradient(135deg,#00796b,#009688); }
+.cert-badge.dlai { background: linear-gradient(135deg,#b71c1c,#e53935); }
+.cert-badge.cors { background: linear-gradient(135deg,#003da5,#0056d3); }
+.cert-badge.stan { background: linear-gradient(135deg,#6a0000,#8c1515); }
+.cert-badge.udac { background: linear-gradient(135deg,#0277bd,#02b3e4); }
+.cert-badge.udem { background: linear-gradient(135deg,#6a1b9a,#a435f0); }
+
 .cert-group { margin-bottom: 2.5rem; }
 .cert-group-title {
   font-size: 1.3rem;
