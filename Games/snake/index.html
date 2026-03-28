@@ -671,11 +671,17 @@ function die() {
   phase = 'dying';
   deathFlash = 0;
   if (deathTimer) clearTimeout(deathTimer);
+  // After flash animation, wait for user click — never auto-reset
   deathTimer = setTimeout(function () {
     if (lives <= 0) {
       gameOver();
     } else {
-      resetLevel();
+      var lv = LEVELS[levelIdx];
+      showOverlay('💀', 'You died!',
+        lives + ' ' + (lives === 1 ? 'life' : 'lives') + ' remaining — Level ' + lv.id + ' · ' + lv.name + ' resets.',
+        'Try Again →',
+        function () { hideOverlay(); resetLevel(); }
+      );
     }
   }, 900);
 }
