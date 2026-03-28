@@ -806,29 +806,29 @@ document.addEventListener('keydown', function (e) {
   if (map[e.key]) { e.preventDefault(); gameSetDir(map[e.key].x, map[e.key].y); }
 });
 
-// ── Touch / swipe on canvas ─────────────────────────
-// Attach to the canvas element so we can preventDefault (stops page scroll)
-// and so the hint doesn't trigger swipes on buttons or overlays.
-var touchX = 0, touchY = 0;
-(function setupTouch() {
-  var c = document.getElementById('snakeCanvas');
-  c.addEventListener('touchstart', function (e) {
-    e.preventDefault();          // stop page scroll while swiping
-    touchX = e.touches[0].clientX;
-    touchY = e.touches[0].clientY;
-  }, {passive: false});
-  c.addEventListener('touchend', function (e) {
+// ── Touch / swipe controls ──────────────────────────
+// Lock page scroll whenever the game is active (playing or paused).
+// This must be a non-passive document listener so preventDefault works.
+document.addEventListener('touchmove', function (e) {
+  if (phase === 'playing' || phase === 'paused' || phase === 'dying') {
     e.preventDefault();
-    var dx = e.changedTouches[0].clientX - touchX;
-    var dy = e.changedTouches[0].clientY - touchY;
-    if (Math.abs(dx) < 20 && Math.abs(dy) < 20) return; // ignore taps
-    if (Math.abs(dx) > Math.abs(dy)) gameSetDir(dx > 0 ? 1 : -1, 0);
-    else                              gameSetDir(0, dy > 0 ? 1 : -1);
-  }, {passive: false});
-  c.addEventListener('touchmove', function (e) {
-    e.preventDefault();          // stop rubber-band scroll mid-swipe
-  }, {passive: false});
-})();
+  }
+}, {passive: false});
+
+var touchX = 0, touchY = 0;
+document.addEventListener('touchstart', function (e) {
+  touchX = e.touches[0].clientX;
+  touchY = e.touches[0].clientY;
+}, {passive: true});
+
+document.addEventListener('touchend', function (e) {
+  if (phase !== 'playing') return;
+  var dx = e.changedTouches[0].clientX - touchX;
+  var dy = e.changedTouches[0].clientY - touchY;
+  if (Math.abs(dx) < 20 && Math.abs(dy) < 20) return; // ignore taps
+  if (Math.abs(dx) > Math.abs(dy)) gameSetDir(dx > 0 ? 1 : -1, 0);
+  else                              gameSetDir(0, dy > 0 ? 1 : -1);
+}, {passive: true});
 
 function gameSetDir(dx, dy) {
   if (phase !== 'playing') return;
