@@ -59,6 +59,17 @@ title: "Snake — 10 Worlds"
 .leg-gold { color: #ffd700; font-size: .9rem; }
 
 /* ── Canvas + overlay ────────────────────────────── */
+/* ── Pause button ────────────────────────────────── */
+.pause-btn {
+  position: absolute; top: 8px; right: 8px; z-index: 5;
+  background: rgba(13,20,39,.75); border: 1px solid #1e2d4a;
+  border-radius: 6px; color: #8899bb; font-size: .75rem;
+  font-weight: 700; letter-spacing: .06em;
+  padding: 4px 9px; cursor: pointer;
+  transition: background .15s, color .15s;
+}
+.pause-btn:hover { background: #1e2d4a; color: #dde6ff; }
+
 .snake-canvas-wrap { position: relative; flex-shrink: 0; }
 #snakeCanvas {
   display: block;
@@ -165,6 +176,7 @@ title: "Snake — 10 Worlds"
     <!-- Canvas -->
     <div class="snake-canvas-wrap">
       <canvas id="snakeCanvas" tabindex="0"></canvas>
+      <button class="pause-btn" id="pauseBtn" onclick="togglePause()" style="display:none">⏸ PAUSE</button>
       <div id="snakeOverlay" class="snake-overlay">
         <div class="so-card">
           <span class="so-emoji" id="soEmoji">🐍</span>
@@ -747,7 +759,26 @@ function gameLoop(ts) {
 }
 
 // ── Input ──────────────────────────────────────────
+function togglePause() {
+  if (phase === 'playing') {
+    phase = 'paused';
+    document.getElementById('pauseBtn').textContent = '▶ RESUME';
+    showOverlay('⏸', 'Paused', 'Press Space or click Resume to continue.', 'Resume →', function () {
+      hideOverlay();
+      phase = 'playing';
+      lastTime = 0; // reset timer so no tick-skip on resume
+      document.getElementById('pauseBtn').textContent = '⏸ PAUSE';
+    });
+  } else if (phase === 'paused') {
+    hideOverlay();
+    phase = 'playing';
+    lastTime = 0;
+    document.getElementById('pauseBtn').textContent = '⏸ PAUSE';
+  }
+}
+
 document.addEventListener('keydown', function (e) {
+  if (e.key === ' ' || e.key === 'Escape') { e.preventDefault(); togglePause(); return; }
   var map = {
     ArrowUp:   {x:0,y:-1}, ArrowDown: {x:0,y:1},
     ArrowLeft: {x:-1,y:0}, ArrowRight:{x:1,y:0},
@@ -785,9 +816,15 @@ function showOverlay(emoji, title, desc, label, onBtn) {
   btn.textContent = label;
   btn.onclick = onBtn;
   document.getElementById('snakeOverlay').classList.remove('hidden');
+  document.getElementById('pauseBtn').style.display = 'none';
 }
 function hideOverlay() {
   document.getElementById('snakeOverlay').classList.add('hidden');
+  document.getElementById('pauseBtn').style.display = 'block';
+}
+
+function showPauseBtn(visible) {
+  document.getElementById('pauseBtn').style.display = visible ? 'block' : 'none';
 }
 function setStat(text) {
   var el = document.getElementById('soStat');
