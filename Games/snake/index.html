@@ -236,126 +236,155 @@ var LEVELS = [
     snakeH:'#69f0ae', snakeB:'#00c853', snakeE:'#003d1e',
     glow: false, obstacles:[], hasGolden:false },
 
-  // 2 – Forest
+  // 2 – Forest  (scattered tree stumps — 1×2 vertical pairs)
   { id:2, name:'Forest', emoji:'🌲', speed:183,
     desc:'Ancient tree stumps block the forest floor.',
     bg:'#051200', grid:'#071600', obsCol:'#5d4037',
     snakeH:'#b9f6ca', snakeB:'#69f0ae', snakeE:'#003d1e',
     glow: false,
-    obstacles: blk(2,2,2).concat(blk(16,2,2), blk(2,16,2), blk(16,16,2)),
+    obstacles: [
+      {x:4,y:3},{x:4,y:4},
+      {x:10,y:3},{x:10,y:4},
+      {x:15,y:3},{x:15,y:4},
+      {x:2,y:9},{x:3,y:9},
+      {x:16,y:10},{x:17,y:10},
+      {x:4,y:15},{x:4,y:16},
+      {x:10,y:15},{x:10,y:16},
+      {x:15,y:15},{x:15,y:16}
+    ],
     hasGolden:false },
 
-  // 3 – Savanna  ★ golden apple
+  // 3 – Savanna  ★ golden apple  (L-shaped boulder clusters)
   { id:3, name:'Savanna', emoji:'🦁', speed:167,
     desc:'Boulders scatter the plain — a golden apple glitters!',
     bg:'#160e00', grid:'#1a1200', obsCol:'#8d6e63',
     snakeH:'#ffd54f', snakeB:'#ffab00', snakeE:'#3e2000',
     glow: false,
-    obstacles: blk(2,2,2).concat(blk(16,2,2), blk(2,16,2), blk(16,16,2),
-      [{x:5,y:9},{x:5,y:10},{x:14,y:9},{x:14,y:10},
-       {x:9,y:4},{x:10,y:4},{x:9,y:15},{x:10,y:15}]),
+    obstacles: [
+      {x:3,y:3},{x:4,y:3},{x:3,y:4},
+      {x:16,y:3},{x:15,y:3},{x:16,y:4},
+      {x:3,y:16},{x:4,y:16},{x:3,y:15},
+      {x:16,y:16},{x:15,y:16},{x:16,y:15},
+      {x:9,y:9},{x:10,y:9},
+      {x:6,y:6},{x:14,y:6},{x:5,y:13},{x:14,y:13}
+    ],
     hasGolden:true },
 
-  // 4 – Desert
+  // 4 – Desert  (T-shaped cacti scattered around)
   { id:4, name:'Desert', emoji:'🏜️', speed:152,
     desc:'Cacti fields stretch under a scorching sun.',
     bg:'#150900', grid:'#190b00', obsCol:'#558b2f',
     snakeH:'#fff176', snakeB:'#ffd600', snakeE:'#3e2700',
     glow: false,
-    obstacles: blk(2,2,2).concat(blk(16,2,2), blk(2,16,2), blk(16,16,2),
-      [{x:7,y:4},{x:7,y:5},{x:12,y:4},{x:12,y:5},
-       {x:7,y:14},{x:7,y:15},{x:12,y:14},{x:12,y:15},
-       {x:3,y:9},{x:4,y:9},{x:15,y:9},{x:16,y:9}]),
+    obstacles: [
+      {x:4,y:3},{x:4,y:4},{x:4,y:5},{x:3,y:4},
+      {x:10,y:2},{x:10,y:3},{x:10,y:4},{x:11,y:3},
+      {x:16,y:3},{x:16,y:4},{x:16,y:5},{x:17,y:4},
+      {x:3,y:14},{x:3,y:15},{x:3,y:16},{x:4,y:15},
+      {x:10,y:15},{x:10,y:16},{x:10,y:17},{x:9,y:16},
+      {x:16,y:14},{x:16,y:15},{x:16,y:16},{x:15,y:15}
+    ],
     hasGolden:false },
 
-  // 5 – Swamp
+  // 5 – Swamp  (horizontal log barriers + side verticals)
   { id:5, name:'Swamp', emoji:'🐊', speed:138,
     desc:'Rotting logs choke every path in the murky swamp.',
     bg:'#030f00', grid:'#041200', obsCol:'#33691e',
     snakeH:'#ccff90', snakeB:'#76ff03', snakeE:'#1b3a00',
     glow: false,
-    obstacles: blk(2,2,2).concat(blk(16,2,2), blk(2,16,2), blk(16,16,2),
-      [{x:6,y:4},{x:7,y:4},{x:8,y:4},
-       {x:11,y:4},{x:12,y:4},{x:13,y:4},
-       {x:6,y:15},{x:7,y:15},{x:8,y:15},
-       {x:11,y:15},{x:12,y:15},{x:13,y:15},
-       {x:4,y:7},{x:4,y:8},{x:4,y:9},
-       {x:15,y:10},{x:15,y:11},{x:15,y:12}]),
+    obstacles: [
+      {x:4,y:4},{x:5,y:4},{x:6,y:4},
+      {x:13,y:4},{x:14,y:4},{x:15,y:4},
+      {x:4,y:15},{x:5,y:15},{x:6,y:15},
+      {x:13,y:15},{x:14,y:15},{x:15,y:15},
+      {x:7,y:8},{x:8,y:8},{x:9,y:8},{x:10,y:8},{x:11,y:8},{x:12,y:8},
+      {x:3,y:10},{x:3,y:11},{x:3,y:12},
+      {x:16,y:7},{x:16,y:8},{x:16,y:9}
+    ],
     hasGolden:false },
 
-  // 6 – Arctic  ★ golden apple
+  // 6 – Arctic  ★ golden apple  (broken ice shelves — slalom corridors)
   { id:6, name:'Arctic', emoji:'🧊', speed:124,
     desc:'Ice walls close in from every direction. A golden apple drifts near!',
     bg:'#001428', grid:'#001830', obsCol:'#81d4fa',
     snakeH:'#e1f5fe', snakeB:'#4fc3f7', snakeE:'#01303f',
     glow: false,
-    obstacles: blk(2,2,2).concat(blk(16,2,2), blk(2,16,2), blk(16,16,2),
-      [{x:5,y:6},{x:6,y:6},{x:7,y:6},{x:8,y:6},
-       {x:11,y:6},{x:12,y:6},{x:13,y:6},{x:14,y:6},
-       {x:5,y:13},{x:6,y:13},{x:7,y:13},{x:8,y:13},
-       {x:11,y:13},{x:12,y:13},{x:13,y:13},{x:14,y:13}]),
+    obstacles: [
+      {x:2,y:6},{x:3,y:6},{x:4,y:6},{x:5,y:6},{x:6,y:6},{x:7,y:6},
+      {x:12,y:6},{x:13,y:6},{x:14,y:6},{x:15,y:6},{x:16,y:6},{x:17,y:6},
+      {x:2,y:13},{x:3,y:13},{x:4,y:13},{x:5,y:13},{x:6,y:13},{x:7,y:13},
+      {x:12,y:13},{x:13,y:13},{x:14,y:13},{x:15,y:13},{x:16,y:13},{x:17,y:13}
+    ],
     hasGolden:true },
 
-  // 7 – Volcano
+  // 7 – Volcano  (vent top + lava splats in each quadrant + bottom pool)
   { id:7, name:'Volcano', emoji:'🌋', speed:111,
     desc:'Lava rocks erupt around every corner!',
     bg:'#130000', grid:'#180000', obsCol:'#dd2c00',
     snakeH:'#ffab40', snakeB:'#ff6d00', snakeE:'#3e0000',
     glow: false,
-    obstacles: blk(2,2,2).concat(blk(16,2,2), blk(2,16,2), blk(16,16,2),
-      blk(8,2,2), blk(10,2,2),
-      [{x:5,y:7},{x:5,y:8},{x:6,y:7},
-       {x:13,y:7},{x:14,y:7},{x:14,y:8},
-       {x:5,y:11},{x:5,y:12},{x:6,y:12},
-       {x:13,y:12},{x:14,y:11},{x:14,y:12}]),
+    obstacles: [
+      {x:9,y:2},{x:10,y:2},{x:9,y:3},{x:10,y:3},
+      {x:5,y:5},{x:6,y:5},{x:5,y:6},
+      {x:13,y:5},{x:14,y:5},{x:14,y:6},
+      {x:3,y:10},{x:3,y:11},{x:4,y:10},
+      {x:16,y:9},{x:16,y:10},{x:17,y:10},
+      {x:5,y:14},{x:6,y:14},{x:5,y:15},
+      {x:13,y:14},{x:14,y:14},{x:14,y:15},
+      {x:9,y:16},{x:10,y:16},{x:9,y:17}
+    ],
     hasGolden:false },
 
-  // 8 – Dungeon
+  // 8 – Dungeon  (four tall pillars + center crossbar)
   { id:8, name:'Dungeon', emoji:'⚔️', speed:99,
     desc:'Winding stone corridors twist through the deep dark.',
     bg:'#080808', grid:'#0d0d0d', obsCol:'#546e7a',
     snakeH:'#cfd8dc', snakeB:'#90a4ae', snakeE:'#1c313a',
     glow: false,
-    obstacles: blk(2,2,2).concat(blk(16,2,2), blk(2,16,2), blk(16,16,2),
-      [{x:5,y:4},{x:5,y:5},{x:5,y:6},{x:5,y:7},
-       {x:14,y:4},{x:14,y:5},{x:14,y:6},{x:14,y:7},
-       {x:5,y:12},{x:5,y:13},{x:5,y:14},{x:5,y:15},
-       {x:14,y:12},{x:14,y:13},{x:14,y:14},{x:14,y:15},
-       {x:7,y:8},{x:8,y:8},{x:11,y:8},{x:12,y:8}]),
+    obstacles: [
+      {x:5,y:3},{x:5,y:4},{x:5,y:5},{x:5,y:6},
+      {x:14,y:3},{x:14,y:4},{x:14,y:5},{x:14,y:6},
+      {x:5,y:13},{x:5,y:14},{x:5,y:15},{x:5,y:16},
+      {x:14,y:13},{x:14,y:14},{x:14,y:15},{x:14,y:16},
+      {x:8,y:9},{x:9,y:9},{x:10,y:9},{x:11,y:9}
+    ],
     hasGolden:false },
 
-  // 9 – Space  ★ golden apple
+  // 9 – Space  ★ golden apple  (irregular asteroid clusters — asymmetric)
   { id:9, name:'Space', emoji:'🚀', speed:88,
     desc:'Asteroid field! A golden apple drifts silently nearby...',
     bg:'#00000f', grid:'#000012', obsCol:'#78909c',
     snakeH:'#ea80fc', snakeB:'#aa00ff', snakeE:'#1a0030',
     glow: true,
-    obstacles: blk(2,2,2).concat(blk(16,2,2), blk(2,16,2), blk(16,16,2),
-      [{x:6,y:5},{x:7,y:5},{x:6,y:6},
-       {x:12,y:5},{x:13,y:5},{x:13,y:6},
-       {x:6,y:13},{x:6,y:14},{x:7,y:14},
-       {x:12,y:14},{x:13,y:13},{x:13,y:14},
-       {x:9,y:3},{x:10,y:3},
-       {x:9,y:16},{x:10,y:16},
-       {x:4,y:9},{x:4,y:10},
-       {x:15,y:9},{x:15,y:10}]),
+    obstacles: [
+      {x:4,y:3},{x:5,y:3},{x:4,y:4},
+      {x:15,y:3},{x:16,y:3},{x:16,y:4},
+      {x:3,y:9},{x:3,y:10},{x:4,y:10},
+      {x:16,y:8},{x:16,y:9},{x:15,y:9},
+      {x:7,y:6},{x:8,y:6},{x:7,y:7},
+      {x:12,y:5},{x:11,y:5},{x:11,y:6},
+      {x:4,y:15},{x:5,y:15},{x:4,y:16},
+      {x:15,y:14},{x:16,y:14},{x:16,y:15},
+      {x:9,y:12},{x:10,y:12},{x:10,y:13}
+    ],
     hasGolden:true },
 
-  // 10 – Cyber
+  // 10 – Cyber  (corner circuit brackets + inner open-frame maze)
   { id:10, name:'Cyber', emoji:'💻', speed:78,
     desc:'The final cyber grid. Maximum speed. Maximum glory!',
     bg:'#000618', grid:'#00071e', obsCol:'#00bcd4',
     snakeH:'#18ffff', snakeB:'#00b0ff', snakeE:'#002233',
     glow: true,
-    obstacles: blk(2,2,2).concat(blk(16,2,2), blk(2,16,2), blk(16,16,2),
-      [{x:5,y:5},{x:6,y:5},{x:7,y:5},
-       {x:12,y:5},{x:13,y:5},{x:14,y:5},
-       {x:5,y:14},{x:6,y:14},{x:7,y:14},
-       {x:12,y:14},{x:13,y:14},{x:14,y:14},
-       {x:5,y:7},{x:5,y:8},{x:5,y:9},
-       {x:14,y:10},{x:14,y:11},{x:14,y:12},
-       {x:8,y:5},{x:8,y:6},{x:8,y:7},
-       {x:11,y:12},{x:11,y:13},{x:11,y:14}]),
+    obstacles: [
+      {x:2,y:2},{x:3,y:2},{x:4,y:2},{x:2,y:3},{x:2,y:4},
+      {x:15,y:2},{x:16,y:2},{x:17,y:2},{x:17,y:3},{x:17,y:4},
+      {x:2,y:15},{x:2,y:16},{x:2,y:17},{x:3,y:17},{x:4,y:17},
+      {x:15,y:17},{x:16,y:17},{x:17,y:17},{x:17,y:15},{x:17,y:16},
+      {x:8,y:7},{x:9,y:7},{x:11,y:7},{x:12,y:7},
+      {x:8,y:12},{x:9,y:12},{x:11,y:12},{x:12,y:12},
+      {x:7,y:8},{x:7,y:9},{x:7,y:11},
+      {x:12,y:8},{x:12,y:9},{x:12,y:11}
+    ],
     hasGolden:false },
 ];
 
