@@ -320,43 +320,58 @@ permalink: /Games/blackjack.html
 
         /* ── RESPONSIVE ── */
         @media (max-width: 600px) {
-          body { padding: 14px 8px 28px; }
+          body { padding: 10px 8px 20px; }
 
-          /* Smaller title */
-          .game-title { font-size: 2.4em; letter-spacing: 0.1em; }
-          .title-ornament { font-size: 0.85em; margin-top: 6px; }
+          /* Compact title */
+          .game-title { font-size: 2.2em; letter-spacing: 0.08em; }
+          .title-ornament { font-size: 0.8em; margin-top: 4px; }
+          .header { margin-bottom: 10px; }
 
-          /* Stats: 2×2 grid */
-          .stats-row { flex-wrap: wrap; gap: 8px; }
-          .stat-box { flex: 1 1 calc(50% - 4px); min-width: 0; padding: 10px 8px; }
-          .stat-val { font-size: 1.2em; }
+          /* Stats: single row, all 4 boxes */
+          .stats-row { gap: 6px; margin-bottom: 10px; flex-wrap: nowrap; }
+          .stat-box { padding: 8px 4px; }
+          .stat-lbl { font-size: 0.52em; letter-spacing: 0.1em; }
+          .stat-val { font-size: 1.05em; }
 
           /* Tighter table */
-          .table { padding: 18px 14px 14px; border-radius: 18px; }
+          .table { padding: 14px 12px 12px; border-radius: 16px; }
+          .hand-section { margin-bottom: 10px; }
+          .hand-header { margin-bottom: 6px; }
+          .felt-divider { margin: 6px 0 10px; }
+
+          /* Key fix: collapse empty card rows — they expand when cards are dealt */
+          .cards-row { gap: 6px; min-height: 20px; }
 
           /* Smaller cards */
-          .card-inner { width: 68px; height: 100px; }
-          .c-rank { font-size: 15px; }
-          .c-suit-sm { font-size: 10px; }
-          .c-center { font-size: 32px; }
-          .cards-row { gap: 7px; min-height: 110px; }
+          .card-inner { width: 62px; height: 90px; }
+          .c-rank { font-size: 14px; }
+          .c-suit-sm { font-size: 9px; }
+          .c-center { font-size: 28px; }
 
-          /* Smaller chips */
-          .chip { width: 52px; height: 52px; font-size: 0.72em; }
-          .chips { gap: 10px; }
+          /* Compact bet panel */
+          .bet-panel { padding: 14px 12px; margin-top: 6px; }
+          .bet-panel-title { margin-bottom: 12px; font-size: 0.62em; }
+
+          /* Smaller chips in one row */
+          .chip { width: 48px; height: 48px; font-size: 0.68em; }
+          .chips { gap: 8px; margin-bottom: 12px; }
 
           /* Bet entry tighter */
-          .bet-input-wrap { min-width: 90px; font-size: 1.2em; padding: 8px 12px; }
+          .bet-entry { margin-bottom: 12px; gap: 8px; }
+          .bet-input-wrap { min-width: 80px; font-size: 1.1em; padding: 7px 10px; }
 
           /* Action buttons: 2 per row */
           .action-row { gap: 8px; }
-          .act-btn { flex: 1 1 calc(50% - 4px); padding: 12px 10px; font-size: 0.85em; }
+          .act-btn { flex: 1 1 calc(50% - 4px); padding: 11px 8px; font-size: 0.82em; }
 
           /* Deal button */
-          .deal-btn { padding: 12px 36px; }
+          .deal-btn { padding: 11px 32px; }
+
+          /* Message */
+          .msg-area { min-height: 40px; margin-top: 10px; }
 
           /* Footer */
-          .footer-row { flex-wrap: wrap; }
+          .footer-row { flex-wrap: wrap; margin-top: 10px; padding-top: 10px; }
           .foot-btn { flex: 1; text-align: center; }
         }
     </style>

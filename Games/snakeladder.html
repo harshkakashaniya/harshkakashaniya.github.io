@@ -265,21 +265,39 @@ permalink: /Games/snakeladder.html
 
     /* ── RESPONSIVE ── */
     @media (max-width: 640px) {
-      body { padding: 12px 8px 24px; }
+      body { padding: 8px 8px 16px; }
 
-      .header h1 { font-size: 1.6rem; }
+      /* Hide the big header — title is already in site nav context */
+      .header { display: none; }
 
-      /* Scale the entire board-wrap (board + SVG overlay + pawns) proportionally.
-         zoom preserves layout space unlike transform:scale, so no height hacks needed. */
+      /* Scale board to fit phone width */
       .board-wrap { zoom: 0.56; }
 
-      /* Side panel goes full-width below the board */
-      .side-panel { width: 100%; max-width: 600px; }
+      /* Side panel: full-width, no gap wasted */
+      .side-panel { width: 100%; max-width: 600px; gap: 8px; }
+      .game-layout { gap: 8px; }
 
-      .game-layout { gap: 14px; }
+      /* Compact panel cards */
+      .panel-card { padding: 10px 12px; }
+
+      /* Hide game log — not needed for gameplay, saves ~180px */
+      .panel-card:has(#log) { display: none; }
+
+      /* Compact player rows */
+      .player-row { padding: 6px 8px; margin-bottom: 4px; }
+
+      /* Compact dice */
+      .dice-scene { margin: 4px auto 8px; width: 46px; height: 46px; }
+      .dice-3d, .face { width: 46px; height: 46px; }
+      .face-1 { transform: translateZ(23px); }
+      .face-6 { transform: rotateY(180deg) translateZ(23px); }
+      .face-2 { transform: rotateY(90deg) translateZ(23px); }
+      .face-5 { transform: rotateY(-90deg) translateZ(23px); }
+      .face-3 { transform: rotateX(-90deg) translateZ(23px); }
+      .face-4 { transform: rotateX(90deg) translateZ(23px); }
 
       /* Tighten setup screen */
-      #setup-screen { padding: 24px 16px; }
+      #setup-screen { padding: 20px 14px; }
     }
 
     /* ── CONFETTI ── */
