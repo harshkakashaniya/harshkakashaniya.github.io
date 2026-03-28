@@ -103,38 +103,30 @@ title: "Snake — 10 Worlds"
 }
 .so-btn:hover { background: #e8c870; transform: translateY(-1px); }
 
-/* ── D-Pad (mobile) ──────────────────────────────── */
-.dpad {
+/* ── Swipe hint (mobile) ─────────────────────────── */
+.swipe-hint {
   display: none;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  margin-top: .5rem;
+  text-align: center;
+  color: #3a4a66;
+  font-size: .78rem;
+  letter-spacing: .06em;
+  margin-top: .3rem;
+  user-select: none;
 }
-.dpad-row { display: flex; gap: 4px; }
-.dpad-btn {
-  width: 54px; height: 54px;
-  background: #0d1427; border: 1px solid #1e2d4a;
-  border-radius: 10px; color: #8899bb; font-size: 1.1rem;
-  cursor: pointer; display: flex; align-items: center; justify-content: center;
-  -webkit-tap-highlight-color: transparent;
-  transition: background .1s, color .1s;
-}
-.dpad-btn:active { background: #1e2d4a; color: #dde6ff; }
-.dpad-center { background: #080e1c; cursor: default; pointer-events: none; }
 
 /* ── Responsive ──────────────────────────────────── */
 @media (max-width: 680px) {
-  .snake-wrap { flex-direction: column; align-items: center; gap: 1rem; }
+  .snake-wrap { flex-direction: column; align-items: center; gap: .5rem; }
   .ss {
     flex-direction: row; flex-wrap: wrap;
-    min-width: unset; width: 100%; max-width: 480px;
-    gap: .5rem .8rem; padding: .8rem 1rem;
+    min-width: unset; width: 100%; max-width: 100%;
+    gap: .3rem .8rem; padding: .5rem 1rem;
     align-items: center;
   }
   .ss-badge { flex: 1; }
   .ss-divider, .ss-legend { display: none; }
-  .dpad { display: flex; }
+  .swipe-hint { display: block; }
+  #snakeCanvas { touch-action: none; }
 }
 
 /* ── Page hero override ──────────────────────────── */
@@ -190,24 +182,8 @@ title: "Snake — 10 Worlds"
 
   </div>
 
-  <!-- Mobile d-pad -->
-  <div class="dpad" id="dpad">
-    <div class="dpad-row">
-      <div style="width:54px"></div>
-      <button class="dpad-btn" ontouchstart="gameSetDir(0,-1)" onclick="gameSetDir(0,-1)">▲</button>
-      <div style="width:54px"></div>
-    </div>
-    <div class="dpad-row">
-      <button class="dpad-btn" ontouchstart="gameSetDir(-1,0)" onclick="gameSetDir(-1,0)">◀</button>
-      <button class="dpad-btn dpad-center"></button>
-      <button class="dpad-btn" ontouchstart="gameSetDir(1,0)" onclick="gameSetDir(1,0)">▶</button>
-    </div>
-    <div class="dpad-row">
-      <div style="width:54px"></div>
-      <button class="dpad-btn" ontouchstart="gameSetDir(0,1)" onclick="gameSetDir(0,1)">▼</button>
-      <div style="width:54px"></div>
-    </div>
-  </div>
+  <!-- Swipe hint shown on mobile -->
+  <p class="swipe-hint" id="swipeHint">👆 Swipe anywhere on the board to change direction</p>
 
 </div>
 
@@ -422,7 +398,8 @@ function initCanvas() {
   if (vw > 720) {
     maxSize = Math.min(500, vh - 140);
   } else {
-    maxSize = Math.min(vw - 24, vh - 260, 480);
+    // no dpad — canvas can use the extra space
+    maxSize = Math.min(vw - 16, vh - 160, 480);
   }
   CELL = Math.floor(maxSize / GRID);
   canvas.width  = GRID * CELL;
@@ -829,18 +806,29 @@ document.addEventListener('keydown', function (e) {
   if (map[e.key]) { e.preventDefault(); gameSetDir(map[e.key].x, map[e.key].y); }
 });
 
+// ── Touch / swipe on canvas ─────────────────────────
+// Attach to the canvas element so we can preventDefault (stops page scroll)
+// and so the hint doesn't trigger swipes on buttons or overlays.
 var touchX = 0, touchY = 0;
-document.addEventListener('touchstart', function (e) {
-  touchX = e.touches[0].clientX;
-  touchY = e.touches[0].clientY;
-}, {passive: true});
-document.addEventListener('touchend', function (e) {
-  var dx = e.changedTouches[0].clientX - touchX;
-  var dy = e.changedTouches[0].clientY - touchY;
-  if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
-  if (Math.abs(dx) > Math.abs(dy)) gameSetDir(dx > 0 ? 1 : -1, 0);
-  else                              gameSetDir(0, dy > 0 ? 1 : -1);
-}, {passive: true});
+(function setupTouch() {
+  var c = document.getElementById('snakeCanvas');
+  c.addEventListener('touchstart', function (e) {
+    e.preventDefault();          // stop page scroll while swiping
+    touchX = e.touches[0].clientX;
+    touchY = e.touches[0].clientY;
+  }, {passive: false});
+  c.addEventListener('touchend', function (e) {
+    e.preventDefault();
+    var dx = e.changedTouches[0].clientX - touchX;
+    var dy = e.changedTouches[0].clientY - touchY;
+    if (Math.abs(dx) < 20 && Math.abs(dy) < 20) return; // ignore taps
+    if (Math.abs(dx) > Math.abs(dy)) gameSetDir(dx > 0 ? 1 : -1, 0);
+    else                              gameSetDir(0, dy > 0 ? 1 : -1);
+  }, {passive: false});
+  c.addEventListener('touchmove', function (e) {
+    e.preventDefault();          // stop rubber-band scroll mid-swipe
+  }, {passive: false});
+})();
 
 function gameSetDir(dx, dy) {
   if (phase !== 'playing') return;
@@ -858,10 +846,12 @@ function showOverlay(emoji, title, desc, label, onBtn) {
   btn.onclick = onBtn;
   document.getElementById('snakeOverlay').classList.remove('hidden');
   document.getElementById('pauseBtn').style.display = 'none';
+  document.getElementById('swipeHint').style.visibility = 'hidden';
 }
 function hideOverlay() {
   document.getElementById('snakeOverlay').classList.add('hidden');
   document.getElementById('pauseBtn').style.display = 'block';
+  document.getElementById('swipeHint').style.visibility = 'visible';
 }
 
 function showPauseBtn(visible) {
