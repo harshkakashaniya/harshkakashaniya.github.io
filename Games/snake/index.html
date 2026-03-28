@@ -871,11 +871,24 @@ window.addEventListener('load', function () {
   });
 });
 
-// ── Firebase session counter ───────────────────────
+
+</script>
+
+{% if site.firebase_db_url != "" %}
+<script>
+/* ── Session play counter ── */
 (function () {
   var DB = '{{ site.firebase_db_url }}';
-  if (!DB) return;
-  fetch(DB + '/games/snake.json', {method:'PUT', body: JSON.stringify({'.sv':'increment'} ), headers:{'Content-Type':'application/json'}})
-    .catch(function(){});
+  var GAME = 'snake';
+  var key = 'gp_' + GAME;
+  if (sessionStorage.getItem(key)) return;
+  fetch(DB + '/games/' + GAME + '.json', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ '.sv': { increment: 1 } })
+  }).then(function () {
+    sessionStorage.setItem(key, '1');
+  }).catch(function () {});
 })();
 </script>
+{% endif %}
