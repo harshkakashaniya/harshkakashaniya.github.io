@@ -615,10 +615,22 @@ function resetSnake() {
   nextDir = {x:1, y:0};
 }
 
+// After a death — keep apple count, start with a bigger snake
+function resetSnakeAfterDeath() {
+  snake   = [{x:10,y:10},{x:9,y:10},{x:8,y:10},{x:7,y:10},{x:6,y:10},{x:5,y:10}];
+  dir     = {x:1, y:0};
+  nextDir = {x:1, y:0};
+}
+
 function resetLevel() {
-  applesEaten = 0;
+  // apple count carries through death — do NOT reset applesEaten
   goldenApple = null;
-  resetSnake();
+  // if the golden apple was still on the board when they died, re-spawn it
+  var lv = LEVELS[levelIdx];
+  if (lv.hasGolden && !goldenAppleEaten && applesEaten >= 10) {
+    goldenApple = spawnGoldenApple();
+  }
+  resetSnakeAfterDeath();
   apple   = spawnApple();
   elapsed = 0;
   lastTime = 0;
@@ -719,7 +731,7 @@ function die() {
     } else {
       var lv = LEVELS[levelIdx];
       showOverlay('💀', 'You died!',
-        lives + ' ' + (lives === 1 ? 'life' : 'lives') + ' remaining — Level ' + lv.id + ' · ' + lv.name + ' resets.',
+        lives + ' ' + (lives === 1 ? 'life' : 'lives') + ' remaining — resuming at ' + applesEaten + ' apples.',
         'Try Again →',
         function () { hideOverlay(); resetLevel(); }
       );
