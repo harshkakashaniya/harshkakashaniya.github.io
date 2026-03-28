@@ -125,6 +125,15 @@ permalink: /Games/blackjack.html
         .hand-badge.bust { color:#f87171; border-color:rgba(248,113,113,0.4); }
         .hand-badge.bj { color:#4ade80; border-color:rgba(74,222,128,0.4); }
 
+        /* Active hand indicator for split */
+        .hand-section.active-hand .hand-name { color: var(--gold); }
+        .hand-section.active-hand {
+            border-left: 3px solid rgba(212,175,55,0.6);
+            padding-left: 10px;
+            border-radius: 4px;
+            transition: border-color 0.3s;
+        }
+
         .cards-row {
             display:flex; gap:10px; min-height:145px;
             align-items:flex-end; flex-wrap:wrap;
@@ -188,6 +197,25 @@ permalink: /Games/blackjack.html
             height:1px; margin:10px 0 18px;
             background:linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
         }
+
+        /* ── INSURANCE PROMPT ── */
+        .insurance-row {
+            background: rgba(230,126,34,0.08);
+            border: 1px solid rgba(230,126,34,0.35);
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-top: 10px;
+            text-align: center;
+        }
+        .insurance-prompt {
+            font-size: 0.82em; font-weight: 700; letter-spacing: 0.1em;
+            color: #e67e22; text-transform: uppercase; margin-bottom: 5px;
+        }
+        .insurance-cost {
+            font-size: 0.75em; color: rgba(255,255,255,0.45); margin-bottom: 12px;
+        }
+        .insurance-cost strong { color: var(--gold); }
+        .ins-btn-group { display:flex; gap:10px; justify-content:center; }
 
         /* ── BETTING PANEL ── */
         .bet-panel {
@@ -281,6 +309,7 @@ permalink: /Games/blackjack.html
         .btn-stand { background:linear-gradient(135deg,#e74c3c,#a93226); color:#fff; box-shadow:0 4px 16px rgba(231,76,60,.35); }
         .btn-dbl   { background:linear-gradient(135deg,#2e86c1,#1a5276); color:#fff; box-shadow:0 4px 16px rgba(46,134,193,.35); }
         .btn-spl   { background:linear-gradient(135deg,#8e44ad,#5b2c6f); color:#fff; box-shadow:0 4px 16px rgba(142,68,173,.35); }
+        .btn-ins   { background:linear-gradient(135deg,#e67e22,#a04000); color:#fff; box-shadow:0 4px 16px rgba(230,126,34,.35); }
         .act-btn:hover:not(:disabled) { transform:translateY(-3px); filter:brightness(1.1); }
         .act-btn:active:not(:disabled) { transform:translateY(0); }
 
@@ -339,7 +368,7 @@ permalink: /Games/blackjack.html
           .hand-header { margin-bottom: 6px; }
           .felt-divider { margin: 6px 0 10px; }
 
-          /* Key fix: collapse empty card rows — they expand when cards are dealt */
+          /* Key fix: collapse empty card rows */
           .cards-row { gap: 6px; min-height: 20px; }
 
           /* Smaller cards */
@@ -373,6 +402,9 @@ permalink: /Games/blackjack.html
           /* Footer */
           .footer-row { flex-wrap: wrap; margin-top: 10px; padding-top: 10px; }
           .foot-btn { flex: 1; text-align: center; }
+
+          /* Insurance */
+          .ins-btn-group { gap: 6px; }
         }
     </style>
 </head>
@@ -416,14 +448,34 @@ permalink: /Games/blackjack.html
 
     <div class="felt-divider"></div>
 
-    <!-- PLAYER -->
-    <div class="hand-section">
+    <!-- PLAYER HAND 1 -->
+    <div class="hand-section" id="hand1Section">
         <div class="hand-header">
-            <span class="hand-name">Player</span>
+            <span class="hand-name" id="hand1Name">Player</span>
             <div class="hand-rule"></div>
             <span class="hand-badge" id="playerBadge">—</span>
         </div>
         <div class="cards-row" id="playerCards"></div>
+    </div>
+
+    <!-- SPLIT HAND 2 (shown only during split) -->
+    <div class="hand-section" id="hand2Section" style="display:none;">
+        <div class="hand-header">
+            <span class="hand-name" id="hand2Name">Hand 2</span>
+            <div class="hand-rule"></div>
+            <span class="hand-badge" id="hand2Badge">—</span>
+        </div>
+        <div class="cards-row" id="splitCards"></div>
+    </div>
+
+    <!-- INSURANCE PROMPT (shown when dealer shows Ace) -->
+    <div class="insurance-row" id="insuranceRow" style="display:none;">
+        <div class="insurance-prompt">🃏 Dealer shows Ace — Take Insurance?</div>
+        <div class="insurance-cost">Side bet costs <strong id="insureAmtDisplay">$0</strong> &nbsp;·&nbsp; pays 2:1 if dealer has Blackjack</div>
+        <div class="ins-btn-group">
+            <button class="act-btn btn-ins" onclick="takeInsurance()">✓ Insure</button>
+            <button class="act-btn btn-stand" onclick="declineInsurance()">✗ No Thanks</button>
+        </div>
     </div>
 
     <!-- BET PANEL -->
@@ -449,7 +501,7 @@ permalink: /Games/blackjack.html
         <button class="act-btn btn-hit"   onclick="hit()">Hit</button>
         <button class="act-btn btn-stand" onclick="stand()">Stand</button>
         <button class="act-btn btn-dbl"   id="dblBtn" onclick="doubleDown()">Double</button>
-        <button class="act-btn btn-spl"   id="splBtn" onclick="splitHand()" style="display:none;">Split</button>
+        <button class="act-btn btn-spl"   id="splBtn" onclick="doSplit()" style="display:none;">Split</button>
     </div>
 
     <!-- MESSAGE -->
@@ -467,7 +519,11 @@ permalink: /Games/blackjack.html
 const G = {
     deck:[], playerHand:[], dealerHand:[],
     bet:0, balance:500, wins:0, losses:0,
-    state:'betting', doubled:false, split:false, splitHand:[]
+    state:'betting', doubled:false,
+    // Split state
+    split:false, splitHand:[], splitBet:0, activeHand:0,
+    // Insurance state
+    insurance:false, insuranceBet:0, insuranceDone:false
 };
 
 const suits = ['♠','♥','♦','♣'];
@@ -503,16 +559,11 @@ function isSoft(hand) {
 function makeCardEl(c, hole=false, animate=false) {
     const wrap = document.createElement('div');
     wrap.className='card-wrap'+(animate?' deal':'');
-
     const inner = document.createElement('div');
     inner.className='card-inner';
-
-    // Back
     const back = document.createElement('div');
     back.className='card-back';
     back.innerHTML='<div class="card-back-inner"></div><div class="card-back-pip">♠</div>';
-
-    // Front
     const front = document.createElement('div');
     front.className='card-front '+(isRed(c.s)?'red':'black');
     front.innerHTML=`
@@ -520,11 +571,9 @@ function makeCardEl(c, hole=false, animate=false) {
         <div class="c-center">${c.s}</div>
         <div class="c-corner bot"><div class="c-rank">${c.r}</div><div class="c-suit-sm">${c.s}</div></div>
     `;
-
     inner.appendChild(back);
     inner.appendChild(front);
     wrap.appendChild(inner);
-
     if(!hole) {
         if(animate) setTimeout(()=>inner.classList.add('reveal'), 80);
         else inner.classList.add('reveal');
@@ -535,7 +584,8 @@ function makeCardEl(c, hole=false, animate=false) {
 // ── UI UPDATES ──
 function refreshStats() {
     document.getElementById('balance').textContent='$'+G.balance;
-    document.getElementById('currentBet').textContent='$'+G.bet;
+    const betLabel = G.split ? '$'+G.bet+' + $'+G.splitBet : '$'+G.bet;
+    document.getElementById('currentBet').textContent=betLabel;
     document.getElementById('wins').textContent=G.wins;
     document.getElementById('losses').textContent=G.losses;
 }
@@ -543,12 +593,19 @@ function refreshStats() {
 function refreshBadges() {
     const pb=document.getElementById('playerBadge');
     const db=document.getElementById('dealerBadge');
+    const h2b=document.getElementById('hand2Badge');
 
     if(G.playerHand.length>0){
         const v=val(G.playerHand);
         pb.textContent=v+(v>21?' BUST':'');
         pb.className='hand-badge'+(v>21?' bust':v===21?' bj':'');
     } else { pb.textContent='—'; pb.className='hand-badge'; }
+
+    if(G.split && G.splitHand.length>0){
+        const v=val(G.splitHand);
+        h2b.textContent=v+(v>21?' BUST':'');
+        h2b.className='hand-badge'+(v>21?' bust':v===21?' bj':'');
+    }
 
     if(G.dealerHand.length>0){
         if(G.state==='playing'){
@@ -569,24 +626,27 @@ function showMsg(text,type='info'){
     a.innerHTML=`<div class="msg-badge ${type}">${text}</div>`;
 }
 
-// ── BETTING ──
-// ── DRAG & DROP ──
+function revealDealerHole(){
+    const dc=document.getElementById('dealerCards');
+    if(dc.children[1]){
+        const inner=dc.children[1].querySelector('.card-inner');
+        if(inner&&!inner.classList.contains('reveal')) inner.classList.add('reveal');
+    }
+}
+
+// ── BETTING / DRAG & DROP ──
 function chipDragStart(e, amt){
     e.dataTransfer.setData('text/plain', amt);
     e.dataTransfer.effectAllowed = 'copy';
     e.currentTarget.classList.add('dragging');
 }
-function chipDragEnd(e){
-    e.currentTarget.classList.remove('dragging');
-}
+function chipDragEnd(e){ e.currentTarget.classList.remove('dragging'); }
 function betDragOver(e){
     e.preventDefault();
     e.dataTransfer.dropEffect = 'copy';
     e.currentTarget.classList.add('drag-over');
 }
-function betDragLeave(e){
-    e.currentTarget.classList.remove('drag-over');
-}
+function betDragLeave(e){ e.currentTarget.classList.remove('drag-over'); }
 function betDrop(e){
     e.preventDefault();
     e.currentTarget.classList.remove('drag-over');
@@ -615,19 +675,31 @@ function placeBet(){
     G.balance-=G.bet;
     refreshStats();
     document.getElementById('betPanel').style.display='none';
-    document.getElementById('actionRow').style.display='flex';
+    document.getElementById('actionRow').style.display='none'; // shown after deal
     document.getElementById('msgArea').innerHTML='';
     startHand();
 }
 
 // ── DEAL ──
 function startHand(){
-    G.state='playing'; G.doubled=false; G.split=false;
-    G.playerHand=[]; G.dealerHand=[]; G.splitHand=[];
+    G.state='playing'; G.doubled=false;
+    G.split=false; G.splitHand=[]; G.splitBet=0; G.activeHand=0;
+    G.insurance=false; G.insuranceBet=0; G.insuranceDone=false;
+    G.playerHand=[]; G.dealerHand=[];
+
     document.getElementById('dealerCards').innerHTML='';
     document.getElementById('playerCards').innerHTML='';
+    document.getElementById('splitCards').innerHTML='';
+    document.getElementById('hand2Section').style.display='none';
+    document.getElementById('hand1Section').classList.remove('active-hand');
+    document.getElementById('hand2Section').classList.remove('active-hand');
+    document.getElementById('hand1Name').textContent='Player';
+    document.getElementById('hand2Name').textContent='Hand 2';
+    document.getElementById('hand2Badge').textContent='—';
+    document.getElementById('hand2Badge').className='hand-badge';
     document.getElementById('playerBadge').textContent='—';
     document.getElementById('dealerBadge').textContent='—';
+    document.getElementById('insuranceRow').style.display='none';
 
     const c1=draw(),c2=draw(),c3=draw(),c4=draw();
     const seq=[
@@ -636,106 +708,291 @@ function startHand(){
         {c:c3, hand:G.playerHand, el:'playerCards', hole:false},
         {c:c4, hand:G.dealerHand, el:'dealerCards', hole:true},
     ];
-
     seq.forEach((item,i)=>{
         setTimeout(()=>{
             item.hand.push(item.c);
             document.getElementById(item.el).appendChild(makeCardEl(item.c,item.hole,true));
             refreshBadges();
-            if(i===seq.length-1){
-                setTimeout(()=>{
-                    const pv=val(G.playerHand), dv=val(G.dealerHand);
-                    if(pv===21&&G.playerHand.length===2){
-                        if(dv===21&&G.dealerHand.length===2) endHand('push'); else endHand('blackjack');
-                    } else if(dv===21&&G.dealerHand.length===2){
-                        endHand('loss');
-                    } else { updateActions(); }
-                },320);
-            }
-        },i*520);
+            if(i===seq.length-1) setTimeout(afterDeal, 320);
+        }, i*520);
     });
 }
 
-function updateActions(){
-    const can2=(G.playerHand.length===2&&G.balance>=G.bet&&!G.doubled);
-    const canSplit=(G.playerHand.length===2&&G.playerHand[0].r===G.playerHand[1].r&&!G.split);
-    document.getElementById('dblBtn').disabled=!can2;
-    document.getElementById('splBtn').style.display=canSplit?'inline-flex':'none';
+function afterDeal(){
+    const pv=val(G.playerHand), dv=val(G.dealerHand);
+    const playerBJ = pv===21 && G.playerHand.length===2;
+    const dealerBJ = dv===21 && G.dealerHand.length===2;
+    const dealerShowsAce = G.dealerHand[0].r==='A';
+
+    if(playerBJ && dealerBJ){ endHand('push'); return; }
+    if(playerBJ){ endHand('blackjack'); return; }
+
+    // Offer insurance when dealer shows Ace (before revealing if dealer has BJ)
+    if(dealerShowsAce){
+        showInsurancePrompt();
+    } else if(dealerBJ){
+        endHand('loss');
+    } else {
+        showActionRow();
+    }
+}
+
+// ── INSURANCE ──
+function showInsurancePrompt(){
+    const insAmt=Math.floor(G.bet/2);
+    document.getElementById('insureAmtDisplay').textContent='$'+insAmt;
+    document.getElementById('insuranceRow').style.display='block';
+    document.getElementById('actionRow').style.display='none';
+}
+
+function takeInsurance(){
+    const insAmt=Math.floor(G.bet/2);
+    if(insAmt<=0 || G.balance<insAmt){
+        showMsg('Not enough chips for insurance','info');
+        declineInsurance();
+        return;
+    }
+    G.balance-=insAmt;
+    G.insurance=true;
+    G.insuranceBet=insAmt;
+    G.insuranceDone=true;
+    refreshStats();
+    document.getElementById('insuranceRow').style.display='none';
+    resolveAfterInsurance();
+}
+
+function declineInsurance(){
+    G.insuranceDone=true;
+    document.getElementById('insuranceRow').style.display='none';
+    resolveAfterInsurance();
+}
+
+function resolveAfterInsurance(){
+    const dv=val(G.dealerHand);
+    const dealerBJ = dv===21 && G.dealerHand.length===2;
+
+    if(dealerBJ){
+        G.state='finished';
+        revealDealerHole();
+        refreshBadges();
+        if(G.insurance){
+            // Insurance pays 2:1 on the side bet
+            G.balance+=G.insuranceBet*3; // return stake + 2x profit
+            refreshStats();
+            showMsg('Dealer Blackjack — Insurance pays! (break even) 🤝','push');
+        } else {
+            showMsg('✗ Dealer has Blackjack!','loss');
+        }
+        G.losses++;
+        refreshStats();
+        setTimeout(()=>finishHand(), 1800);
+    } else {
+        if(G.insurance){
+            showMsg('No Blackjack — Insurance lost ($'+G.insuranceBet+')','info');
+            setTimeout(()=>{ document.getElementById('msgArea').innerHTML=''; showActionRow(); }, 1400);
+        } else {
+            showActionRow();
+        }
+    }
+}
+
+function showActionRow(){
+    document.getElementById('actionRow').style.display='flex';
+    updateActions();
+}
+
+// ── SPLIT ──
+function doSplit(){
+    if(G.balance<G.bet){ showMsg('Not enough chips to split','info'); return; }
+    G.balance-=G.bet;
+    G.splitBet=G.bet;
+    G.split=true;
+    refreshStats();
+
+    // Separate the two cards
+    const card0=G.playerHand[0], card1=G.playerHand[1];
+    G.playerHand=[card0];
+    G.splitHand=[card1];
+
+    // Deal one new card to each hand
+    const newCard0=draw(), newCard1=draw();
+    G.playerHand.push(newCard0);
+    G.splitHand.push(newCard1);
+
+    // Show hand 2 section
+    document.getElementById('hand2Section').style.display='block';
+    document.getElementById('hand1Name').textContent='Hand 1 ▶';
+    document.getElementById('hand1Section').classList.add('active-hand');
+    document.getElementById('hand2Section').classList.remove('active-hand');
+
+    // Animate hand 1 cards
+    const pc=document.getElementById('playerCards');
+    pc.innerHTML='';
+    setTimeout(()=>pc.appendChild(makeCardEl(card0,false,true)), 0);
+    setTimeout(()=>pc.appendChild(makeCardEl(newCard0,false,true)), 400);
+
+    // Animate hand 2 cards
+    const sc=document.getElementById('splitCards');
+    sc.innerHTML='';
+    setTimeout(()=>sc.appendChild(makeCardEl(card1,false,true)), 200);
+    setTimeout(()=>sc.appendChild(makeCardEl(newCard1,false,true)), 600);
+
+    G.activeHand=0;
+    setTimeout(()=>{ refreshBadges(); updateActions(); }, 800);
+}
+
+function switchToHand2(){
+    G.activeHand=1;
+    document.getElementById('hand1Section').classList.remove('active-hand');
+    document.getElementById('hand2Section').classList.add('active-hand');
+    document.getElementById('hand1Name').textContent='Hand 1 ✓';
+    document.getElementById('hand2Name').textContent='Hand 2 ▶';
+    refreshBadges();
+    updateActions();
 }
 
 // ── PLAYER ACTIONS ──
+function updateActions(){
+    const activeHand = G.split ? (G.activeHand===0 ? G.playerHand : G.splitHand) : G.playerHand;
+    const activeBet  = G.split ? (G.activeHand===0 ? G.bet : G.splitBet) : G.bet;
+    const canDouble  = activeHand.length===2 && G.balance>=activeBet && !G.doubled;
+    const canSplit   = !G.split && G.playerHand.length===2
+                       && G.playerHand[0].r===G.playerHand[1].r
+                       && G.balance>=G.bet;
+    document.getElementById('dblBtn').disabled=!canDouble;
+    document.getElementById('splBtn').style.display=canSplit?'inline-flex':'none';
+}
+
 function hit(){
-    const c=draw(); G.playerHand.push(c);
-    document.getElementById('playerCards').appendChild(makeCardEl(c,false,true));
-    refreshBadges();
-    const v=val(G.playerHand);
-    if(v>21) endHand('bust');
-    else if(v===21) setTimeout(()=>stand(),400);
-    else updateActions();
+    if(G.split){
+        const activeHand = G.activeHand===0 ? G.playerHand : G.splitHand;
+        const activeEl   = G.activeHand===0 ? 'playerCards' : 'splitCards';
+        const c=draw(); activeHand.push(c);
+        document.getElementById(activeEl).appendChild(makeCardEl(c,false,true));
+        refreshBadges();
+        const v=val(activeHand);
+        if(v>21){
+            // Bust on this hand — move on
+            if(G.activeHand===0) setTimeout(()=>switchToHand2(), 600);
+            else setTimeout(()=>dealerRevealAndPlay(), 600);
+        } else if(v===21){
+            // Auto-stand at 21
+            if(G.activeHand===0) setTimeout(()=>switchToHand2(), 400);
+            else setTimeout(()=>dealerRevealAndPlay(), 400);
+        } else { updateActions(); }
+    } else {
+        const c=draw(); G.playerHand.push(c);
+        document.getElementById('playerCards').appendChild(makeCardEl(c,false,true));
+        refreshBadges();
+        const v=val(G.playerHand);
+        if(v>21) endHand('bust');
+        else if(v===21) setTimeout(()=>stand(), 400);
+        else updateActions();
+    }
 }
 
 function stand(){
-    G.state='finished';
-    // flip hole card
-    const dc=document.getElementById('dealerCards');
-    if(dc.children[1]){
-        const inner=dc.children[1].querySelector('.card-inner');
-        if(inner&&!inner.classList.contains('reveal'))
-            setTimeout(()=>inner.classList.add('reveal'),150);
+    if(G.split){
+        if(G.activeHand===0) switchToHand2();
+        else dealerRevealAndPlay();
+    } else {
+        dealerRevealAndPlay();
     }
-    refreshBadges();
-    setTimeout(()=>dealerPlay(),650);
 }
 
+function dealerRevealAndPlay(){
+    G.state='finished';
+    revealDealerHole();
+    refreshBadges();
+    setTimeout(()=>dealerPlay(), 650);
+}
+
+function doubleDown(){
+    const activeBet = G.split ? (G.activeHand===0 ? G.bet : G.splitBet) : G.bet;
+    if(G.balance<activeBet){ showMsg('Not enough chips','info'); return; }
+
+    G.balance-=activeBet;
+    if(G.split){
+        if(G.activeHand===0) G.bet*=2; else G.splitBet*=2;
+    } else {
+        G.bet*=2; G.doubled=true;
+    }
+    refreshStats();
+
+    const activeHand = G.split ? (G.activeHand===0 ? G.playerHand : G.splitHand) : G.playerHand;
+    const activeEl   = G.split ? (G.activeHand===0 ? 'playerCards' : 'splitCards') : 'playerCards';
+    const c=draw(); activeHand.push(c);
+    document.getElementById(activeEl).appendChild(makeCardEl(c,false,true));
+    refreshBadges();
+
+    if(G.split){
+        // After doubling in split, always move to next hand / dealer
+        if(G.activeHand===0) setTimeout(()=>switchToHand2(), 600);
+        else setTimeout(()=>dealerRevealAndPlay(), 600);
+    } else {
+        if(val(G.playerHand)>21) endHand('bust');
+        else setTimeout(()=>stand(), 600);
+    }
+}
+
+// ── DEALER PLAY ──
 function dealerPlay(){
     const dv=val(G.dealerHand);
     if(dv<17||(dv===17&&isSoft(G.dealerHand))){
         const c=draw(); G.dealerHand.push(c);
         document.getElementById('dealerCards').appendChild(makeCardEl(c,false,true));
         refreshBadges();
-        setTimeout(()=>dealerPlay(),700);
+        setTimeout(()=>dealerPlay(), 700);
     } else { determineWinner(); }
 }
 
-function doubleDown(){
-    if(G.balance<G.bet){showMsg('Not enough chips','info');return;}
-    G.balance-=G.bet; G.bet*=2; G.doubled=true; refreshStats();
-    const c=draw(); G.playerHand.push(c);
-    document.getElementById('playerCards').appendChild(makeCardEl(c,false,true));
-    refreshBadges();
-    if(val(G.playerHand)>21) endHand('bust');
-    else setTimeout(()=>stand(),600);
-}
-
-function splitHand(){
-    if(G.balance<G.bet){showMsg('Not enough chips','info');return;}
-    G.balance-=G.bet; G.bet*=2; G.split=true; refreshStats();
-    G.splitHand=[G.playerHand[1]]; G.playerHand=[G.playerHand[0]];
-    G.playerHand.push(draw());
-    const pc=document.getElementById('playerCards');
-    pc.innerHTML='';
-    G.playerHand.forEach((c,i)=>setTimeout(()=>pc.appendChild(makeCardEl(c,false,true)),i*400));
-    setTimeout(()=>{ refreshBadges(); updateActions(); },900);
-}
-
 // ── RESULT ──
-function determineWinner(){
-    const pv=val(G.playerHand),dv=val(G.dealerHand);
-    if(pv>21) endHand('bust');
-    else if(dv>21) endHand('win');
-    else if(pv>dv) endHand('win');
-    else if(pv<dv) endHand('loss');
-    else endHand('push');
+function getResult(pv, dv){
+    if(pv>21) return 'bust';
+    if(dv>21) return 'win';
+    if(pv>dv)  return 'win';
+    if(pv<dv)  return 'loss';
+    return 'push';
 }
 
-function endHand(result){
-    G.state='finished';
-    // ensure hole card revealed
-    const dc=document.getElementById('dealerCards');
-    if(dc.children[1]){
-        const inner=dc.children[1].querySelector('.card-inner');
-        if(inner&&!inner.classList.contains('reveal')) inner.classList.add('reveal');
+function applySettlement(result, bet){
+    // Returns [balanceGain, winsIncrement, lossesIncrement]
+    if(result==='win')  return [bet*2, 1, 0];
+    if(result==='push') return [bet,   0, 0];
+    return [0, 0, 1]; // bust / loss
+}
+
+function determineWinner(){
+    const dv=val(G.dealerHand);
+
+    if(G.split){
+        // Settle both hands independently
+        const pv0=val(G.playerHand);
+        const pv1=val(G.splitHand);
+        const r0=getResult(pv0,dv), r1=getResult(pv1,dv);
+        const [g0,w0,l0]=applySettlement(r0,G.bet);
+        const [g1,w1,l1]=applySettlement(r1,G.splitBet);
+
+        G.balance+=g0+g1;
+        G.wins+=w0+w1;
+        G.losses+=l0+l1;
+        refreshStats();
+
+        const lbl = r => r==='win'?'Win ✓':r==='push'?'Push =':'Bust/Loss ✗';
+        const totalWins=w0+w1, totalLosses=l0+l1;
+        const msgType = totalWins>totalLosses?'win':totalLosses>totalWins?'loss':'push';
+        showMsg('Hand 1: '+lbl(r0)+'  |  Hand 2: '+lbl(r1), msgType);
+        finishHand();
+    } else {
+        const pv=val(G.playerHand);
+        const r=getResult(pv,dv);
+        endHandResult(r);
     }
+}
+
+function endHandResult(result){
+    G.state='finished';
+    revealDealerHole();
     refreshBadges();
 
     if(result==='blackjack'){
@@ -755,9 +1012,17 @@ function endHand(result){
         G.losses++;
         showMsg('✗ Bust! −$'+G.bet,'loss');
     }
-
     refreshStats();
+    finishHand();
+}
+
+// Alias for legacy calls (blackjack, bust, push from afterDeal)
+function endHand(result){ endHandResult(result); }
+
+function finishHand(){
+    G.state='finished';
     document.getElementById('actionRow').style.display='none';
+    document.getElementById('insuranceRow').style.display='none';
     document.getElementById('betPanel').style.display='block';
     document.getElementById('betDisplay').textContent='$0';
     document.getElementById('betDisplay').classList.remove('active');
@@ -772,8 +1037,9 @@ function endHand(result){
 
 // ── CONTROLS ──
 function newHand(){
-    if(G.balance<=0){resetGame();return;}
+    if(G.balance<=0){ resetGame(); return; }
     document.getElementById('actionRow').style.display='none';
+    document.getElementById('insuranceRow').style.display='none';
     document.getElementById('betPanel').style.display='block';
     document.getElementById('betDisplay').textContent='$0';
     document.getElementById('betDisplay').classList.remove('active');
@@ -785,10 +1051,20 @@ function newHand(){
 function resetGame(){
     G.balance=500; G.wins=0; G.losses=0; G.bet=0;
     G.playerHand=[]; G.dealerHand=[]; G.state='betting';
+    G.split=false; G.splitHand=[]; G.splitBet=0; G.activeHand=0;
+    G.insurance=false; G.insuranceBet=0; G.insuranceDone=false;
+    G.doubled=false;
     pendingBet=0;
     document.getElementById('dealerCards').innerHTML='';
     document.getElementById('playerCards').innerHTML='';
+    document.getElementById('splitCards').innerHTML='';
+    document.getElementById('hand2Section').style.display='none';
+    document.getElementById('hand1Section').classList.remove('active-hand');
+    document.getElementById('hand2Section').classList.remove('active-hand');
+    document.getElementById('hand1Name').textContent='Player';
+    document.getElementById('hand2Name').textContent='Hand 2';
     document.getElementById('actionRow').style.display='none';
+    document.getElementById('insuranceRow').style.display='none';
     document.getElementById('betPanel').style.display='block';
     document.getElementById('betDisplay').textContent='$0';
     document.getElementById('betDisplay').classList.remove('active');
@@ -798,6 +1074,8 @@ function resetGame(){
     document.getElementById('playerBadge').className='hand-badge';
     document.getElementById('dealerBadge').textContent='—';
     document.getElementById('dealerBadge').className='hand-badge';
+    document.getElementById('hand2Badge').textContent='—';
+    document.getElementById('hand2Badge').className='hand-badge';
     refreshStats();
 }
 
