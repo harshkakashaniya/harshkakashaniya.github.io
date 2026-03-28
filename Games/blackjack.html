@@ -317,6 +317,48 @@ permalink: /Games/blackjack.html
             transition:all 0.2s;
         }
         .foot-btn:hover { background:rgba(255,255,255,0.12); color:#fff; }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 600px) {
+          body { padding: 14px 8px 28px; }
+
+          /* Smaller title */
+          .game-title { font-size: 2.4em; letter-spacing: 0.1em; }
+          .title-ornament { font-size: 0.85em; margin-top: 6px; }
+
+          /* Stats: 2×2 grid */
+          .stats-row { flex-wrap: wrap; gap: 8px; }
+          .stat-box { flex: 1 1 calc(50% - 4px); min-width: 0; padding: 10px 8px; }
+          .stat-val { font-size: 1.2em; }
+
+          /* Tighter table */
+          .table { padding: 18px 14px 14px; border-radius: 18px; }
+
+          /* Smaller cards */
+          .card-inner { width: 68px; height: 100px; }
+          .c-rank { font-size: 15px; }
+          .c-suit-sm { font-size: 10px; }
+          .c-center { font-size: 32px; }
+          .cards-row { gap: 7px; min-height: 110px; }
+
+          /* Smaller chips */
+          .chip { width: 52px; height: 52px; font-size: 0.72em; }
+          .chips { gap: 10px; }
+
+          /* Bet entry tighter */
+          .bet-input-wrap { min-width: 90px; font-size: 1.2em; padding: 8px 12px; }
+
+          /* Action buttons: 2 per row */
+          .action-row { gap: 8px; }
+          .act-btn { flex: 1 1 calc(50% - 4px); padding: 12px 10px; font-size: 0.85em; }
+
+          /* Deal button */
+          .deal-btn { padding: 12px 36px; }
+
+          /* Footer */
+          .footer-row { flex-wrap: wrap; }
+          .foot-btn { flex: 1; text-align: center; }
+        }
     </style>
 </head>
 <body>

@@ -263,6 +263,25 @@ permalink: /Games/snakeladder.html
     }
     .glowing { animation:ladderGlow 0.6s ease 3; }
 
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      body { padding: 12px 8px 24px; }
+
+      .header h1 { font-size: 1.6rem; }
+
+      /* Scale the entire board-wrap (board + SVG overlay + pawns) proportionally.
+         zoom preserves layout space unlike transform:scale, so no height hacks needed. */
+      .board-wrap { zoom: 0.56; }
+
+      /* Side panel goes full-width below the board */
+      .side-panel { width: 100%; max-width: 600px; }
+
+      .game-layout { gap: 14px; }
+
+      /* Tighten setup screen */
+      #setup-screen { padding: 24px 16px; }
+    }
+
     /* ── CONFETTI ── */
     .confetti {
       position:fixed; width:9px; height:9px; border-radius:2px;
