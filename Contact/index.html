@@ -3,6 +3,131 @@ layout: default
 title: Contact
 ---
 
+<style>
+/* ── Contact form styles ── */
+.cf-wrap {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem 2.5rem;
+  margin-top: 1rem;
+}
+
+.cf-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+}
+.cf-full { grid-column: 1 / -1; }
+
+.cf-group {
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+}
+
+.cf-group label {
+  font-size: .78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--muted);
+}
+
+.cf-group input,
+.cf-group textarea,
+.cf-group select {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-s);
+  color: var(--text);
+  font-family: inherit;
+  font-size: .95rem;
+  padding: .7rem 1rem;
+  transition: border-color .2s, box-shadow .2s;
+  outline: none;
+  width: 100%;
+}
+
+.cf-group input:focus,
+.cf-group textarea:focus,
+.cf-group select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(88,166,255,.15);
+}
+
+.cf-group input::placeholder,
+.cf-group textarea::placeholder {
+  color: var(--muted);
+  opacity: .6;
+}
+
+.cf-group textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+
+.cf-submit {
+  margin-top: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.cf-submit .btn {
+  min-width: 160px;
+  justify-content: center;
+  position: relative;
+}
+
+.cf-submit .btn:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Spinner inside button */
+.cf-spinner {
+  display: none;
+  width: 16px; height: 16px;
+  border: 2px solid rgba(13,17,23,.4);
+  border-top-color: #0d1117;
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+  margin-left: 6px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Status messages */
+.cf-status {
+  display: none;
+  align-items: center;
+  gap: .5rem;
+  font-size: .9rem;
+  font-weight: 600;
+  padding: .6rem 1rem;
+  border-radius: var(--radius-s);
+}
+.cf-status.success {
+  display: flex;
+  background: rgba(126,231,135,.1);
+  border: 1px solid rgba(126,231,135,.3);
+  color: var(--accent-g);
+}
+.cf-status.error {
+  display: flex;
+  background: rgba(247,129,102,.1);
+  border: 1px solid rgba(247,129,102,.3);
+  color: var(--accent-r);
+}
+
+@media (max-width: 560px) {
+  .cf-wrap { padding: 1.25rem; }
+  .cf-grid { grid-template-columns: 1fr; }
+}
+</style>
+
 <div class="page-hero">
   <div class="container">
     <div class="accent-line"></div>
@@ -37,18 +162,137 @@ title: Contact
       <a href="https://github.com/harshkakashaniya" target="_blank" rel="noopener" class="btn btn-outline">GitHub Profile</a>
     </div>
 
-    <div class="form-wrap">
-      <iframe
-        src="https://docs.google.com/forms/d/e/1FAIpQLSdJnAZrRlOa70WXiVMsMwNWUZnPw-ieB-IsoyzcKXMOPH6Cug/viewform?embedded=true"
-        width="100%"
-        height="900"
-        frameborder="0"
-        marginheight="0"
-        marginwidth="0"
-        title="Contact Form">
-        Loading…
-      </iframe>
+    <!-- ── CONTACT FORM ── -->
+    <div class="cf-wrap">
+
+      <form id="contactForm" novalidate>
+
+        <!-- Formspree: replace YOUR_FORM_ID with the ID from formspree.io -->
+        <input type="hidden" name="_subject" value="New inquiry from portfolio site">
+
+        <div class="cf-grid">
+
+          <div class="cf-group">
+            <label for="cf-name">Your Name *</label>
+            <input type="text" id="cf-name" name="name"
+                   placeholder="John Smith" required>
+          </div>
+
+          <div class="cf-group">
+            <label for="cf-email">Email Address *</label>
+            <input type="email" id="cf-email" name="email"
+                   placeholder="john@example.com" required>
+          </div>
+
+          <div class="cf-group">
+            <label for="cf-subject">Subject *</label>
+            <select id="cf-subject" name="subject" required>
+              <option value="" disabled selected>Select a topic…</option>
+              <option value="Job Opportunity">Job Opportunity</option>
+              <option value="Project Collaboration">Project Collaboration</option>
+              <option value="Robotics / Research">Robotics / Research</option>
+              <option value="General Inquiry">General Inquiry</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="cf-group">
+            <label for="cf-company">Company / Organization</label>
+            <input type="text" id="cf-company" name="company"
+                   placeholder="Optional">
+          </div>
+
+          <div class="cf-group cf-full">
+            <label for="cf-message">Message *</label>
+            <textarea id="cf-message" name="message"
+                      placeholder="Tell me what's on your mind…" required></textarea>
+          </div>
+
+        </div>
+
+        <div class="cf-submit">
+          <button type="submit" class="btn btn-primary" id="cf-btn">
+            Send Message
+            <span class="cf-spinner" id="cf-spinner"></span>
+          </button>
+          <div class="cf-status" id="cf-status"></div>
+        </div>
+
+      </form>
     </div>
+    <!-- ── END CONTACT FORM ── -->
 
   </div>
 </section>
+
+<script>
+(function () {
+  // ── Replace this URL with your Formspree endpoint ──
+  // 1. Go to https://formspree.io and sign up (free)
+  // 2. Create a new form and copy the endpoint URL
+  // 3. Paste it here, e.g. "https://formspree.io/f/abcdefgh"
+  var FORMSPREE_URL = 'https://formspree.io/f/YOUR_FORM_ID';
+
+  var form    = document.getElementById('contactForm');
+  var btn     = document.getElementById('cf-btn');
+  var spinner = document.getElementById('cf-spinner');
+  var status  = document.getElementById('cf-status');
+
+  function showStatus(type, msg) {
+    status.className = 'cf-status ' + type;
+    status.textContent = (type === 'success' ? '✓ ' : '✗ ') + msg;
+  }
+
+  function setLoading(loading) {
+    btn.disabled = loading;
+    spinner.style.display = loading ? 'inline-block' : 'none';
+    btn.firstChild.textContent = loading ? 'Sending…' : 'Send Message';
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Basic client-side validation
+    var name    = document.getElementById('cf-name').value.trim();
+    var email   = document.getElementById('cf-email').value.trim();
+    var subject = document.getElementById('cf-subject').value;
+    var message = document.getElementById('cf-message').value.trim();
+
+    if (!name || !email || !subject || !message) {
+      showStatus('error', 'Please fill in all required fields.');
+      return;
+    }
+
+    var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRe.test(email)) {
+      showStatus('error', 'Please enter a valid email address.');
+      return;
+    }
+
+    setLoading(true);
+    status.className = 'cf-status'; // hide
+
+    fetch(FORMSPREE_URL, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      body: new FormData(form)
+    })
+    .then(function (res) {
+      setLoading(false);
+      if (res.ok) {
+        showStatus('success', 'Message sent! I\'ll get back to you soon.');
+        form.reset();
+      } else {
+        return res.json().then(function (data) {
+          var msg = (data.errors || []).map(function(err){ return err.message; }).join(', ');
+          showStatus('error', msg || 'Something went wrong. Please try again.');
+        });
+      }
+    })
+    .catch(function () {
+      setLoading(false);
+      showStatus('error', 'Network error. Please try emailing directly.');
+    });
+  });
+})();
+</script>
