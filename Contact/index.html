@@ -615,17 +615,34 @@ title: Contact
     copyBtn.style.display   = 'inline-flex';
   });
 
+  function showCopied() {
+    copyBtn.innerHTML = '✓ Copied!';
+    copyBtn.classList.add('copied');
+    setTimeout(function () {
+      copyBtn.innerHTML = '📋 Copy';
+      copyBtn.classList.remove('copied');
+    }, 2000);
+  }
+
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0;';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try { document.execCommand('copy'); showCopied(); } catch(e) {}
+    document.body.removeChild(ta);
+  }
+
   copyBtn.addEventListener('click', function () {
     var email = decode();
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(email).then(function () {
-        copyBtn.textContent = '✓ Copied!';
-        copyBtn.classList.add('copied');
-        setTimeout(function () {
-          copyBtn.innerHTML = '📋 Copy';
-          copyBtn.classList.remove('copied');
-        }, 2000);
-      });
+      navigator.clipboard.writeText(email)
+        .then(showCopied)
+        .catch(function () { fallbackCopy(email); });
+    } else {
+      fallbackCopy(email);
     }
   });
 })();
