@@ -116,14 +116,49 @@ title: "Snake — 10 Worlds"
 
 /* ── Responsive ──────────────────────────────────── */
 @media (max-width: 680px) {
-  .snake-wrap { flex-direction: column; align-items: center; gap: .5rem; }
+  .snake-wrap { flex-direction: column; align-items: center; gap: .4rem; }
+
+  /* Compact horizontal stat strip */
   .ss {
-    flex-direction: row; flex-wrap: wrap;
-    min-width: unset; width: 100%; max-width: 100%;
-    gap: .3rem .8rem; padding: .5rem 1rem;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    min-width: unset;
+    width: 100%;
+    padding: .4rem .75rem;
+    gap: 0;
     align-items: center;
   }
-  .ss-badge { flex: 1; }
+
+  /* Badge: emoji + level name — takes natural width, right border separator */
+  .ss-badge {
+    flex: 0 0 auto;
+    margin-bottom: 0;
+    padding-right: .6rem;
+    margin-right: .5rem;
+    border-right: 1px solid #1e2d4a;
+  }
+  .ss-emoji { font-size: 1.4rem; }
+  .ss-name  { font-size: .65rem; }
+  .ss-num   { font-size: .6rem; }
+
+  /* Each stat (Score / Apples / Lives) stacks label over value, equal width */
+  .ss-row {
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    border-left: 1px solid #1e2d4a;
+    padding: .1rem .3rem;
+    font-size: .65rem;
+  }
+  .ss-row span   { color: #576685; font-size: .6rem; text-transform: uppercase; letter-spacing: .04em; }
+  .ss-row strong { font-size: .78rem; }
+
+  /* Smaller hearts so they fit in one row */
+  .ss-hearts { gap: 1px; flex-wrap: nowrap; }
+  .ss-heart  { font-size: .72rem; }
+
   .ss-divider, .ss-legend { display: none; }
   .swipe-hint { display: block; }
   #snakeCanvas { touch-action: none; }

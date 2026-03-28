@@ -223,6 +223,29 @@ permalink: /Games/4inarow.html
       0%{ transform:translateY(-10px) rotate(0deg); opacity:1; }
       100%{ transform:translateY(100vh) rotate(720deg); opacity:0; }
     }
+  @media (max-width: 560px) {
+    body { padding: 12px 8px 24px; }
+
+    .col-targets {
+      grid-template-columns: repeat(7, 44px);
+      gap: 4px;
+      margin-bottom: 4px;
+    }
+    .col-target { height: 36px; }
+    .drop-preview { width: 34px; height: 34px; }
+
+    .board {
+      grid-template-columns: repeat(7, 44px);
+      grid-template-rows: repeat(6, 44px);
+      gap: 4px;
+      padding: 5px;
+      border-radius: 12px;
+    }
+
+    .side-panel { width: 100%; max-width: 100%; }
+
+    .game-layout { gap: 14px; }
+  }
   </style>
 </head>
 <body>
