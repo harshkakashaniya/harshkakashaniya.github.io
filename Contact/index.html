@@ -318,6 +318,70 @@ title: Contact
   .cf-submit { gap: .8rem; }
   .cf-btn { width: 100%; justify-content: center; }
 }
+
+/* ── Email reveal ── */
+.email-lock-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .55rem;
+}
+.email-masked {
+  font-size: .88rem;
+  color: var(--muted);
+  letter-spacing: .04em;
+  font-family: monospace;
+}
+.email-revealed {
+  font-size: .88rem;
+  color: var(--accent) !important;
+  font-family: monospace;
+  word-break: break-all;
+  text-decoration: none;
+}
+.email-revealed:hover { color: #79c0ff !important; }
+.email-reveal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  background: rgba(88,166,255,.1);
+  border: 1px solid rgba(88,166,255,.35);
+  border-radius: 20px;
+  color: var(--accent);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: .3rem .85rem;
+  cursor: pointer;
+  transition: background .2s, border-color .2s, transform .2s;
+}
+.email-reveal-btn:hover {
+  background: rgba(88,166,255,.2);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+.email-copy-btn {
+  display: none;
+  align-items: center;
+  gap: .35rem;
+  background: rgba(126,231,135,.1);
+  border: 1px solid rgba(126,231,135,.3);
+  border-radius: 20px;
+  color: var(--accent-g);
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: .3rem .85rem;
+  cursor: pointer;
+  transition: background .2s, transform .2s;
+}
+.email-copy-btn:hover { background: rgba(126,231,135,.2); transform: translateY(-1px); }
+.email-copy-btn.copied {
+  color: #fff;
+  background: rgba(126,231,135,.25);
+}
 </style>
 
 <div class="page-hero">
@@ -340,7 +404,12 @@ title: Contact
       <div class="contact-card">
         <div class="cc-icon">✉️</div>
         <h3>Email</h3>
-        <a href="mailto:harshkakashniya@gmail.com">harshkakashniya@gmail.com</a>
+        <div class="email-lock-wrap">
+          <span class="email-masked" id="emailMasked">h••••••••••••@gmail.com</span>
+          <a class="email-revealed" id="emailRevealed" href="#" style="display:none;"></a>
+          <button class="email-reveal-btn" id="emailRevealBtn">🔒 Reveal Email</button>
+          <button class="email-copy-btn"   id="emailCopyBtn">📋 Copy</button>
+        </div>
       </div>
       <div class="contact-card">
         <div class="cc-icon">📍</div>
@@ -517,6 +586,47 @@ title: Contact
       setLoading(false);
       showStatus('error', 'Network error. Please email directly.');
     });
+  });
+})();
+
+// ── Email reveal (scrambled so bots can't scrape it) ──
+(function () {
+  // Email stored as char codes each shifted by +17 — decoded only on user click
+  // Never appears as plain text in the HTML source
+  var sc = [121,114,131,132,121,63,124,114,124,114,132,121,127,122,138,114,81,120,126,114,122,125,63,116,128,126];
+  //        h    a    r    s    h    .    k    a    k    a    s    h    n    i    y    a    @    g    m    a    i    l    .    c    o    m
+
+  function decode() {
+    return sc.map(function(c){ return String.fromCharCode(c - 17); }).join('');
+  }
+
+  var revealBtn = document.getElementById('emailRevealBtn');
+  var copyBtn   = document.getElementById('emailCopyBtn');
+  var masked    = document.getElementById('emailMasked');
+  var revealed  = document.getElementById('emailRevealed');
+
+  revealBtn.addEventListener('click', function () {
+    var email = decode();
+    masked.style.display    = 'none';
+    revealBtn.style.display = 'none';
+    revealed.href        = 'mailto:' + email;
+    revealed.textContent = email;
+    revealed.style.display  = 'inline';
+    copyBtn.style.display   = 'inline-flex';
+  });
+
+  copyBtn.addEventListener('click', function () {
+    var email = decode();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(email).then(function () {
+        copyBtn.textContent = '✓ Copied!';
+        copyBtn.classList.add('copied');
+        setTimeout(function () {
+          copyBtn.innerHTML = '📋 Copy';
+          copyBtn.classList.remove('copied');
+        }, 2000);
+      });
+    }
   });
 })();
 </script>
