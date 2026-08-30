@@ -1,3 +1,6 @@
+---
+title: "Scrambled Chess"
+---
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -50,5 +53,24 @@
 <script src="js/ai.js"></script>
 <script src="js/piece-svgs.js"></script>
 <script src="js/ui.js"></script>
+
+{% if site.firebase_db_url != "" %}
+<script>
+/* ── Session play counter ── */
+(function () {
+  var DB = '{{ site.firebase_db_url }}';
+  var GAME = 'scrambled-chess';
+  var key = 'gp_' + GAME;
+  if (sessionStorage.getItem(key)) return;
+  fetch(DB + '/games/' + GAME + '.json', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ '.sv': { increment: 1 } })
+  }).then(function () {
+    sessionStorage.setItem(key, '1');
+  }).catch(function () {});
+})();
+</script>
+{% endif %}
 </body>
 </html>
