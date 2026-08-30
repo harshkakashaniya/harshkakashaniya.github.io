@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scrambled Chess</title>
+<meta name="description" content="Chess with a twist: play Classic or Scrambled (randomized, castling-safe back rank) chess, locally two-player or vs. a simple computer opponent.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="topbar">
+  <h1>♟ Scrambled Chess</h1>
+  <button id="theme-toggle" class="icon-btn" aria-label="Toggle day/night theme">🌙</button>
+</header>
+
+<main>
+  <section id="start-screen" class="panel">
+    <h2>New Game</h2>
+
+    <div class="option-group" role="group" aria-label="Game mode">
+      <button class="option-btn is-selected" data-mode="classic" aria-pressed="true">Classic</button>
+      <button class="option-btn" data-mode="scrambled" aria-pressed="false">Scrambled</button>
+    </div>
+    <p class="option-hint" id="mode-hint">Standard starting position — bring your usual openings.</p>
+
+    <div class="option-group" role="group" aria-label="Opponent">
+      <button class="option-btn is-selected" data-opponent="twoPlayer" aria-pressed="true">2 Players</button>
+      <button class="option-btn" data-opponent="ai" aria-pressed="false">vs Computer</button>
+    </div>
+    <p class="option-hint" id="opponent-hint">Share this device and take turns.</p>
+
+    <button id="start-btn" class="primary-btn">Start Game</button>
+  </section>
+
+  <section id="game-screen" class="panel hidden">
+    <div id="status-line" class="status-line" aria-live="polite">White to move</div>
+    <div id="board" class="board" role="grid" aria-label="Chess board"></div>
+    <div id="promotion-picker" class="promotion-picker hidden" aria-label="Choose promotion piece"></div>
+    <button id="new-game-btn" class="secondary-btn">New Game / Change Settings</button>
+  </section>
+</main>
+
+<footer class="foot-note">Runs entirely in your browser — no server, no account, nothing saved except your theme choice.</footer>
+
+<!-- Plain classic scripts, not type="module" — ES modules are blocked by
+     browser CORS rules when opened via file://, which broke the "must run
+     by opening index.html directly" requirement. Load order matters: each
+     file expects the previous ones' globals to already exist. -->
+<script src="js/chess-engine.js"></script>
+<script src="js/ai.js"></script>
+<script src="js/piece-svgs.js"></script>
+<script src="js/ui.js"></script>
+</body>
+</html>

@@ -1,0 +1,272 @@
+/* Night (default) theme — matches harshkakashaniya.github.io/Games/'s dark palette */
+:root {
+  --bg: #0d1117;
+  --text: #e6edf3;
+  --text-muted: #9aa7b3;
+  --panel-bg: #161b22;
+  --panel-border: #30363d;
+  --accent: #58a6ff;
+  --accent-text: #0d1117;
+  /* Board gets its own genuinely light/dark palette — like lichess/chess.com,
+     the board is a distinct visual zone and doesn't need to match the page
+     chrome's dark tone. See docs/game/ux-guidelines.md's "Piece/board
+     legibility" section for why (measured contrast bug, fixed 2026-08-29). */
+  --board-light: #b7c4d6;
+  --board-dark: #4c6485;
+  --square-selected: #2f9e63;
+  --square-legal-dot: rgba(230, 162, 20, 0.85);
+  --square-capture-ring: #e5534b;
+  --check-ring: #e5534b;
+  --piece-white-fill: #ffffff;
+  --piece-white-stroke: #000000;
+  --piece-black-fill: #000000;
+  --piece-black-stroke: #ffffff;
+}
+
+html[data-theme="light"] {
+  --bg: #f5f7fa;
+  --text: #1b1f24;
+  --text-muted: #57606a;
+  --panel-bg: #ffffff;
+  --panel-border: #d7dde4;
+  --accent: #2563eb;
+  --accent-text: #ffffff;
+  /* Classic warm wood-style board — proven-legible pairing, and the light
+     theme has room to use it since it doesn't need to match a dark-site
+     baseline the way night mode does. */
+  --board-light: #f0e6d2;
+  --board-dark: #b58863;
+  --square-selected: #2f9e63;
+  --square-legal-dot: rgba(191, 110, 20, 0.85);
+  --square-capture-ring: #d64545;
+  --check-ring: #d64545;
+  /* Piece colors are theme-independent — pure black/white, defined once in :root. */
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.topbar {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+}
+
+.topbar h1 {
+  font-size: 1.25rem;
+  margin: 0;
+}
+
+.icon-btn {
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  color: var(--text);
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.icon-btn:hover { border-color: var(--accent); }
+
+main {
+  width: 100%;
+  max-width: 560px;
+  padding: 0 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.panel {
+  width: 100%;
+  background: var(--panel-bg);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.panel.hidden { display: none; }
+
+.panel h2 { margin: 0 0 0.25rem; }
+
+.option-group {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.option-btn {
+  flex: 1;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--panel-border);
+  background: transparent;
+  color: var(--text);
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+.option-btn.is-selected {
+  background: var(--accent);
+  color: var(--accent-text);
+  border-color: var(--accent);
+}
+
+.option-hint {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin: 0 0 0.5rem;
+  text-align: center;
+}
+
+.primary-btn, .secondary-btn {
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.primary-btn {
+  background: var(--accent);
+  color: var(--accent-text);
+  font-weight: 600;
+}
+
+.secondary-btn {
+  background: transparent;
+  border: 1px solid var(--panel-border);
+  color: var(--text);
+  margin-top: 0.75rem;
+}
+
+.status-line {
+  font-size: 1.05rem;
+  font-weight: 600;
+  min-height: 1.5em;
+  text-align: center;
+}
+.status-line.is-check { color: var(--check-ring); }
+.status-line.is-over { color: var(--accent); }
+
+.board {
+  width: min(90vw, 480px);
+  aspect-ratio: 1 / 1;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--panel-border);
+}
+
+.square {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.square.light { background: var(--board-light); }
+.square.dark { background: var(--board-dark); }
+
+.square.is-selected { box-shadow: inset 0 0 0 3px var(--square-selected); }
+.square.is-check { box-shadow: inset 0 0 0 3px var(--check-ring); }
+
+.square .legal-dot {
+  position: absolute;
+  width: 22%;
+  height: 22%;
+  border-radius: 50%;
+  background: var(--square-legal-dot);
+  pointer-events: none;
+}
+
+.square .capture-ring {
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  border: 3px solid var(--square-capture-ring);
+  pointer-events: none;
+}
+
+/* Pieces are hand-drawn SVG silhouettes (game/js/piece-svgs.js), not Unicode
+   glyphs — Unicode chess symbols render inconsistently across fonts/
+   platforms and were reported as looking crude. Pure black/white fill
+   (user preference — an earlier translucent backdrop-circle version
+   measured well for contrast but was rejected on sight as "circles around
+   the pieces"). Pure fill color only solves contrast on the *opposite*-
+   toned square (white fill vs. dark square, black fill vs. light square) —
+   a same-toned square (white piece on a light square, black piece on a
+   dark square) is mathematically incapable of good fill-vs-background
+   contrast no matter what shade of "light" or "dark" the square is,
+   because that's what matching tones means. The outline stroke is what
+   carries the same-toned cases, so it isn't optional polish — it's
+   load-bearing. See docs/game/ux-guidelines.md's "Piece/board legibility"
+   section for the measured numbers (this still holds with SVG shapes:
+   `stroke` on an SVG shape is the direct equivalent of the old
+   `-webkit-text-stroke`, and is standard/well-supported for vector shapes
+   in every engine — no text-shadow fallback needed the way it was for
+   Unicode glyphs). */
+.piece-white, .piece-black {
+  width: 82%;
+  height: 82%;
+  overflow: visible;
+  pointer-events: none;
+  stroke-width: 3;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.piece-white { fill: var(--piece-white-fill); stroke: var(--piece-white-stroke); }
+.piece-black { fill: var(--piece-black-fill); stroke: var(--piece-black-stroke); }
+
+.promotion-picker {
+  display: flex;
+  gap: 0.5rem;
+  background: var(--panel-bg);
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  padding: 0.75rem;
+}
+.promotion-picker.hidden { display: none; }
+.promotion-picker button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--text);
+  width: 3rem;
+  height: 3rem;
+}
+.promotion-picker button:hover { border-color: var(--accent); }
+
+.foot-note {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  padding: 1rem;
+  text-align: center;
+}
